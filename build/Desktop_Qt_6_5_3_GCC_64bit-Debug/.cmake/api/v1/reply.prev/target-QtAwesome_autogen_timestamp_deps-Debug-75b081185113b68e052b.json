@@ -1,0 +1,27 @@
+{
+	"backtrace" : 0,
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : 
+		[
+			"QtAwesome/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			}
+		]
+	},
+	"id" : "QtAwesome_autogen_timestamp_deps::@f77b18f5c21314b7f427",
+	"isGeneratorProvided" : true,
+	"name" : "QtAwesome_autogen_timestamp_deps",
+	"paths" : 
+	{
+		"build" : "QtAwesome",
+		"source" : "QtAwesome"
+	},
+	"sources" : [],
+	"type" : "UTILITY"
+}

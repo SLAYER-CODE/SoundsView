@@ -1,0 +1,194 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-adfb35d52cda9ede4898.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						6,
+						7,
+						8
+					]
+				},
+				{
+					"build" : "QtAwesome",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-QtAwesome-Debug-72da55f50be7373c2145.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "QtAwesome",
+					"targetIndexes" : 
+					[
+						3,
+						4,
+						5
+					]
+				},
+				{
+					"build" : "QHotkeys",
+					"jsonFile" : "directory-QHotkeys-Debug-eb0910cf40eaba7b20be.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 2,
+					"source" : "QHotkeys",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "SoundsView",
+					"targetIndexes" : 
+					[
+						6,
+						7,
+						8
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "QtAwesome",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						3,
+						4,
+						5
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						2
+					],
+					"name" : "QHotkeys",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 2,
+					"id" : "QHotkeys::@3a9b7a97e2ad1efc068b",
+					"jsonFile" : "target-QHotkeys-Debug-7e8bcc3d69c379036681.json",
+					"name" : "QHotkeys",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "QHotkeys_autogen::@3a9b7a97e2ad1efc068b",
+					"jsonFile" : "target-QHotkeys_autogen-Debug-b5a3a259eb61a5ef330c.json",
+					"name" : "QHotkeys_autogen",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "QHotkeys_autogen_timestamp_deps::@3a9b7a97e2ad1efc068b",
+					"jsonFile" : "target-QHotkeys_autogen_timestamp_deps-Debug-1b88d216e9bd1fae5e75.json",
+					"name" : "QHotkeys_autogen_timestamp_deps",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "QtAwesome::@f77b18f5c21314b7f427",
+					"jsonFile" : "target-QtAwesome-Debug-e70d354b86a7d3a3d117.json",
+					"name" : "QtAwesome",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "QtAwesome_autogen::@f77b18f5c21314b7f427",
+					"jsonFile" : "target-QtAwesome_autogen-Debug-0a13ef4acca6c1751765.json",
+					"name" : "QtAwesome_autogen",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "QtAwesome_autogen_timestamp_deps::@f77b18f5c21314b7f427",
+					"jsonFile" : "target-QtAwesome_autogen_timestamp_deps-Debug-75b081185113b68e052b.json",
+					"name" : "QtAwesome_autogen_timestamp_deps",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "SoundsView::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-SoundsView-Debug-db485ff4e5a3d7a17870.json",
+					"name" : "SoundsView",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "SoundsView_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-SoundsView_autogen-Debug-5f7da90976c0c1024b92.json",
+					"name" : "SoundsView_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "SoundsView_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-SoundsView_autogen_timestamp_deps-Debug-1b16afacb3ea33cf9182.json",
+					"name" : "SoundsView_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/Tiopaz/SoundsView/build/Desktop_Qt_6_5_3_GCC_64bit-Debug",
+		"source" : "/home/Tiopaz/SoundsView"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

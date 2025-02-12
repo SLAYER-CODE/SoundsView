@@ -1,0 +1,150 @@
+{
+	"BUILD_DIR" : "/home/Tiopaz/SoundsView/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/QHotkeys/QHotkeys_autogen",
+	"CMAKE_BINARY_DIR" : "/home/Tiopaz/SoundsView/build/Desktop_Qt_6_5_3_GCC_64bit-Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/Tiopaz/SoundsView/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/QHotkeys",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/Tiopaz/SoundsView/QHotkeys",
+	"CMAKE_EXECUTABLE" : "/home/Tiopaz/Qt/Tools/CMake/bin/cmake",
+	"CMAKE_LIST_FILES" : 
+	[
+		"/home/Tiopaz/SoundsView/QHotkeys/CMakeLists.txt",
+		"/home/Tiopaz/SoundsView/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/.qtc/package-manager/auto-setup.cmake",
+		"/home/Tiopaz/SoundsView/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/CMakeFiles/3.29.3/CMakeCCompiler.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/CMakeCInformation.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/CMakeLanguageInformation.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/Compiler/Clang-C.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/Compiler/Clang.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/Platform/Linux-Clang-C.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/Platform/Linux-GNU-C.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/Platform/Linux-GNU.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/CMakeCommonLanguageInclude.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/Qt6ConfigVersion.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/Qt6ConfigVersionImpl.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/Qt6Config.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/Qt6ConfigExtras.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/QtPublicCMakeVersionHelpers.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/Qt6Targets.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/Qt6VersionlessTargets.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/QtFeature.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/QtFeatureCommon.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/CheckCXXCompilerFlag.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/QtPublicAppleHelpers.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/QtPublicFinalizerHelpers.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/QtPublicPluginHelpers.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/QtPublicTargetHelpers.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/QtPublicWalkLibsHelpers.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/QtPublicFindPackageHelpers.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/QtPublicTestHelpers.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/QtPublicToolHelpers.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/QtPublicCMakeHelpers.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/CMakeFindDependencyMacro.cmake",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/lib/cmake/Qt6/Qt6Dependencies.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/FindX11.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/FindFreetype.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/FindPackageHandleStandardArgs.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/FindPackageMessage.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/FindFontconfig.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/FindPkgConfig.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/FindPackageHandleStandardArgs.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/FindPackageMessage.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/FindPackageHandleStandardArgs.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/FindPackageMessage.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/FindPackageHandleStandardArgs.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/FindPackageMessage.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/CheckFunctionExists.cmake",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/CheckLibraryExists.cmake"
+	],
+	"CMAKE_SOURCE_DIR" : "/home/Tiopaz/SoundsView",
+	"CROSS_CONFIG" : false,
+	"DEP_FILE" : "/home/Tiopaz/SoundsView/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/QHotkeys/QHotkeys_autogen/deps",
+	"DEP_FILE_RULE_NAME" : "QHotkeys_autogen/timestamp",
+	"HEADERS" : 
+	[
+		[
+			"/home/Tiopaz/SoundsView/QHotkeys/src/helper.h",
+			"MU",
+			"UVLADIE3JM/moc_helper.cpp",
+			null
+		],
+		[
+			"/home/Tiopaz/SoundsView/QHotkeys/src/qhotkey.h",
+			"MU",
+			"UVLADIE3JM/moc_qhotkey.cpp",
+			null
+		]
+	],
+	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
+	"INCLUDE_DIR" : "/home/Tiopaz/SoundsView/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/QHotkeys/QHotkeys_autogen/include",
+	"MOC_COMPILATION_FILE" : "/home/Tiopaz/SoundsView/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/QHotkeys/QHotkeys_autogen/mocs_compilation.cpp",
+	"MOC_DEFINITIONS" : [ "QT_CORE_LIB", "QT_DEPRECATED_WARNINGS", "QT_GUI_LIB" ],
+	"MOC_DEPEND_FILTERS" : 
+	[
+		[
+			"Q_PLUGIN_METADATA",
+			"[\n][ \t]*Q_PLUGIN_METADATA[ \t]*\\([^\\)]*FILE[ \t]*\"([^\"]+)\""
+		]
+	],
+	"MOC_INCLUDES" : 
+	[
+		"/home/Tiopaz/SoundsView/QtAwesome",
+		"/home/Tiopaz/SoundsView/QHotkeys/src",
+		"/usr/lib/libSM.so",
+		"/usr/lib/libICE.so",
+		"/usr/lib/libX11.so",
+		"/usr/lib/libXext.so",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/include/QtCore",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/include",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/mkspecs/linux-g++",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/include/QtGui/6.5.3",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/include/QtGui/6.5.3/QtGui",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/include/QtCore/6.5.3",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/include/QtCore/6.5.3/QtCore",
+		"/home/Tiopaz/Qt/6.5.3/gcc_64/include/QtGui",
+		"/usr/include",
+		"/usr/include/c++/14.1.1",
+		"/usr/include/c++/14.1.1/x86_64-pc-linux-gnu",
+		"/usr/include/c++/14.1.1/backward",
+		"/usr/lib/clang/18/include",
+		"/usr/local/include"
+	],
+	"MOC_MACRO_NAMES" : 
+	[
+		"Q_OBJECT",
+		"Q_GADGET",
+		"Q_NAMESPACE",
+		"Q_NAMESPACE_EXPORT",
+		"Q_GADGET_EXPORT"
+	],
+	"MOC_OPTIONS" : [],
+	"MOC_PATH_PREFIX" : false,
+	"MOC_PREDEFS_CMD" : 
+	[
+		"/usr/bin/clang++",
+		"-std=gnu++17",
+		"-dM",
+		"-E",
+		"-c",
+		"/home/Tiopaz/Qt/Tools/CMake/share/cmake-3.29/Modules/CMakeCXXCompilerABI.cpp"
+	],
+	"MOC_PREDEFS_FILE" : "/home/Tiopaz/SoundsView/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/QHotkeys/QHotkeys_autogen/moc_predefs.h",
+	"MOC_RELAXED_MODE" : false,
+	"MOC_SKIP" : [],
+	"MULTI_CONFIG" : false,
+	"PARALLEL" : 8,
+	"PARSE_CACHE_FILE" : "/home/Tiopaz/SoundsView/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/QHotkeys/CMakeFiles/QHotkeys_autogen.dir/ParseCache.txt",
+	"QT_MOC_EXECUTABLE" : "/home/Tiopaz/Qt/6.5.3/gcc_64/./libexec/moc",
+	"QT_UIC_EXECUTABLE" : "/home/Tiopaz/Qt/6.5.3/gcc_64/./libexec/uic",
+	"QT_VERSION_MAJOR" : 6,
+	"QT_VERSION_MINOR" : 5,
+	"SETTINGS_FILE" : "/home/Tiopaz/SoundsView/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/QHotkeys/CMakeFiles/QHotkeys_autogen.dir/AutogenUsed.txt",
+	"SOURCES" : 
+	[
+		[ "/home/Tiopaz/SoundsView/QHotkeys/src/qhotkey_linux.cpp", "MU", null ]
+	],
+	"UIC_OPTIONS" : [],
+	"UIC_SEARCH_PATHS" : [],
+	"UIC_SKIP" : [],
+	"UIC_UI_FILES" : [],
+	"USE_BETTER_GRAPH" : false,
+	"VERBOSITY" : 0
+}

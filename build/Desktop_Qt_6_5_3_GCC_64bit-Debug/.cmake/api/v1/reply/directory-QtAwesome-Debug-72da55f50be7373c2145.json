@@ -1,0 +1,88 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"QtAwesome/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 35,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 41,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 47,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "lib",
+			"paths" : 
+			[
+				"QtAwesome/libQtAwesome.a"
+			],
+			"targetId" : "QtAwesome::@f77b18f5c21314b7f427",
+			"targetIndex" : 3,
+			"type" : "target"
+		},
+		{
+			"backtrace" : 2,
+			"component" : "Unspecified",
+			"destination" : "lib/cmake/QtAwesome",
+			"exportName" : "QtAwesomeConfig",
+			"exportTargets" : 
+			[
+				{
+					"id" : "QtAwesome::@f77b18f5c21314b7f427",
+					"index" : 3
+				}
+			],
+			"paths" : 
+			[
+				"QtAwesome/CMakeFiles/Export/0e9df93fb2de51680e781cd4501de1ff/QtAwesomeConfig.cmake"
+			],
+			"type" : "export"
+		},
+		{
+			"backtrace" : 3,
+			"component" : "Unspecified",
+			"destination" : "include/QtAwesome",
+			"paths" : 
+			[
+				"QtAwesome/QtAwesome/QtAwesome.h",
+				"QtAwesome/QtAwesome/QtAwesomeAnim.h",
+				"QtAwesome/QtAwesome/QtAwesomeEnumGenerated.h",
+				"QtAwesome/QtAwesome/QtAwesomeStringGenerated.h"
+			],
+			"type" : "file"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "QtAwesome",
+		"source" : "QtAwesome"
+	}
+}
