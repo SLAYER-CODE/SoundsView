@@ -63,6 +63,9 @@ public:
   void onZoomAnimationFinished();
   void updatePlaceholderPosition();
   void updatePlaceholder();
+  bool isExpanded() const { return m_check; }
+  void toggleExpansion();
+  void collapse() { updateIcon(false); }
 
 protected:
   void paintEvent(QPaintEvent *event) override;

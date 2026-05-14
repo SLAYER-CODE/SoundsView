@@ -127,6 +127,7 @@ void VoiceRoulette::hideEvent(QHideEvent *event) {
   menuSelect_change(false);
   for (const ButtonData *data : m_buttons) data->button->clearFocus();
   for (const ButtonDataMenu *data : m_buttonsMenu) data->button->clearFocus();
+  m_buttonloquendo->collapse();
   unsetCursor();
   QWidget::hideEvent(event);
 }
@@ -253,6 +254,9 @@ void VoiceRoulette::keyPressEvent(QKeyEvent *event) {
     menuSelect_change(false);
     for (const ButtonData *data : m_buttons) data->button->clearFocus();
     for (const ButtonDataMenu *data : m_buttonsMenu) data->button->clearFocus();
+  } else if (event->key() == Qt::Key_Control) {
+    m_buttonloquendo->toggleExpansion();
+    event->accept();
   } else if (event->key() == Qt::Key_Alt) {
     menuSelect_change(true);
     for (const ButtonData *data : m_buttons) data->button->clearFocus();

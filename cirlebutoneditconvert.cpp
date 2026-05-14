@@ -214,6 +214,10 @@ void CirleButonEditConvert::animatePosition(const QPoint &startPos,
   m_moving->start();
 }
 
+void CirleButonEditConvert::toggleExpansion() {
+  updateIcon(!m_check);
+}
+
 void CirleButonEditConvert::updateIcon(bool checked) {
   m_check = checked;
   if (!checked) {
