@@ -1,71 +1,67 @@
 #ifndef CIRCULARBUTTON_H
 #define CIRCULARBUTTON_H
+#include "iconmanager.h"
 #include <QLabel>
 #include <QPropertyAnimation>
 #include <QPushButton>
-#include "iconmanager.h"
 
-class CircularButton : public QPushButton
-{
-    Q_OBJECT
-    Q_PROPERTY(qreal expancion READ expancion WRITE setExpancion)
+class CircularButton : public QPushButton {
+  Q_OBJECT
+  Q_PROPERTY(qreal expancion READ expancion WRITE setExpancion)
 
 public:
-    CircularButton(const QString &text,
-                   const QChar &icon,
-                   const QChar &iconCheck,
-                   qreal radius,
-                   QWidget *parent = nullptr);
-    qreal pos() const;
-    void setpos(qreal &pos);
+  CircularButton(const QString &text, const QChar &icon, const QChar &iconCheck,
+                 qreal radius, QWidget *parent = nullptr);
+  qreal pos() const;
+  void setpos(qreal &pos);
 
-    qreal opacity() const;
-    void setopacity(qreal &zoom);
+  qreal opacity() const;
+  void setopacity(qreal &zoom);
 
-    qreal expancion();
-    void setExpancion(qreal number);
+  qreal expancion();
+  void setExpancion(qreal number);
 
-    QPointF moving();
-    void setMoving(QPointF &zoom);
+  QPointF moving();
+  void setMoving(QPointF &zoom);
 
-    void startAnimation();
-    void resverseAnimation();
+  void startAnimation();
+  void resverseAnimation();
 
 protected:
-    void enterEvent(QEnterEvent *event) override;
-    void leaveEvent(QEvent *event) override;
-    void resizeEvent(QResizeEvent *event) override;
-    void paintEvent(QPaintEvent *event) override;
+  void enterEvent(QEnterEvent *event) override;
+  void leaveEvent(QEvent *event) override;
+  void resizeEvent(QResizeEvent *event) override;
+  void paintEvent(QPaintEvent *event) override;
 
-    void updateMask();
+  void updateMask();
 
 private slots:
 
 private:
-    QChar m_icon; // Icono de FontAwesome
-    QChar m_iconUnchecked;
-    QChar m_iconchecked;
+  QChar m_icon; // Icono de FontAwesome
+  QChar m_iconUnchecked;
+  QChar m_iconchecked;
 
-    QColor m_backgroundColor;
-    int m_iconSize;
-    qreal m_centerX;
-    qreal m_centerY;
-    int radius;
-    qreal exp;
-    QPointF pointMessage;
+  QColor m_backgroundColor;
+  int m_iconSize;
+  qreal m_centerX;
+  qreal m_centerY;
+  int radius;
+  qreal exp;
+  QPointF pointMessage;
 
-    bool m_isHovered;
-    QColor m_hoverBackgroundColor;
-    qreal m_zoom;
+  bool m_isHovered;
+  QColor m_hoverBackgroundColor;
+  qreal m_zoom;
 
-    bool m_check;
+  bool m_check;
 
-    qreal m_opacity;
-    qreal m_pos;
-    QLabel *placeholder;
+  qreal m_opacity;
+  qreal m_pos;
+  QLabel *placeholder;
 
-    QPropertyAnimation *m_expancion;
-    fa::QtAwesome *awesome;
+  QPropertyAnimation *m_expancion;
+  fa::QtAwesome *awesome;
 };
 
 #endif // CIRCULARBUTTON_H

@@ -1,0 +1,4 @@
+set(__QT_DEPLOY_TARGET_QtAwesome_FILE /home/Tiopaz/SoundsView/build_terminal/QtAwesome/libQtAwesome.a)
+set(__QT_DEPLOY_TARGET_QtAwesome_TYPE STATIC_LIBRARY)
+set(__QT_DEPLOY_TARGET_SoundsView_FILE /home/Tiopaz/SoundsView/build_terminal/SoundsView)
+set(__QT_DEPLOY_TARGET_SoundsView_TYPE EXECUTABLE)

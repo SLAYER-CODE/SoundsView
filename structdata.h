@@ -4,25 +4,23 @@
 
 #include "circulartrianglebutton.h"
 #include "polygonbutton.h"
-struct ButtonData
-{
-    ButtonData(); // Constructor por defecto
-    ButtonData(PolygonButton *button,
-               double startAngle,
-               double endAngle); // Constructor personalizado
+struct ButtonData {
+  ButtonData(); // Constructor por defecto
+  ButtonData(PolygonButton *button, double startAngle,
+             double endAngle); // Constructor personalizado
 
-    PolygonButton *button;
-    double startAngle;
-    double endAngle;
+  PolygonButton *button;
+  double startAngle;
+  double endAngle;
 };
 
-struct ButtonDataMenu
-{
-    ButtonDataMenu();
-    ButtonDataMenu(CircularTriangleButton *button, double startAngle, double endAngle);
-    CircularTriangleButton *button;
-    double startAngle;
-    double endAngle;
+struct ButtonDataMenu {
+  ButtonDataMenu();
+  ButtonDataMenu(CircularTriangleButton *button, double startAngle,
+                 double endAngle);
+  CircularTriangleButton *button;
+  double startAngle;
+  double endAngle;
 };
 
 #endif // BUTTONDATA_H

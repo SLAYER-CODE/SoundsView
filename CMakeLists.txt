@@ -10,14 +10,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools Core )
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools TextToSpeech WebEngineWidgets)
-find_package(X11 REQUIRED)
-
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 add_subdirectory(QtAwesome)
 include_directories(QtAwesome)
 
-add_subdirectory(QHotkeys)
-include_directories(${CMAKE_SOURCE_DIR}/QHotkeys/src)
+# QHotkeys eliminado — usa XGrabKey (no funciona en Wayland)
+# En su lugar: SIGUSR1 desde niri config
 
 set(TS_FILES SoundsView_es_PE.ts)
 
@@ -30,8 +28,7 @@ set(PROJECT_SOURCES
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(SoundsView
-        MANUAL_FINALIZATION
+    add_executable(SoundsView
         ${PROJECT_SOURCES}
         circulartrianglebutton.h circulartrianglebutton.cpp
         voiceroulette.h voiceroulette.cpp
@@ -69,7 +66,7 @@ else()
 
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
-target_link_libraries(SoundsView PRIVATE QtAwesome QHotkeys  PRIVATE Qt6::GuiPrivate Qt6::Core Qt6::TextToSpeech Qt6::WebEngineWidgets  Qt${QT_VERSION_MAJOR}::Widgets ${X11_LIBRARIES})
+target_link_libraries(SoundsView PRIVATE QtAwesome Qt${QT_VERSION_MAJOR}::Widgets)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
@@ -93,6 +90,5 @@ install(TARGETS SoundsView
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(SoundsView)
-endif()
+# qt_finalize_executable skipped — using add_executable instead of qt_add_executable
+# to avoid QML import scanner (version mismatch in Qt installation)

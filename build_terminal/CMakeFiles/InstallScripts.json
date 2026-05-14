@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/Tiopaz/SoundsView/build_terminal/cmake_install.cmake",
+		"/home/Tiopaz/SoundsView/build_terminal/QtAwesome/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
