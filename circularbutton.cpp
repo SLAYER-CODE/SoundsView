@@ -8,7 +8,7 @@ CircularButton::CircularButton(const QString &text, const QChar &icon,
                                QWidget *parent)
     : QPushButton(text, parent), m_backgroundColor(Qt::black), exp(1),
       m_icon(icon), m_iconUnchecked(iconCheck), radius(radius), m_zoom(1),
-      m_isHovered(false) {
+      m_isHovered(false), m_iconColor(Qt::white) {
   setCheckable(true);
   m_expancion = new QPropertyAnimation(this, "expancion");
   m_expancion->setDuration(300);
@@ -50,7 +50,7 @@ void CircularButton::paintEvent(QPaintEvent *event) {
 
   painter.restore();
 
-  QPen pen(Qt::white, 1); // Ajusta el grosor del borde aquí
+  QPen pen(m_iconColor, 1); // Ajusta el grosor del borde aquí
   painter.setPen(pen);
 
   painter.setBrush(Qt::NoBrush);

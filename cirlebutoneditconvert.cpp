@@ -129,8 +129,9 @@ CirleButonEditConvert::CirleButonEditConvert(const QString &text, qreal radius,
 
   treants = new CircularButton("", QChar(static_cast<char16_t>(fa::fa_layer_group)), QChar(static_cast<char16_t>(fa::fa_list_check)),
                                radius / 2, this);
-  clear = new CircularButton("", QChar(static_cast<char16_t>(fa::fa_circle_check)), QChar(static_cast<char16_t>(fa::fa_delete_left)),
+  clear = new CircularButton("", QChar(static_cast<char16_t>(fa::fa_minus)), QChar(static_cast<char16_t>(fa::fa_circle_check)),
                              radius / 2, this);
+  clear->setIconColor(QColor(128, 128, 128));
 
   icon_place = new QLabel(this);
   QFont font = awesome->font(fa::fa_solid, 40);
@@ -216,6 +217,23 @@ void CirleButonEditConvert::animatePosition(const QPoint &startPos,
 
 void CirleButonEditConvert::toggleExpansion() {
   updateIcon(!m_check);
+}
+
+void CirleButonEditConvert::setSendStatus(SendStatus status) {
+  switch (status) {
+    case SendStatus::Neutral:
+      clear->setCustomIcon(QChar(static_cast<char16_t>(fa::fa_minus)));
+      clear->setIconColor(QColor(128, 128, 128));
+      break;
+    case SendStatus::Success:
+      clear->setCustomIcon(QChar(static_cast<char16_t>(fa::fa_circle_check)));
+      clear->setIconColor(Qt::white);
+      break;
+    case SendStatus::Failure:
+      clear->setCustomIcon(QChar(static_cast<char16_t>(fa::fa_circle_xmark)));
+      clear->setIconColor(Qt::red);
+      break;
+  }
 }
 
 void CirleButonEditConvert::updateIcon(bool checked) {

@@ -1,6 +1,7 @@
 #ifndef CIRCULARBUTTON_H
 #define CIRCULARBUTTON_H
 #include "iconmanager.h"
+#include <QColor>
 #include <QLabel>
 #include <QPropertyAnimation>
 #include <QPushButton>
@@ -26,6 +27,9 @@ public:
 
   void startAnimation();
   void resverseAnimation();
+
+  void setCustomIcon(const QChar &icon) { m_icon = icon; update(); }
+  void setIconColor(const QColor &color) { m_iconColor = color; update(); }
 
 protected:
   void enterEvent(QEnterEvent *event) override;
@@ -62,6 +66,8 @@ private:
 
   QPropertyAnimation *m_expancion;
   fa::QtAwesome *awesome;
+
+  QColor m_iconColor;
 };
 
 #endif // CIRCULARBUTTON_H

@@ -349,7 +349,8 @@ CMakeFiles/SoundsView.dir/SoundsView_autogen/mocs_compilation.cpp.o: \
  /home/Tiopaz/SoundsView/QtAwesome/QtAwesome/QtAwesomeAnim.h \
  /usr/include/qt6/QtCore/QObject \
  /home/Tiopaz/SoundsView/QtAwesome/QtAwesome/QtAwesomeEnumGenerated.h \
- /usr/include/qt6/QtWidgets/QLabel /usr/include/qt6/QtWidgets/qlabel.h \
+ /usr/include/qt6/QtGui/QColor /usr/include/qt6/QtWidgets/QLabel \
+ /usr/include/qt6/QtWidgets/qlabel.h \
  /usr/include/qt6/QtWidgets/qtwidgetsglobal.h \
  /usr/include/qt6/QtWidgets/qtwidgets-config.h \
  /usr/include/qt6/QtWidgets/qtwidgetsexports.h \
@@ -402,7 +403,7 @@ CMakeFiles/SoundsView.dir/SoundsView_autogen/mocs_compilation.cpp.o: \
  /usr/include/qt6/QtWidgets/qtabwidget.h \
  /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/moc_polygonbutton.cpp \
  /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../polygonbutton.h \
- /usr/include/qt6/QtGui/QColor /usr/include/qt6/QtGui/QPolygonF \
+ /usr/include/qt6/QtGui/QPolygonF \
  /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/moc_voiceroulette.cpp \
  /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../voiceroulette.h \
  /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../cirlebutoneditconvert.h \

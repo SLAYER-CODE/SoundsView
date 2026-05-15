@@ -347,7 +347,8 @@ CMakeFiles/SoundsView.dir/circularbutton.cpp.o: \
  /home/Tiopaz/SoundsView/QtAwesome/QtAwesome/QtAwesomeAnim.h \
  /usr/include/qt6/QtCore/QObject \
  /home/Tiopaz/SoundsView/QtAwesome/QtAwesome/QtAwesomeEnumGenerated.h \
- /usr/include/qt6/QtWidgets/QLabel /usr/include/qt6/QtWidgets/qlabel.h \
+ /usr/include/qt6/QtGui/QColor /usr/include/qt6/QtWidgets/QLabel \
+ /usr/include/qt6/QtWidgets/qlabel.h \
  /usr/include/qt6/QtWidgets/qtwidgetsglobal.h \
  /usr/include/qt6/QtWidgets/qtwidgets-config.h \
  /usr/include/qt6/QtWidgets/qtwidgetsexports.h \

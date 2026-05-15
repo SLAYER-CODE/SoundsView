@@ -66,6 +66,11 @@ public:
   bool isExpanded() const { return m_check; }
   void toggleExpansion();
   void collapse() { updateIcon(false); }
+  enum class SendStatus { Neutral, Success, Failure };
+  void setSendStatus(SendStatus status);
+  void setNeutral() { setSendStatus(SendStatus::Neutral); }
+  void markSent() { setSendStatus(SendStatus::Success); }
+  void markFailed() { setSendStatus(SendStatus::Failure); }
 
 protected:
   void paintEvent(QPaintEvent *event) override;

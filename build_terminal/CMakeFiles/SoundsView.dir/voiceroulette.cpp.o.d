@@ -349,7 +349,8 @@ CMakeFiles/SoundsView.dir/voiceroulette.cpp.o: \
  /home/Tiopaz/SoundsView/QtAwesome/QtAwesome/QtAwesomeAnim.h \
  /usr/include/qt6/QtCore/QObject \
  /home/Tiopaz/SoundsView/QtAwesome/QtAwesome/QtAwesomeEnumGenerated.h \
- /usr/include/qt6/QtWidgets/QLabel /usr/include/qt6/QtWidgets/qlabel.h \
+ /usr/include/qt6/QtGui/QColor /usr/include/qt6/QtWidgets/QLabel \
+ /usr/include/qt6/QtWidgets/qlabel.h \
  /usr/include/qt6/QtWidgets/qtwidgetsglobal.h \
  /usr/include/qt6/QtWidgets/qtwidgets-config.h \
  /usr/include/qt6/QtWidgets/qtwidgetsexports.h \
@@ -375,8 +376,8 @@ CMakeFiles/SoundsView.dir/voiceroulette.cpp.o: \
  /usr/include/qt6/QtWidgets/qabstractscrollarea.h \
  /usr/include/qt6/QtGui/qtextcursor.h \
  /usr/include/qt6/QtGui/qtextformat.h \
- /home/Tiopaz/SoundsView/polygonbutton.h /usr/include/qt6/QtGui/QColor \
- /usr/include/qt6/QtGui/QPolygonF /home/Tiopaz/SoundsView/structdata.h \
+ /home/Tiopaz/SoundsView/polygonbutton.h /usr/include/qt6/QtGui/QPolygonF \
+ /home/Tiopaz/SoundsView/structdata.h \
  /home/Tiopaz/SoundsView/circulartrianglebutton.h \
  /usr/include/qt6/QtWidgets/QDialog /usr/include/qt6/QtWidgets/qdialog.h \
  /usr/include/qt6/QtWidgets/QWidget \
