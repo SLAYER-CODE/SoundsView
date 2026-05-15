@@ -64,12 +64,17 @@ private:
   QPoint m_hoverPos; // Position of the hovered button's center
   bool isHovering;   // Flag to check if a button is being hovered
   bool m_menuSelect;
+  bool m_altHeld = false;
   QWidget *m_focusedButton;
 
   void activateCurrentSector();
   void handleMenuAction(const QString &name);
   bool angleInRange(double angle, double start, double end);
+  double angularDistance(double a, double b) const;
+  double distanceToSectorEdge(double angle, double start, double end) const;
   void setupAudioPaths();
+
+  static constexpr double kHysteresis = 8.0;
   void speakText(const QString &text);
   void stopSpeech();
 

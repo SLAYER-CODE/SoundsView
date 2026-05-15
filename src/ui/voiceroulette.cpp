@@ -252,6 +252,8 @@ void VoiceRoulette::keyPressEvent(QKeyEvent *event) {
     m_buttonloquendo->toggleExpansion();
     event->accept();
   } else if (event->key() == Qt::Key_Alt) {
+    m_altHeld = true;
+    m_buttonloquendo->setAltActive(true);
     menuSelect_change(true);
     for (const ButtonData *data : m_buttons) data->button->clearFocus();
     event->accept();
@@ -265,6 +267,8 @@ void VoiceRoulette::keyPressEvent(QKeyEvent *event) {
 
 void VoiceRoulette::keyReleaseEvent(QKeyEvent *event) {
   if (event->key() == Qt::Key_Alt) {
+    m_altHeld = false;
+    m_buttonloquendo->setAltActive(false);
     menuSelect_change(false);
     for (const ButtonDataMenu *data : m_buttonsMenu) data->button->clearFocus();
     event->accept();
@@ -273,10 +277,26 @@ void VoiceRoulette::keyReleaseEvent(QKeyEvent *event) {
   }
 }
 
+double VoiceRoulette::angularDistance(double a, double b) const {
+  double diff = fmod(a - b + 360, 360);
+  if (diff > 180) diff = 360 - diff;
+  return diff;
+}
+
+double VoiceRoulette::distanceToSectorEdge(double angle, double start,
+                                           double end) const {
+  return qMin(angularDistance(angle, start), angularDistance(angle, end));
+}
+
 void VoiceRoulette::mouseMoveEvent(QMouseEvent *event) {
   if (m_buttonloquendo->isExpanded()) {
-    for (const ButtonData *data : m_buttons) data->button->clearFocus();
-    for (const ButtonDataMenu *data : m_buttonsMenu) data->button->clearFocus();
+    if (m_altHeld) {
+      QPoint c = m_buttonloquendo->geometry().center();
+      m_buttonloquendo->updateEmojiHighlight(event->pos().x());
+    } else {
+      for (const ButtonData *data : m_buttons) data->button->clearFocus();
+      for (const ButtonDataMenu *data : m_buttonsMenu) data->button->clearFocus();
+    }
     return;
   }
 
@@ -289,45 +309,71 @@ void VoiceRoulette::mouseMoveEvent(QMouseEvent *event) {
   if (angle < 0) angle += 360;
 
   if (m_menuSelect) {
+    ButtonDataMenu *rawSector = nullptr;
+    for (ButtonDataMenu *data : m_buttonsMenu) {
+      if (angleInRange(angle, data->startAngle, data->endAngle)) {
+        rawSector = data;
+        break;
+      }
+    }
+    QWidget *target = rawSector ? rawSector->button : nullptr;
+    if (target && m_focusedButton && target != m_focusedButton) {
+      ButtonDataMenu *current = nullptr;
+      for (ButtonDataMenu *data : m_buttonsMenu) {
+        if (data->button == m_focusedButton) {
+          current = data;
+          break;
+        }
+      }
+      if (current && distanceToSectorEdge(angle, current->startAngle,
+                                          current->endAngle) < kHysteresis)
+        target = current->button;
+    }
     for (const ButtonDataMenu *data : m_buttonsMenu) {
-      double start = data->startAngle;
-      double end = data->endAngle;
-      if (data->startAngle <= data->endAngle) {
-        if (angle >= start && angle < end)
-          data->button->setFocus();
-        else
-          data->button->clearFocus();
-      } else {
-        if ((angle >= start && angle < 360) ||
-            (angle >= 0 && angle < end))
-          data->button->setFocus();
-        else
-          data->button->clearFocus();
-      }
+      if (data->button == target)
+        data->button->setFocus();
+      else
+        data->button->clearFocus();
     }
+    m_focusedButton = target;
   } else {
-    for (const ButtonData *data : m_buttons) {
-      double start = data->startAngle;
-      double end = data->endAngle;
-      if (data->startAngle <= data->endAngle) {
-        if (angle >= start && angle < end)
-          data->button->setFocus();
-        else
-          data->button->clearFocus();
-      } else {
-        if ((angle >= start && angle < 360) ||
-            (angle >= 0 && angle < end))
-          data->button->setFocus();
-        else
-          data->button->clearFocus();
+    ButtonData *rawSector = nullptr;
+    for (ButtonData *data : m_buttons) {
+      if (angleInRange(angle, data->startAngle, data->endAngle)) {
+        rawSector = data;
+        break;
       }
     }
+    QWidget *target = rawSector ? rawSector->button : nullptr;
+    if (target && m_focusedButton && target != m_focusedButton) {
+      ButtonData *current = nullptr;
+      for (ButtonData *data : m_buttons) {
+        if (data->button == m_focusedButton) {
+          current = data;
+          break;
+        }
+      }
+      if (current && distanceToSectorEdge(angle, current->startAngle,
+                                          current->endAngle) < kHysteresis)
+        target = current->button;
+    }
+    for (const ButtonData *data : m_buttons) {
+      if (data->button == target)
+        data->button->setFocus();
+      else
+        data->button->clearFocus();
+    }
+    m_focusedButton = target;
   }
 }
 
 void VoiceRoulette::mouseReleaseEvent(QMouseEvent *event) {
   if (event->button() != Qt::LeftButton) return;
-  if (m_buttonloquendo->isExpanded()) return;
+  if (m_buttonloquendo->isExpanded()) {
+    if (m_altHeld)
+      m_buttonloquendo->triggerHighlighted();
+    return;
+  }
   activateCurrentSector();
 }
 

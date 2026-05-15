@@ -33,7 +33,7 @@ CirleButonEditConvert::CirleButonEditConvert(const QString &text, qreal radius,
   m_expancion = new QPropertyAnimation(this, "expancion");
   m_expancion->setDuration(300);
   m_expancion->setStartValue(1);
-  m_expancion->setEndValue(3.3);
+  m_expancion->setEndValue(3.5);
 
   m_zoomAnimation = new QPropertyAnimation(this, "zoom");
   m_zoomAnimation->setDuration(300);
@@ -69,7 +69,7 @@ CirleButonEditConvert::CirleButonEditConvert(const QString &text, qreal radius,
       "color: gray; font-size: 25pt;background: transparent;"); // Tamaño del
                                                                 // placeholder
   placeholder->setWordWrap(true); // Permite el ajuste de texto
-  placeholder->setText("Escribe lo que loquendo quieres que reprodusca");
+  placeholder->setText("Escribe ...");
   placeholder->setAlignment(Qt::AlignCenter);
 
   editline = new QTextEdit(this);
@@ -85,6 +85,7 @@ CirleButonEditConvert::CirleButonEditConvert(const QString &text, qreal radius,
   editline->setAlignment(Qt::AlignCenter);
   editline->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   editline->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  editline->viewport()->setCursor(Qt::BlankCursor);
   editline->setCursorWidth(0);
 
   // Centrar el texto horizontalmente
@@ -196,6 +197,11 @@ void CirleButonEditConvert::updatePlaceholder() {
   placeholder->setVisible(false);
 }
 
+void CirleButonEditConvert::showEvent(QShowEvent *event) {
+  QWidget::showEvent(event);
+  editline->viewport()->setCursor(Qt::BlankCursor);
+}
+
 void CirleButonEditConvert::paintEvent(QPaintEvent *event) {
   QWidget::paintEvent(event);
   QPainter painter(this);
@@ -214,16 +220,25 @@ void CirleButonEditConvert::paintEvent(QPaintEvent *event) {
   painter.restore();
 }
 
-void CirleButonEditConvert::mouseMoveEvent(QMouseEvent *event) {
-  if (!m_check) return;
+void CirleButonEditConvert::updateEmojiHighlight(int mouseX) {
   int cx = width() / 2;
-  if (event->pos().x() > cx) {
-    highlightLeft(false);
-    highlightRight(true);
-  } else {
-    highlightLeft(true);
-    highlightRight(false);
+  int dx = mouseX - cx;
+  bool toRight = false, toLeft = false;
+  if (m_highlightedSide == Left)
+    toRight = dx > kHysteresisPx;
+  else if (m_highlightedSide == Right)
+    toLeft = dx < -kHysteresisPx;
+  else {
+    toRight = dx > 0;
+    toLeft = dx < 0;
   }
+  if (toRight) { highlightLeft(false); highlightRight(true); }
+  else if (toLeft) { highlightLeft(true); highlightRight(false); }
+}
+
+void CirleButonEditConvert::mouseMoveEvent(QMouseEvent *event) {
+  if (!m_check || !m_altActive) return;
+  updateEmojiHighlight(event->pos().x());
 }
 
 void CirleButonEditConvert::leaveEvent(QEvent *event) {
@@ -233,18 +248,18 @@ void CirleButonEditConvert::leaveEvent(QEvent *event) {
 }
 
 bool CirleButonEditConvert::eventFilter(QObject *obj, QEvent *event) {
-  if (event->type() == QEvent::MouseMove && m_check) {
+  if (m_check && m_altActive && event->type() == QEvent::MouseMove) {
     QMouseEvent *me = static_cast<QMouseEvent *>(event);
     QPoint local = mapFromGlobal(me->globalPosition().toPoint());
-    int cx = width() / 2;
-    if (local.x() > cx) {
-      highlightLeft(false);
-      highlightRight(true);
-    } else {
-      highlightLeft(true);
-      highlightRight(false);
-    }
+    updateEmojiHighlight(local.x());
+    if (obj == editline) return true;
     return false;
+  }
+  if (m_check && m_altActive && obj == editline &&
+      (event->type() == QEvent::MouseButtonPress ||
+       event->type() == QEvent::MouseButtonRelease ||
+       event->type() == QEvent::MouseButtonDblClick)) {
+    return true;
   }
   return QWidget::eventFilter(obj, event);
 }
@@ -291,6 +306,10 @@ void CirleButonEditConvert::updateIcon(bool checked) {
     m_hoverBackgroundColor = QColor(31, 31, 31, 220);
 
     m_backgroundColor = Qt::black;
+    m_treantsActive = false;
+    m_clearActive = false;
+    treants->setIconColor(QColor(128, 128, 128));
+    clear->setIconColor(QColor(128, 128, 128));
 
     m_moving->setDirection(QPropertyAnimation::Backward);
     m_moving->start();
@@ -310,7 +329,7 @@ void CirleButonEditConvert::updateIcon(bool checked) {
     // m_elementexpancion->setDirection(QPropertyAnimation::Forward);
     // m_elementexpancion->start();
   } else {
-    m_backgroundColor = QColor(31, 31, 31, 220);
+    m_backgroundColor = Qt::black;
     m_hoverBackgroundColor = Qt::black;
     m_icon = m_iconUnchecked;
     m_expancion->setDirection(QPropertyAnimation::Forward);
@@ -330,6 +349,10 @@ void CirleButonEditConvert::onZoomAnimationFinished() {
   if (m_check) {
     editline->setEnabled(true);
     editline->setFocus();
+    editline->setCursor(Qt::BlankCursor);
+    editline->viewport()->setCursor(Qt::BlankCursor);
+    treants->setCursor(Qt::BlankCursor);
+    clear->setCursor(Qt::BlankCursor);
     m_mogAnimation->setDirection(QPropertyAnimation::Forward);
     m_mogAnimation->start();
 
@@ -495,11 +518,27 @@ void CirleButonEditConvert::focusInEvent(QFocusEvent *event) {
   update();
 }
 
+void CirleButonEditConvert::triggerHighlighted() {
+  if (!m_check) return;
+  CircularButton *btn = nullptr;
+  if (m_highlightedSide == Left)
+    btn = treants;
+  else if (m_highlightedSide == Right)
+    btn = clear;
+  if (btn) {
+    btn->click();
+    QPoint globalCenter = btn->mapToGlobal(btn->rect().center());
+    QCursor::setPos(globalCenter);
+  }
+}
+
 void CirleButonEditConvert::onSendClicked() {
   if (!m_check) return;
   QString text = editline->toPlainText().trimmed();
   if (!text.isEmpty())
     emit sendRequested(text);
+  m_treantsActive = !m_treantsActive;
+  treants->setIconColor(m_treantsActive ? QColor(76, 175, 80) : QColor(128, 128, 128));
 }
 
 void CirleButonEditConvert::onClearClicked() {
@@ -508,4 +547,6 @@ void CirleButonEditConvert::onClearClicked() {
   placeholder->setVisible(true);
   editline->setCursorWidth(0);
   setNeutral();
+  m_clearActive = !m_clearActive;
+  clear->setIconColor(m_clearActive ? QColor(76, 175, 80) : QColor(128, 128, 128));
 }

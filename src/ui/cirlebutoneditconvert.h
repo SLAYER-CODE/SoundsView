@@ -66,8 +66,15 @@ public:
   bool isExpanded() const { return m_check; }
   void toggleExpansion();
   void collapse() { updateIcon(false); }
-  void highlightLeft(bool h) { treants->setHighlight(h); }
-  void highlightRight(bool h) { clear->setHighlight(h); }
+  enum Side { None, Left, Right };
+  void highlightLeft(bool h) { treants->setHighlight(h); if (h) m_highlightedSide = Left; else if (m_highlightedSide == Left) m_highlightedSide = None; }
+  void highlightRight(bool h) { clear->setHighlight(h); if (h) m_highlightedSide = Right; else if (m_highlightedSide == Right) m_highlightedSide = None; }
+  Side highlightedSide() const { return m_highlightedSide; }
+  void triggerHighlighted();
+  void setAltActive(bool active) { m_altActive = active; if (!active) { highlightLeft(false); highlightRight(false); } }
+  void updateEmojiHighlight(int mouseX);
+
+  static constexpr int kHysteresisPx = 15;
   enum class SendStatus { Neutral, Success, Failure };
   void setSendStatus(SendStatus status);
   void setNeutral() { setSendStatus(SendStatus::Neutral); }
@@ -76,6 +83,7 @@ public:
 
 protected:
   void paintEvent(QPaintEvent *event) override;
+  void showEvent(QShowEvent *event) override;
   void focusInEvent(QFocusEvent *event) override;
   void focusOutEvent(QFocusEvent *event) override;
   void resizeEvent(QResizeEvent *event) override;
@@ -141,6 +149,10 @@ private:
   CircularButton *treants;
   CircularButton *clear;
   QString m_text;
+  bool m_treantsActive = false;
+  bool m_clearActive = false;
+  bool m_altActive = false;
+  Side m_highlightedSide = None;
 
 signals:
   void scaleSizeChanged(QSize point);
