@@ -1,10 +1,9 @@
 CMakeFiles/SoundsView.dir/SoundsView_autogen/mocs_compilation.cpp.o: \
  /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/mocs_compilation.cpp \
  /usr/include/stdc-predef.h \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/moc_circularbutton.cpp \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../circularbutton.h \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../iconmanager.h \
- /home/Tiopaz/SoundsView/QtAwesome/QtAwesome/QtAwesome.h \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/2PZEZPHIBF/moc_iconmanager.cpp \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/2PZEZPHIBF/../../../src/common/iconmanager.h \
+ /home/Tiopaz/SoundsView/lib/QtAwesome/QtAwesome/QtAwesome.h \
  /usr/include/qt6/QtGui/QIcon /usr/include/qt6/QtGui/qicon.h \
  /usr/include/qt6/QtGui/qtguiglobal.h /usr/include/qt6/QtCore/qglobal.h \
  /usr/include/c++/15.2.1/type_traits \
@@ -346,9 +345,20 @@ CMakeFiles/SoundsView.dir/SoundsView_autogen/mocs_compilation.cpp.o: \
  /usr/include/qt6/QtCore/qobject_impl.h \
  /usr/include/qt6/QtCore/qbindingstorage.h \
  /usr/include/qt6/QtCore/QString \
- /home/Tiopaz/SoundsView/QtAwesome/QtAwesome/QtAwesomeAnim.h \
+ /home/Tiopaz/SoundsView/lib/QtAwesome/QtAwesome/QtAwesomeAnim.h \
  /usr/include/qt6/QtCore/QObject \
- /home/Tiopaz/SoundsView/QtAwesome/QtAwesome/QtAwesomeEnumGenerated.h \
+ /home/Tiopaz/SoundsView/lib/QtAwesome/QtAwesome/QtAwesomeEnumGenerated.h \
+ /usr/include/qt6/QtCore/qtmochelpers.h \
+ /usr/include/qt6/QtCore/qtmocconstants.h \
+ /usr/include/qt6/QtCore/q20algorithm.h \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/PRMOGMWJPH/moc_audiomanager.cpp \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/PRMOGMWJPH/../../../src/core/audiomanager.h \
+ /usr/include/qt6/QtCore/QHash /usr/include/qt6/QtCore/QProcess \
+ /usr/include/qt6/QtCore/qprocess.h /usr/include/qt6/QtCore/qiodevice.h \
+ /usr/include/qt6/QtCore/QStringList \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/moc_circularbutton.cpp \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/../../../src/ui/circularbutton.h \
+ /home/Tiopaz/SoundsView/src/common/iconmanager.h \
  /usr/include/qt6/QtGui/QColor /usr/include/qt6/QtWidgets/QLabel \
  /usr/include/qt6/QtWidgets/qlabel.h \
  /usr/include/qt6/QtWidgets/qtwidgetsglobal.h \
@@ -359,8 +369,8 @@ CMakeFiles/SoundsView.dir/SoundsView_autogen/mocs_compilation.cpp.o: \
  /usr/include/qt6/QtGui/qpalette.h \
  /usr/include/qt6/QtWidgets/qsizepolicy.h \
  /usr/include/qt6/QtGui/qcursor.h /usr/include/qt6/QtGui/qbitmap.h \
- /usr/include/qt6/QtGui/qpicture.h /usr/include/qt6/QtCore/qiodevice.h \
- /usr/include/qt6/QtGui/qtextdocument.h /usr/include/qt6/QtCore/qurl.h \
+ /usr/include/qt6/QtGui/qpicture.h /usr/include/qt6/QtGui/qtextdocument.h \
+ /usr/include/qt6/QtCore/qurl.h \
  /usr/include/qt6/QtCore/QPropertyAnimation \
  /usr/include/qt6/QtCore/qpropertyanimation.h \
  /usr/include/qt6/QtCore/qvariantanimation.h \
@@ -371,43 +381,24 @@ CMakeFiles/SoundsView.dir/SoundsView_autogen/mocs_compilation.cpp.o: \
  /usr/include/qt6/QtWidgets/qabstractbutton.h \
  /usr/include/qt6/QtGui/qtextcursor.h \
  /usr/include/qt6/QtGui/qtextformat.h \
- /usr/include/qt6/QtCore/qtmochelpers.h \
- /usr/include/qt6/QtCore/qtmocconstants.h \
- /usr/include/qt6/QtCore/q20algorithm.h \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/moc_circulartrianglebutton.cpp \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../circulartrianglebutton.h \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/moc_cirlebutoneditconvert.cpp \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../cirlebutoneditconvert.h \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../circularbutton.h \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/moc_circulartrianglebutton.cpp \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/../../../src/ui/circulartrianglebutton.h \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/moc_cirlebutoneditconvert.cpp \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/../../../src/ui/cirlebutoneditconvert.h \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/../../../src/ui/circularbutton.h \
  /usr/include/qt6/QtWidgets/QGraphicsOpacityEffect \
  /usr/include/qt6/QtWidgets/qgraphicseffect.h \
  /usr/include/qt6/QtWidgets/QTextEdit \
  /usr/include/qt6/QtWidgets/qtextedit.h \
  /usr/include/qt6/QtWidgets/qabstractscrollarea.h \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/moc_datacontroller.cpp \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../datacontroller.h \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../datamodel.h \
- /usr/include/qt6/QtCore/QString \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../dataview.h \
- /usr/include/qt6/QtWidgets/QWidget \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/moc_datamodel.cpp \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../datamodel.h \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/moc_dataview.cpp \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../dataview.h \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/moc_iconmanager.cpp \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../iconmanager.h \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/moc_mainwindow.cpp \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../mainwindow.h \
- /usr/include/qt6/QtWidgets/QMainWindow \
- /usr/include/qt6/QtWidgets/qmainwindow.h \
- /usr/include/qt6/QtWidgets/qtabwidget.h \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/moc_polygonbutton.cpp \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../polygonbutton.h \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/moc_polygonbutton.cpp \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/../../../src/ui/polygonbutton.h \
  /usr/include/qt6/QtGui/QPolygonF \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/moc_voiceroulette.cpp \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../voiceroulette.h \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../cirlebutoneditconvert.h \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../polygonbutton.h \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../structdata.h \
- /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/EWIEGA46WW/../../../circulartrianglebutton.h \
- /usr/include/qt6/QtWidgets/QDialog /usr/include/qt6/QtWidgets/qdialog.h
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/moc_voiceroulette.cpp \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/../../../src/ui/voiceroulette.h \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/../../../src/ui/cirlebutoneditconvert.h \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/../../../src/ui/polygonbutton.h \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/../../../src/ui/structdata.h \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/../../../src/ui/circulartrianglebutton.h \
+ /usr/include/qt6/QtWidgets/QDialog /usr/include/qt6/QtWidgets/qdialog.h \
+ /usr/include/qt6/QtWidgets/QWidget

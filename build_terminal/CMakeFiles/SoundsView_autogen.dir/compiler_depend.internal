@@ -3,39 +3,32 @@
 
 /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/timestamp
  /home/Tiopaz/SoundsView/CMakeLists.txt
- /home/Tiopaz/SoundsView/QtAwesome/QtAwesome/QtAwesome.h
- /home/Tiopaz/SoundsView/QtAwesome/QtAwesome/QtAwesomeAnim.h
- /home/Tiopaz/SoundsView/QtAwesome/QtAwesome/QtAwesomeEnumGenerated.h
  /home/Tiopaz/SoundsView/build_terminal/CMakeFiles/4.2.3/CMakeCXXCompiler.cmake
  /home/Tiopaz/SoundsView/build_terminal/CMakeFiles/4.2.3/CMakeSystem.cmake
  /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/moc_predefs.h
- /home/Tiopaz/SoundsView/circularbutton.cpp
- /home/Tiopaz/SoundsView/circularbutton.h
- /home/Tiopaz/SoundsView/circulartrianglebutton.cpp
- /home/Tiopaz/SoundsView/circulartrianglebutton.h
- /home/Tiopaz/SoundsView/cirlebutoneditconvert.cpp
- /home/Tiopaz/SoundsView/cirlebutoneditconvert.h
- /home/Tiopaz/SoundsView/datacontroller.cpp
- /home/Tiopaz/SoundsView/datacontroller.h
- /home/Tiopaz/SoundsView/datamodel.cpp
- /home/Tiopaz/SoundsView/datamodel.h
- /home/Tiopaz/SoundsView/dataview.cpp
- /home/Tiopaz/SoundsView/dataview.h
- /home/Tiopaz/SoundsView/iconmanager.cpp
- /home/Tiopaz/SoundsView/iconmanager.h
- /home/Tiopaz/SoundsView/images.qrc
- /home/Tiopaz/SoundsView/main.cpp
- /home/Tiopaz/SoundsView/mainwindow.cpp
- /home/Tiopaz/SoundsView/mainwindow.h
- /home/Tiopaz/SoundsView/mainwindow.ui
- /home/Tiopaz/SoundsView/polygonbutton.cpp
- /home/Tiopaz/SoundsView/polygonbutton.h
- /home/Tiopaz/SoundsView/structdata.cpp
- /home/Tiopaz/SoundsView/structdata.h
- /home/Tiopaz/SoundsView/utils.cpp
- /home/Tiopaz/SoundsView/utils.h
- /home/Tiopaz/SoundsView/voiceroulette.cpp
- /home/Tiopaz/SoundsView/voiceroulette.h
+ /home/Tiopaz/SoundsView/lib/QtAwesome/QtAwesome/QtAwesome.h
+ /home/Tiopaz/SoundsView/lib/QtAwesome/QtAwesome/QtAwesomeAnim.h
+ /home/Tiopaz/SoundsView/lib/QtAwesome/QtAwesome/QtAwesomeEnumGenerated.h
+ /home/Tiopaz/SoundsView/resources/images.qrc
+ /home/Tiopaz/SoundsView/src/common/iconmanager.cpp
+ /home/Tiopaz/SoundsView/src/common/iconmanager.h
+ /home/Tiopaz/SoundsView/src/common/utils.cpp
+ /home/Tiopaz/SoundsView/src/common/utils.h
+ /home/Tiopaz/SoundsView/src/core/audiomanager.cpp
+ /home/Tiopaz/SoundsView/src/core/audiomanager.h
+ /home/Tiopaz/SoundsView/src/main.cpp
+ /home/Tiopaz/SoundsView/src/ui/circularbutton.cpp
+ /home/Tiopaz/SoundsView/src/ui/circularbutton.h
+ /home/Tiopaz/SoundsView/src/ui/circulartrianglebutton.cpp
+ /home/Tiopaz/SoundsView/src/ui/circulartrianglebutton.h
+ /home/Tiopaz/SoundsView/src/ui/cirlebutoneditconvert.cpp
+ /home/Tiopaz/SoundsView/src/ui/cirlebutoneditconvert.h
+ /home/Tiopaz/SoundsView/src/ui/polygonbutton.cpp
+ /home/Tiopaz/SoundsView/src/ui/polygonbutton.h
+ /home/Tiopaz/SoundsView/src/ui/structdata.cpp
+ /home/Tiopaz/SoundsView/src/ui/structdata.h
+ /home/Tiopaz/SoundsView/src/ui/voiceroulette.cpp
+ /home/Tiopaz/SoundsView/src/ui/voiceroulette.h
  /usr/bin/cmake
  /usr/include/alloca.h
  /usr/include/asm-generic/bitsperlong.h
@@ -302,11 +295,14 @@
  /usr/include/linux/types.h
  /usr/include/locale.h
  /usr/include/pthread.h
+ /usr/include/qt6/QtCore/QHash
  /usr/include/qt6/QtCore/QMap
  /usr/include/qt6/QtCore/QObject
+ /usr/include/qt6/QtCore/QProcess
  /usr/include/qt6/QtCore/QPropertyAnimation
  /usr/include/qt6/QtCore/QRect
  /usr/include/qt6/QtCore/QString
+ /usr/include/qt6/QtCore/QStringList
  /usr/include/qt6/QtCore/QVariant
  /usr/include/qt6/QtCore/QVariantMap
  /usr/include/qt6/QtCore/q17memory.h
@@ -386,6 +382,7 @@
  /usr/include/qt6/QtCore/qoverload.h
  /usr/include/qt6/QtCore/qpair.h
  /usr/include/qt6/QtCore/qpoint.h
+ /usr/include/qt6/QtCore/qprocess.h
  /usr/include/qt6/QtCore/qprocessordetection.h
  /usr/include/qt6/QtCore/qpropertyanimation.h
  /usr/include/qt6/QtCore/qrect.h
@@ -485,7 +482,6 @@
  /usr/include/qt6/QtWidgets/QDialog
  /usr/include/qt6/QtWidgets/QGraphicsOpacityEffect
  /usr/include/qt6/QtWidgets/QLabel
- /usr/include/qt6/QtWidgets/QMainWindow
  /usr/include/qt6/QtWidgets/QPushButton
  /usr/include/qt6/QtWidgets/QTextEdit
  /usr/include/qt6/QtWidgets/QWidget
@@ -495,10 +491,8 @@
  /usr/include/qt6/QtWidgets/qframe.h
  /usr/include/qt6/QtWidgets/qgraphicseffect.h
  /usr/include/qt6/QtWidgets/qlabel.h
- /usr/include/qt6/QtWidgets/qmainwindow.h
  /usr/include/qt6/QtWidgets/qpushbutton.h
  /usr/include/qt6/QtWidgets/qsizepolicy.h
- /usr/include/qt6/QtWidgets/qtabwidget.h
  /usr/include/qt6/QtWidgets/qtextedit.h
  /usr/include/qt6/QtWidgets/qtwidgets-config.h
  /usr/include/qt6/QtWidgets/qtwidgetsexports.h
@@ -869,15 +863,6 @@
  /usr/lib/cmake/Qt6GuiTools/Qt6GuiToolsTargets.cmake
  /usr/lib/cmake/Qt6GuiTools/Qt6GuiToolsTargetsPrecheck.cmake
  /usr/lib/cmake/Qt6GuiTools/Qt6GuiToolsVersionlessTargets.cmake
- /usr/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsAdditionalTargetInfo.cmake
- /usr/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsConfig.cmake
- /usr/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsConfigVersion.cmake
- /usr/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsConfigVersionImpl.cmake
- /usr/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsDependencies.cmake
- /usr/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsMacros.cmake
- /usr/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsTargets-relwithdebinfo.cmake
- /usr/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsTargets.cmake
- /usr/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsVersionlessTargets.cmake
  /usr/lib/cmake/Qt6Widgets/Qt6WidgetsAdditionalTargetInfo.cmake
  /usr/lib/cmake/Qt6Widgets/Qt6WidgetsConfig.cmake
  /usr/lib/cmake/Qt6Widgets/Qt6WidgetsConfigVersion.cmake
@@ -908,7 +893,6 @@
  /usr/share/cmake/Modules/CMakeGenericSystem.cmake
  /usr/share/cmake/Modules/CMakeInitializeConfigs.cmake
  /usr/share/cmake/Modules/CMakeLanguageInformation.cmake
- /usr/share/cmake/Modules/CMakeParseArguments.cmake
  /usr/share/cmake/Modules/CMakeSystemSpecificInformation.cmake
  /usr/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake
  /usr/share/cmake/Modules/CheckCXXCompilerFlag.cmake

@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
   "CMakeFiles/SoundsView_autogen"
-  "SoundsView_autogen/include/ui_mainwindow.h"
   "SoundsView_autogen/mocs_compilation.cpp"
   "SoundsView_autogen/timestamp"
 )

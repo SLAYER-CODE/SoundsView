@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB
 
-CXX_INCLUDES = -I/home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/include -I/home/Tiopaz/SoundsView/QtAwesome -I/home/Tiopaz/SoundsView/QtAwesome/QtAwesome -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui
+CXX_INCLUDES = -I/home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/include -I/home/Tiopaz/SoundsView/src -I/home/Tiopaz/SoundsView/src/ui -I/home/Tiopaz/SoundsView/src/common -I/home/Tiopaz/SoundsView/src/core -I/home/Tiopaz/SoundsView/lib/QtAwesome -I/home/Tiopaz/SoundsView/lib/QtAwesome/QtAwesome -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui
 
 CXX_FLAGS = -std=gnu++17 -mno-direct-extern-access
 

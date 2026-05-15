@@ -3,21 +3,18 @@ SoundsView: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/crti.o \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/crtbeginS.o \
   CMakeFiles/SoundsView.dir/SoundsView_autogen/mocs_compilation.cpp.o \
-  CMakeFiles/SoundsView.dir/main.cpp.o \
-  CMakeFiles/SoundsView.dir/mainwindow.cpp.o \
-  CMakeFiles/SoundsView.dir/circulartrianglebutton.cpp.o \
-  CMakeFiles/SoundsView.dir/voiceroulette.cpp.o \
-  CMakeFiles/SoundsView.dir/polygonbutton.cpp.o \
-  CMakeFiles/SoundsView.dir/datamodel.cpp.o \
-  CMakeFiles/SoundsView.dir/dataview.cpp.o \
-  CMakeFiles/SoundsView.dir/datacontroller.cpp.o \
-  CMakeFiles/SoundsView.dir/iconmanager.cpp.o \
-  CMakeFiles/SoundsView.dir/utils.cpp.o \
-  CMakeFiles/SoundsView.dir/cirlebutoneditconvert.cpp.o \
-  CMakeFiles/SoundsView.dir/circularbutton.cpp.o \
-  CMakeFiles/SoundsView.dir/structdata.cpp.o \
-  CMakeFiles/SoundsView.dir/SoundsView_autogen/EWIEGA46WW/qrc_images.cpp.o \
-  QtAwesome/libQtAwesome.a \
+  CMakeFiles/SoundsView.dir/src/main.cpp.o \
+  CMakeFiles/SoundsView.dir/src/ui/voiceroulette.cpp.o \
+  CMakeFiles/SoundsView.dir/src/ui/polygonbutton.cpp.o \
+  CMakeFiles/SoundsView.dir/src/ui/circulartrianglebutton.cpp.o \
+  CMakeFiles/SoundsView.dir/src/ui/cirlebutoneditconvert.cpp.o \
+  CMakeFiles/SoundsView.dir/src/ui/circularbutton.cpp.o \
+  CMakeFiles/SoundsView.dir/src/ui/structdata.cpp.o \
+  CMakeFiles/SoundsView.dir/src/common/iconmanager.cpp.o \
+  CMakeFiles/SoundsView.dir/src/common/utils.cpp.o \
+  CMakeFiles/SoundsView.dir/src/core/audiomanager.cpp.o \
+  CMakeFiles/SoundsView.dir/SoundsView_autogen/3YJK5W5UP7/qrc_images.cpp.o \
+  lib/QtAwesome/libQtAwesome.a \
   /usr/lib/libQt6Widgets.so.6.11.0 \
   /usr/lib/libQt6Gui.so.6.11.0 \
   /usr/lib/libGLX.so \
@@ -102,35 +99,29 @@ SoundsView: \
 
 CMakeFiles/SoundsView.dir/SoundsView_autogen/mocs_compilation.cpp.o:
 
-CMakeFiles/SoundsView.dir/main.cpp.o:
+CMakeFiles/SoundsView.dir/src/main.cpp.o:
 
-CMakeFiles/SoundsView.dir/mainwindow.cpp.o:
+CMakeFiles/SoundsView.dir/src/ui/voiceroulette.cpp.o:
 
-CMakeFiles/SoundsView.dir/circulartrianglebutton.cpp.o:
+CMakeFiles/SoundsView.dir/src/ui/polygonbutton.cpp.o:
 
-CMakeFiles/SoundsView.dir/voiceroulette.cpp.o:
+CMakeFiles/SoundsView.dir/src/ui/circulartrianglebutton.cpp.o:
 
-CMakeFiles/SoundsView.dir/polygonbutton.cpp.o:
+CMakeFiles/SoundsView.dir/src/ui/cirlebutoneditconvert.cpp.o:
 
-CMakeFiles/SoundsView.dir/datamodel.cpp.o:
+CMakeFiles/SoundsView.dir/src/ui/circularbutton.cpp.o:
 
-CMakeFiles/SoundsView.dir/dataview.cpp.o:
+CMakeFiles/SoundsView.dir/src/ui/structdata.cpp.o:
 
-CMakeFiles/SoundsView.dir/datacontroller.cpp.o:
+CMakeFiles/SoundsView.dir/src/common/iconmanager.cpp.o:
 
-CMakeFiles/SoundsView.dir/iconmanager.cpp.o:
+CMakeFiles/SoundsView.dir/src/common/utils.cpp.o:
 
-CMakeFiles/SoundsView.dir/utils.cpp.o:
+CMakeFiles/SoundsView.dir/src/core/audiomanager.cpp.o:
 
-CMakeFiles/SoundsView.dir/cirlebutoneditconvert.cpp.o:
+CMakeFiles/SoundsView.dir/SoundsView_autogen/3YJK5W5UP7/qrc_images.cpp.o:
 
-CMakeFiles/SoundsView.dir/circularbutton.cpp.o:
-
-CMakeFiles/SoundsView.dir/structdata.cpp.o:
-
-CMakeFiles/SoundsView.dir/SoundsView_autogen/EWIEGA46WW/qrc_images.cpp.o:
-
-QtAwesome/libQtAwesome.a:
+lib/QtAwesome/libQtAwesome.a:
 
 /usr/lib/libQt6Widgets.so.6.11.0:
 

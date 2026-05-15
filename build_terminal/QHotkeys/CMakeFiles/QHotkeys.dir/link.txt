@@ -1,2 +1,0 @@
-/usr/bin/ar qc libQHotkeys.a CMakeFiles/QHotkeys.dir/QHotkeys_autogen/mocs_compilation.cpp.o CMakeFiles/QHotkeys.dir/src/qhotkey_linux.cpp.o
-/usr/bin/ranlib libQHotkeys.a

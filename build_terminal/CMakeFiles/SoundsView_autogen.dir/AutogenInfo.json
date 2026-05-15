@@ -569,19 +569,8 @@
 		"/usr/lib/cmake/Qt6Widgets/Qt6WidgetsMacros.cmake",
 		"/usr/lib/cmake/Qt6Widgets/Qt6WidgetsPlugins.cmake",
 		"/usr/lib/cmake/Qt6Widgets/Qt6WidgetsVersionlessAliasTargets.cmake",
-		"/usr/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsConfigVersion.cmake",
-		"/usr/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsConfigVersionImpl.cmake",
-		"/usr/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsConfig.cmake",
-		"/usr/share/cmake/Modules/CMakeFindDependencyMacro.cmake",
-		"/usr/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsDependencies.cmake",
-		"/usr/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsTargets.cmake",
-		"/usr/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsTargets-relwithdebinfo.cmake",
-		"/usr/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsAdditionalTargetInfo.cmake",
-		"/usr/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsVersionlessTargets.cmake",
-		"/usr/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsMacros.cmake",
-		"/usr/share/cmake/Modules/CMakeParseArguments.cmake",
 		"/usr/share/cmake/Modules/GNUInstallDirs.cmake",
-		"/home/Tiopaz/SoundsView/images.qrc"
+		"/home/Tiopaz/SoundsView/resources/images.qrc"
 	],
 	"CMAKE_SOURCE_DIR" : "/home/Tiopaz/SoundsView",
 	"CROSS_CONFIG" : false,
@@ -590,75 +579,57 @@
 	"HEADERS" : 
 	[
 		[
-			"/home/Tiopaz/SoundsView/circularbutton.h",
+			"/home/Tiopaz/SoundsView/src/common/iconmanager.h",
 			"MU",
-			"EWIEGA46WW/moc_circularbutton.cpp",
+			"2PZEZPHIBF/moc_iconmanager.cpp",
 			null
 		],
 		[
-			"/home/Tiopaz/SoundsView/circulartrianglebutton.h",
+			"/home/Tiopaz/SoundsView/src/common/utils.h",
 			"MU",
-			"EWIEGA46WW/moc_circulartrianglebutton.cpp",
+			"2PZEZPHIBF/moc_utils.cpp",
 			null
 		],
 		[
-			"/home/Tiopaz/SoundsView/cirlebutoneditconvert.h",
+			"/home/Tiopaz/SoundsView/src/core/audiomanager.h",
 			"MU",
-			"EWIEGA46WW/moc_cirlebutoneditconvert.cpp",
+			"PRMOGMWJPH/moc_audiomanager.cpp",
 			null
 		],
 		[
-			"/home/Tiopaz/SoundsView/datacontroller.h",
+			"/home/Tiopaz/SoundsView/src/ui/circularbutton.h",
 			"MU",
-			"EWIEGA46WW/moc_datacontroller.cpp",
+			"YPKJ5OE7LN/moc_circularbutton.cpp",
 			null
 		],
 		[
-			"/home/Tiopaz/SoundsView/datamodel.h",
+			"/home/Tiopaz/SoundsView/src/ui/circulartrianglebutton.h",
 			"MU",
-			"EWIEGA46WW/moc_datamodel.cpp",
+			"YPKJ5OE7LN/moc_circulartrianglebutton.cpp",
 			null
 		],
 		[
-			"/home/Tiopaz/SoundsView/dataview.h",
+			"/home/Tiopaz/SoundsView/src/ui/cirlebutoneditconvert.h",
 			"MU",
-			"EWIEGA46WW/moc_dataview.cpp",
+			"YPKJ5OE7LN/moc_cirlebutoneditconvert.cpp",
 			null
 		],
 		[
-			"/home/Tiopaz/SoundsView/iconmanager.h",
+			"/home/Tiopaz/SoundsView/src/ui/polygonbutton.h",
 			"MU",
-			"EWIEGA46WW/moc_iconmanager.cpp",
+			"YPKJ5OE7LN/moc_polygonbutton.cpp",
 			null
 		],
 		[
-			"/home/Tiopaz/SoundsView/mainwindow.h",
+			"/home/Tiopaz/SoundsView/src/ui/structdata.h",
 			"MU",
-			"EWIEGA46WW/moc_mainwindow.cpp",
+			"YPKJ5OE7LN/moc_structdata.cpp",
 			null
 		],
 		[
-			"/home/Tiopaz/SoundsView/polygonbutton.h",
+			"/home/Tiopaz/SoundsView/src/ui/voiceroulette.h",
 			"MU",
-			"EWIEGA46WW/moc_polygonbutton.cpp",
-			null
-		],
-		[
-			"/home/Tiopaz/SoundsView/structdata.h",
-			"MU",
-			"EWIEGA46WW/moc_structdata.cpp",
-			null
-		],
-		[
-			"/home/Tiopaz/SoundsView/utils.h",
-			"MU",
-			"EWIEGA46WW/moc_utils.cpp",
-			null
-		],
-		[
-			"/home/Tiopaz/SoundsView/voiceroulette.h",
-			"MU",
-			"EWIEGA46WW/moc_voiceroulette.cpp",
+			"YPKJ5OE7LN/moc_voiceroulette.cpp",
 			null
 		]
 	],
@@ -675,8 +646,12 @@
 	],
 	"MOC_INCLUDES" : 
 	[
-		"/home/Tiopaz/SoundsView/QtAwesome",
-		"/home/Tiopaz/SoundsView/QtAwesome/QtAwesome",
+		"/home/Tiopaz/SoundsView/src",
+		"/home/Tiopaz/SoundsView/src/ui",
+		"/home/Tiopaz/SoundsView/src/common",
+		"/home/Tiopaz/SoundsView/src/core",
+		"/home/Tiopaz/SoundsView/lib/QtAwesome",
+		"/home/Tiopaz/SoundsView/lib/QtAwesome/QtAwesome",
 		"/usr/include/qt6/QtWidgets",
 		"/usr/include/qt6",
 		"/usr/include/qt6/QtCore",
@@ -723,19 +698,24 @@
 	"SETTINGS_FILE" : "/home/Tiopaz/SoundsView/build_terminal/CMakeFiles/SoundsView_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
-		[ "/home/Tiopaz/SoundsView/circularbutton.cpp", "MU", null ],
-		[ "/home/Tiopaz/SoundsView/circulartrianglebutton.cpp", "MU", null ],
-		[ "/home/Tiopaz/SoundsView/cirlebutoneditconvert.cpp", "MU", null ],
-		[ "/home/Tiopaz/SoundsView/datacontroller.cpp", "MU", null ],
-		[ "/home/Tiopaz/SoundsView/datamodel.cpp", "MU", null ],
-		[ "/home/Tiopaz/SoundsView/dataview.cpp", "MU", null ],
-		[ "/home/Tiopaz/SoundsView/iconmanager.cpp", "MU", null ],
-		[ "/home/Tiopaz/SoundsView/main.cpp", "MU", null ],
-		[ "/home/Tiopaz/SoundsView/mainwindow.cpp", "MU", null ],
-		[ "/home/Tiopaz/SoundsView/polygonbutton.cpp", "MU", null ],
-		[ "/home/Tiopaz/SoundsView/structdata.cpp", "MU", null ],
-		[ "/home/Tiopaz/SoundsView/utils.cpp", "MU", null ],
-		[ "/home/Tiopaz/SoundsView/voiceroulette.cpp", "MU", null ]
+		[ "/home/Tiopaz/SoundsView/src/common/iconmanager.cpp", "MU", null ],
+		[ "/home/Tiopaz/SoundsView/src/common/utils.cpp", "MU", null ],
+		[ "/home/Tiopaz/SoundsView/src/core/audiomanager.cpp", "MU", null ],
+		[ "/home/Tiopaz/SoundsView/src/main.cpp", "MU", null ],
+		[ "/home/Tiopaz/SoundsView/src/ui/circularbutton.cpp", "MU", null ],
+		[
+			"/home/Tiopaz/SoundsView/src/ui/circulartrianglebutton.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/Tiopaz/SoundsView/src/ui/cirlebutoneditconvert.cpp",
+			"MU",
+			null
+		],
+		[ "/home/Tiopaz/SoundsView/src/ui/polygonbutton.cpp", "MU", null ],
+		[ "/home/Tiopaz/SoundsView/src/ui/structdata.cpp", "MU", null ],
+		[ "/home/Tiopaz/SoundsView/src/ui/voiceroulette.cpp", "MU", null ]
 	],
 	"UIC_OPTIONS" : [],
 	"UIC_SEARCH_PATHS" : [],

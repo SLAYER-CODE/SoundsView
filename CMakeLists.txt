@@ -9,86 +9,50 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools Core )
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
-add_subdirectory(QtAwesome)
-include_directories(QtAwesome)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Core)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+add_subdirectory(lib/QtAwesome)
 
-# QHotkeys eliminado — usa XGrabKey (no funciona en Wayland)
-# En su lugar: SIGUSR1 desde niri config
-
-set(TS_FILES SoundsView_es_PE.ts)
+# Qt6 Multimedia and TextToSpeech modules at 6.10.2 have ABI mismatch with 6.11.0 core.
+# Using system audio tools (paplay/pw-play/ffplay) and speech-dispatcher via QProcess instead.
 
 set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
-        ${TS_FILES}
+    src/main.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     add_executable(SoundsView
         ${PROJECT_SOURCES}
-        circulartrianglebutton.h circulartrianglebutton.cpp
-        voiceroulette.h voiceroulette.cpp
-        polygonbutton.h polygonbutton.cpp
-        datamodel.h datamodel.cpp
-        dataview.h dataview.cpp
-        datacontroller.h datacontroller.cpp
-        iconmanager.h iconmanager.cpp
-        utils.h utils.cpp
-        cirlebutoneditconvert.h cirlebutoneditconvert.cpp
-        circularbutton.h circularbutton.cpp
-        images.qrc
-        structdata.h structdata.cpp
-
-
+        src/ui/voiceroulette.h src/ui/voiceroulette.cpp
+        src/ui/polygonbutton.h src/ui/polygonbutton.cpp
+        src/ui/circulartrianglebutton.h src/ui/circulartrianglebutton.cpp
+        src/ui/cirlebutoneditconvert.h src/ui/cirlebutoneditconvert.cpp
+        src/ui/circularbutton.h src/ui/circularbutton.cpp
+        src/ui/structdata.h src/ui/structdata.cpp
+        src/common/iconmanager.h src/common/iconmanager.cpp
+        src/common/utils.h src/common/utils.cpp
+        src/core/audiomanager.h src/core/audiomanager.cpp
+        resources/images.qrc
     )
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET SoundsView APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
-
-    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
-else()
-    if(ANDROID)
-        add_library(SoundsView SHARED
-            ${PROJECT_SOURCES}
-        )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(SoundsView
-            ${PROJECT_SOURCES}
-        )
-    endif()
-
-    qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
+
+target_include_directories(SoundsView PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ui
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/common
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/QtAwesome
+)
+
 target_link_libraries(SoundsView PRIVATE QtAwesome Qt${QT_VERSION_MAJOR}::Widgets)
 
-# Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
-# If you are developing for iOS or macOS you should consider setting an
-# explicit, fixed bundle identifier manually though.
-if(${QT_VERSION} VERSION_LESS 6.1.0)
-  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.SoundsView)
-endif()
-set_target_properties(SoundsView PROPERTIES
-    ${BUNDLE_ID_OPTION}
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
-    WIN32_EXECUTABLE TRUE
-)
+# Qt6 Multimedia link omitted due to ABI mismatch (6.10.2 vs 6.11.0)
+# Audio playback uses QProcess + system tools instead.
 
 include(GNUInstallDirs)
 
 install(TARGETS SoundsView
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIN}
 )
-
-# qt_finalize_executable skipped — using add_executable instead of qt_add_executable
-# to avoid QML import scanner (version mismatch in Qt installation)

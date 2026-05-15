@@ -1,2 +1,0 @@
-/usr/bin/ar qc libQtAwesome.a CMakeFiles/QtAwesome.dir/QtAwesome_autogen/mocs_compilation.cpp.o CMakeFiles/QtAwesome.dir/QtAwesome/QtAwesome.cpp.o CMakeFiles/QtAwesome.dir/QtAwesome/QtAwesomeAnim.cpp.o CMakeFiles/QtAwesome.dir/QtAwesome_autogen/3QVQ3WXC3W/qrc_QtAwesomeFree.cpp.o
-/usr/bin/ranlib libQtAwesome.a

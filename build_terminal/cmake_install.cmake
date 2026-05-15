@@ -60,7 +60,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/Tiopaz/SoundsView/build_terminal/QtAwesome/cmake_install.cmake")
+  include("/home/Tiopaz/SoundsView/build_terminal/lib/QtAwesome/cmake_install.cmake")
 
 endif()
 
