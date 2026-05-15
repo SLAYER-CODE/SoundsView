@@ -270,6 +270,17 @@ void PolygonButton::setGradientColorEnd(const QColor &color) {
   update();
 }
 
+void PolygonButton::setVisualHighlight(bool highlighted) {
+  if (m_visualHighlighted == highlighted) return;
+  m_visualHighlighted = highlighted;
+  gradientAnimation->stop();
+  gradientAnimation->setDirection(highlighted ? QPropertyAnimation::Forward : QPropertyAnimation::Backward);
+  gradientAnimation->start();
+  m_radiusAnimation->stop();
+  m_radiusAnimation->setDirection(highlighted ? QPropertyAnimation::Forward : QPropertyAnimation::Backward);
+  m_radiusAnimation->start();
+}
+
 void PolygonButton::startSizeAnimation() { m_sizeAnimation->start(); }
 
 void PolygonButton::mousePressEvent(QMouseEvent *event) {

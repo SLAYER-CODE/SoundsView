@@ -67,6 +67,7 @@ public:
   qreal size() const;
   void setSize(qreal size);
   void startSizeAnimation();
+  void setVisualHighlight(bool highlighted);
 
   int calculateFontSize(const QString &text, const QRectF &inscribedRect,
                         int maxFontSize);
@@ -121,6 +122,7 @@ private:
   int fontSize;
 
   bool m_isHovered;
+  bool m_visualHighlighted = false;
   double m_rotationAngle; // Agregar esta variable
 
   QString m_text;

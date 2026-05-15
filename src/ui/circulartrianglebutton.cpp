@@ -2,6 +2,7 @@
 #include "iconmanager.h"
 #include "utils.h"
 #include <QEvent>
+#include <QMouseEvent>
 #include <QFontDatabase>
 #include <QFontMetrics>
 #include <QPainter>
@@ -128,6 +129,25 @@ void CircularTriangleButton::focusOutEvent(QFocusEvent *event) {
   m_radiusAnimation->setEndValue(50); // El radio original
   m_radiusAnimation->start();
   emit hoverLeave(); // Emit the signal with the center position
+}
+
+void CircularTriangleButton::mouseMoveEvent(QMouseEvent *event) {
+  event->ignore();
+}
+
+void CircularTriangleButton::setVisualHighlight(bool highlighted) {
+  if (m_visualHighlighted == highlighted) return;
+  m_visualHighlighted = highlighted;
+  m_isHovered = highlighted;
+  m_zoomAnimation->stop();
+  m_zoomAnimation->setStartValue(m_zoom);
+  m_zoomAnimation->setEndValue(highlighted ? 0.5 : 0.0);
+  m_zoomAnimation->start();
+  m_radiusAnimation->stop();
+  m_radiusAnimation->setStartValue(m_radius);
+  m_radiusAnimation->setEndValue(highlighted ? 75 : 50);
+  m_radiusAnimation->start();
+  update();
 }
 
 qreal CircularTriangleButton::zoom() const { return m_zoom; }

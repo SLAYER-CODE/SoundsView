@@ -87,6 +87,7 @@ VoiceRoulette::VoiceRoulette(QWidget *parent)
   setupButtons(Musics);
   setupButtonsMenu(iconMap);
   setupButtonLoquendo();
+  m_buttonloquendo->setInitialExpanded();
 
   connect(m_buttonloquendo, &CirleButonEditConvert::sendRequested, this,
           [this](const QString &text) {
@@ -128,14 +129,20 @@ void VoiceRoulette::showEvent(QShowEvent *event) {
   QWidget::showEvent(event);
   m_restoreMouse = QCursor::pos();
   setCursor(Qt::BlankCursor);
+  if (!m_buttonloquendo->isExpanded())
+    m_buttonloquendo->setInitialExpanded();
+  for (const ButtonData *data : m_buttons) data->button->setVisualHighlight(false);
+  for (const ButtonDataMenu *data : m_buttonsMenu) data->button->setVisualHighlight(false);
+  m_focusedButton = nullptr;
   raise();
   activateWindow();
 }
 
 void VoiceRoulette::hideEvent(QHideEvent *event) {
   menuSelect_change(false);
-  for (const ButtonData *data : m_buttons) data->button->clearFocus();
-  for (const ButtonDataMenu *data : m_buttonsMenu) data->button->clearFocus();
+  for (const ButtonData *data : m_buttons) data->button->setVisualHighlight(false);
+  for (const ButtonDataMenu *data : m_buttonsMenu) data->button->setVisualHighlight(false);
+  m_focusedButton = nullptr;
   m_buttonloquendo->collapse();
   stopSpeech();
   unsetCursor();
@@ -243,11 +250,12 @@ void VoiceRoulette::setupButtonsMenu(QMap<QString, QPair<QChar, QChar>> list) {
 
 void VoiceRoulette::keyPressEvent(QKeyEvent *event) {
   if (event->key() == Qt::Key_Escape) {
+    menuSelect_change(false);
+    for (const ButtonData *data : m_buttons) data->button->setVisualHighlight(false);
+    for (const ButtonDataMenu *data : m_buttonsMenu) data->button->setVisualHighlight(false);
+    m_focusedButton = nullptr;
     hide();
     event->accept();
-    menuSelect_change(false);
-    for (const ButtonData *data : m_buttons) data->button->clearFocus();
-    for (const ButtonDataMenu *data : m_buttonsMenu) data->button->clearFocus();
   } else if (event->key() == Qt::Key_Control) {
     m_buttonloquendo->toggleExpansion();
     event->accept();
@@ -255,7 +263,7 @@ void VoiceRoulette::keyPressEvent(QKeyEvent *event) {
     m_altHeld = true;
     m_buttonloquendo->setAltActive(true);
     menuSelect_change(true);
-    for (const ButtonData *data : m_buttons) data->button->clearFocus();
+    for (const ButtonData *data : m_buttons) data->button->setVisualHighlight(false);
     event->accept();
   } else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Space) {
     activateCurrentSector();
@@ -270,7 +278,7 @@ void VoiceRoulette::keyReleaseEvent(QKeyEvent *event) {
     m_altHeld = false;
     m_buttonloquendo->setAltActive(false);
     menuSelect_change(false);
-    for (const ButtonDataMenu *data : m_buttonsMenu) data->button->clearFocus();
+    for (const ButtonDataMenu *data : m_buttonsMenu) data->button->setVisualHighlight(false);
     event->accept();
   } else {
     QWidget::keyReleaseEvent(event);
@@ -289,21 +297,17 @@ double VoiceRoulette::distanceToSectorEdge(double angle, double start,
 }
 
 void VoiceRoulette::mouseMoveEvent(QMouseEvent *event) {
-  if (m_buttonloquendo->isExpanded()) {
-    if (m_altHeld) {
-      QPoint c = m_buttonloquendo->geometry().center();
-      m_buttonloquendo->updateEmojiHighlight(event->pos().x());
-    } else {
-      for (const ButtonData *data : m_buttons) data->button->clearFocus();
-      for (const ButtonDataMenu *data : m_buttonsMenu) data->button->clearFocus();
-    }
+  QPoint pos = mapFromGlobal(event->globalPosition().toPoint());
+
+  if (m_buttonloquendo->isExpanded() && m_altHeld) {
+    m_buttonloquendo->updateEmojiHighlight(pos.x());
     return;
   }
 
   QPoint center(width() / 2, height() / 2);
 
-  int dx = event->pos().x() - center.x();
-  int dy = event->pos().y() - center.y();
+  int dx = pos.x() - center.x();
+  int dy = pos.y() - center.y();
 
   double angle = qAtan2(dy, dx) * (180.0 / M_PI);
   if (angle < 0) angle += 360;
@@ -329,12 +333,8 @@ void VoiceRoulette::mouseMoveEvent(QMouseEvent *event) {
                                           current->endAngle) < kHysteresis)
         target = current->button;
     }
-    for (const ButtonDataMenu *data : m_buttonsMenu) {
-      if (data->button == target)
-        data->button->setFocus();
-      else
-        data->button->clearFocus();
-    }
+    for (const ButtonDataMenu *data : m_buttonsMenu)
+      data->button->setVisualHighlight(data->button == target);
     m_focusedButton = target;
   } else {
     ButtonData *rawSector = nullptr;
@@ -357,21 +357,16 @@ void VoiceRoulette::mouseMoveEvent(QMouseEvent *event) {
                                           current->endAngle) < kHysteresis)
         target = current->button;
     }
-    for (const ButtonData *data : m_buttons) {
-      if (data->button == target)
-        data->button->setFocus();
-      else
-        data->button->clearFocus();
-    }
+    for (const ButtonData *data : m_buttons)
+      data->button->setVisualHighlight(data->button == target);
     m_focusedButton = target;
   }
 }
 
 void VoiceRoulette::mouseReleaseEvent(QMouseEvent *event) {
   if (event->button() != Qt::LeftButton) return;
-  if (m_buttonloquendo->isExpanded()) {
-    if (m_altHeld)
-      m_buttonloquendo->triggerHighlighted();
+  if (m_buttonloquendo->isExpanded() && m_altHeld) {
+    m_buttonloquendo->triggerHighlighted();
     return;
   }
   activateCurrentSector();

@@ -54,12 +54,14 @@ public:
   bool isChecked() const { return m_isChecked; }
   void setChecked(bool checked);
   void toggle() { setChecked(!m_isChecked); }
+  void setVisualHighlight(bool highlighted);
 
 protected:
   void focusInEvent(QFocusEvent *event) override;
   void focusOutEvent(QFocusEvent *event) override;
 
   void paintEvent(QPaintEvent *event) override;
+  void mouseMoveEvent(QMouseEvent *event) override;
 
 public slots:
   void updateIcon(bool checked);
@@ -98,6 +100,7 @@ private:
 
   int m_iconSize;
   bool m_isHovered;
+  bool m_visualHighlighted = false;
   bool m_isChecked = false;
   double m_rotationAngle; // Agregar esta variable
 };

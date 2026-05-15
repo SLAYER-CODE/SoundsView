@@ -191,6 +191,42 @@ CirleButonEditConvert::CirleButonEditConvert(const QString &text, qreal radius,
   clear->installEventFilter(this);
 }
 
+void CirleButonEditConvert::setInitialExpanded() {
+  m_check = true;
+  m_icon = m_iconUnchecked;
+  icon_place->setText(m_icon);
+  m_backgroundColor = Qt::black;
+  m_hoverBackgroundColor = Qt::black;
+
+  setExpancion(3.5);
+  mov = QPointF((radius * 3.5) / 2, (radius * 3.5) / 2);
+  updatePlaceholderPosition();
+  {
+    qreal v = (radius * 3.5) / 2;
+    m_pos = v;
+    setmog(m_pos);
+  }
+  m_mogAnimation->setStartValue(m_pos);
+  m_mogAnimation->setEndValue(m_pos);
+
+  editline->setEnabled(true);
+  editline->setFocus();
+  editline->setCursor(Qt::BlankCursor);
+  editline->viewport()->setCursor(Qt::BlankCursor);
+  treants->setCursor(Qt::BlankCursor);
+  clear->setCursor(Qt::BlankCursor);
+
+  treants->setIconColor(QColor(128, 128, 128));
+  clear->setIconColor(QColor(128, 128, 128));
+
+  placeholder->setVisible(false);
+  opacityEffect->setOpacity(1.0);
+  qobject_cast<QGraphicsOpacityEffect*>(m_opacityTreant->targetObject())->setOpacity(1.0);
+  qobject_cast<QGraphicsOpacityEffect*>(m_opacityClear->targetObject())->setOpacity(1.0);
+
+  update();
+}
+
 void CirleButonEditConvert::updatePlaceholder() {
   m_posAnimation->start();
   editline->setCursorWidth(8);
@@ -237,7 +273,10 @@ void CirleButonEditConvert::updateEmojiHighlight(int mouseX) {
 }
 
 void CirleButonEditConvert::mouseMoveEvent(QMouseEvent *event) {
-  if (!m_check || !m_altActive) return;
+  if (!m_check || !m_altActive) {
+    event->ignore();
+    return;
+  }
   updateEmojiHighlight(event->pos().x());
 }
 
@@ -326,6 +365,9 @@ void CirleButonEditConvert::updateIcon(bool checked) {
     m_opacityTreant->setDirection(QPropertyAnimation::Backward);
     m_opacityTreant->start();
 
+    m_mogAnimation->setStartValue(0);
+    m_mogAnimation->setEndValue((radius * 3.5) / 2);
+
     // m_elementexpancion->setDirection(QPropertyAnimation::Forward);
     // m_elementexpancion->start();
   } else {
@@ -389,10 +431,10 @@ void CirleButonEditConvert::updatePlaceholderPosition() {
   editline->setGeometry(0, radius * 2, width(), height() - (radius * 2 * 2));
   // editline->setAlignment(Qt::AlignCenter);
   if (m_check) {
-    treants->setGeometry(width() / 2 - radius / 2,
+    treants->setGeometry(width() / 2 - mog() - radius / 2,
                          height() / 2 - mov.x() - radius / 2, radius, radius);
 
-    clear->setGeometry(width() / 2 - radius / 2,
+    clear->setGeometry(width() / 2 + mog() - radius / 2,
                        height() / 2 - mov.x() - radius / 2, radius, radius);
     icon_place->setGeometry(width() / 2 - radius / 2,
                             height() / 2 - (mov.x() * 1.5) - radius / 2, radius,

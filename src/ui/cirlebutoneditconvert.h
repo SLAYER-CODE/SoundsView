@@ -72,6 +72,7 @@ public:
   Side highlightedSide() const { return m_highlightedSide; }
   void triggerHighlighted();
   void setAltActive(bool active) { m_altActive = active; if (!active) { highlightLeft(false); highlightRight(false); } }
+  void setInitialExpanded();
   void updateEmojiHighlight(int mouseX);
 
   static constexpr int kHysteresisPx = 15;

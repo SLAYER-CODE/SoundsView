@@ -4149,10 +4149,13 @@ CMakeFiles/SoundsView.dir/src/ui/circulartrianglebutton.cpp.o: /home/Tiopaz/Soun
   /usr/include/math.h \
   /usr/include/pthread.h \
   /usr/include/qt6/QtCore/QEvent \
+  /usr/include/qt6/QtCore/QList \
   /usr/include/qt6/QtCore/QMap \
   /usr/include/qt6/QtCore/QObject \
   /usr/include/qt6/QtCore/QPropertyAnimation \
   /usr/include/qt6/QtCore/QRect \
+  /usr/include/qt6/QtCore/QSize \
+  /usr/include/qt6/QtCore/QSizeF \
   /usr/include/qt6/QtCore/QString \
   /usr/include/qt6/QtCore/QVariant \
   /usr/include/qt6/QtCore/QVariantMap \
@@ -4196,6 +4199,8 @@ CMakeFiles/SoundsView.dir/src/ui/circulartrianglebutton.cpp.o: /home/Tiopaz/Soun
   /usr/include/qt6/QtCore/qcontainerinfo.h \
   /usr/include/qt6/QtCore/qcontainertools_impl.h \
   /usr/include/qt6/QtCore/qcontiguouscache.h \
+  /usr/include/qt6/QtCore/qcoreapplication.h \
+  /usr/include/qt6/QtCore/qcoreapplication_platform.h \
   /usr/include/qt6/QtCore/qcoreevent.h \
   /usr/include/qt6/QtCore/qdarwinhelpers.h \
   /usr/include/qt6/QtCore/qdatastream.h \
@@ -4222,6 +4227,7 @@ CMakeFiles/SoundsView.dir/src/ui/circulartrianglebutton.cpp.o: /home/Tiopaz/Soun
   /usr/include/qt6/QtCore/qlatin1stringview.h \
   /usr/include/qt6/QtCore/qline.h \
   /usr/include/qt6/QtCore/qlist.h \
+  /usr/include/qt6/QtCore/qlocale.h \
   /usr/include/qt6/QtCore/qlogging.h \
   /usr/include/qt6/QtCore/qmalloc.h \
   /usr/include/qt6/QtCore/qmap.h \
@@ -4231,6 +4237,7 @@ CMakeFiles/SoundsView.dir/src/ui/circulartrianglebutton.cpp.o: /home/Tiopaz/Soun
   /usr/include/qt6/QtCore/qmetatype.h \
   /usr/include/qt6/QtCore/qminmax.h \
   /usr/include/qt6/QtCore/qnamespace.h \
+  /usr/include/qt6/QtCore/qnativeinterface.h \
   /usr/include/qt6/QtCore/qnumeric.h \
   /usr/include/qt6/QtCore/qobject.h \
   /usr/include/qt6/QtCore/qobject_impl.h \
@@ -4301,21 +4308,29 @@ CMakeFiles/SoundsView.dir/src/ui/circulartrianglebutton.cpp.o: /home/Tiopaz/Soun
   /usr/include/qt6/QtGui/QFontMetrics \
   /usr/include/qt6/QtGui/QIcon \
   /usr/include/qt6/QtGui/QIconEngine \
+  /usr/include/qt6/QtGui/QMouseEvent \
   /usr/include/qt6/QtGui/QPainter \
   /usr/include/qt6/QtGui/QPolygonF \
+  /usr/include/qt6/QtGui/QTransform \
   /usr/include/qt6/QtGui/qaction.h \
   /usr/include/qt6/QtGui/qbitmap.h \
   /usr/include/qt6/QtGui/qbrush.h \
   /usr/include/qt6/QtGui/qcolor.h \
   /usr/include/qt6/QtGui/qcursor.h \
+  /usr/include/qt6/QtGui/qevent.h \
+  /usr/include/qt6/QtGui/qeventpoint.h \
   /usr/include/qt6/QtGui/qfont.h \
   /usr/include/qt6/QtGui/qfontdatabase.h \
   /usr/include/qt6/QtGui/qfontinfo.h \
   /usr/include/qt6/QtGui/qfontmetrics.h \
   /usr/include/qt6/QtGui/qfontvariableaxis.h \
+  /usr/include/qt6/QtGui/qguiapplication.h \
+  /usr/include/qt6/QtGui/qguiapplication_platform.h \
   /usr/include/qt6/QtGui/qicon.h \
   /usr/include/qt6/QtGui/qiconengine.h \
   /usr/include/qt6/QtGui/qimage.h \
+  /usr/include/qt6/QtGui/qinputdevice.h \
+  /usr/include/qt6/QtGui/qinputmethod.h \
   /usr/include/qt6/QtGui/qkeysequence.h \
   /usr/include/qt6/QtGui/qpaintdevice.h \
   /usr/include/qt6/QtGui/qpainter.h \
@@ -4324,16 +4339,21 @@ CMakeFiles/SoundsView.dir/src/ui/circulartrianglebutton.cpp.o: /home/Tiopaz/Soun
   /usr/include/qt6/QtGui/qpicture.h \
   /usr/include/qt6/QtGui/qpixelformat.h \
   /usr/include/qt6/QtGui/qpixmap.h \
+  /usr/include/qt6/QtGui/qpointingdevice.h \
   /usr/include/qt6/QtGui/qpolygon.h \
   /usr/include/qt6/QtGui/qregion.h \
   /usr/include/qt6/QtGui/qrgb.h \
   /usr/include/qt6/QtGui/qrgba64.h \
+  /usr/include/qt6/QtGui/qscreen.h \
+  /usr/include/qt6/QtGui/qscreen_platform.h \
   /usr/include/qt6/QtGui/qtextdocument.h \
   /usr/include/qt6/QtGui/qtextoption.h \
   /usr/include/qt6/QtGui/qtgui-config.h \
   /usr/include/qt6/QtGui/qtguiexports.h \
   /usr/include/qt6/QtGui/qtguiglobal.h \
   /usr/include/qt6/QtGui/qtransform.h \
+  /usr/include/qt6/QtGui/qvector2d.h \
+  /usr/include/qt6/QtGui/qvectornd.h \
   /usr/include/qt6/QtGui/qwindowdefs.h \
   /usr/include/qt6/QtWidgets/QLabel \
   /usr/include/qt6/QtWidgets/QPushButton \
@@ -8845,6 +8865,8 @@ SoundsView_autogen/YPKJ5OE7LN/moc_circulartrianglebutton.cpp:
 
 /usr/include/qt6/QtCore/qsocketnotifier.h:
 
+/usr/include/qt6/QtCore/QSizeF:
+
 /usr/include/qt6/QtCore/QtMath:
 
 /usr/lib/cmake/Qt6Core/Qt6CoreTargetsPrecheck.cmake:
@@ -8855,19 +8877,17 @@ SoundsView_autogen/YPKJ5OE7LN/moc_circulartrianglebutton.cpp:
 
 /usr/include/qt6/QtGui/QKeyEvent:
 
-/usr/include/qt6/QtGui/qfontdatabase.h:
-
-/usr/include/qt6/QtCore/QSizeF:
-
-/usr/include/c++/15.2.1/bits/atomic_lockfree_defines.h:
-
-/usr/include/qt6/QtGui/QTextFrame:
-
 /usr/include/c++/15.2.1/memory:
 
 /usr/include/qt6/QtGui/QTransform:
 
+/usr/include/qt6/QtGui/qfontdatabase.h:
+
 /usr/include/qt6/QtGui/qscreen.h:
+
+/usr/include/c++/15.2.1/bits/atomic_lockfree_defines.h:
+
+/usr/include/qt6/QtGui/QTextFrame:
 
 /usr/include/qt6/QtGui/qtextobject.h:
 
