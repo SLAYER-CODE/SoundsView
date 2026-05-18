@@ -2,6 +2,7 @@
 #define POLYGONBUTTON_H
 
 #include <QColor>
+#include <QPainterPath>
 #include <QPolygonF>
 #include <QPropertyAnimation>
 #include <QPushButton>
@@ -102,6 +103,7 @@ private:
 
   QPolygonF m_polygon;
   QPolygonF m_realpolygon;
+  QPainterPath m_arcPath;
 
   qreal rad;
   qreal m_radius;

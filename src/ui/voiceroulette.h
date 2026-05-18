@@ -3,6 +3,7 @@
 
 #include "cirlebutoneditconvert.h"
 #include "polygonbutton.h"
+#include "soundmanager.h"
 #include "structdata.h"
 #include <QDialog>
 #include <QWidget>
@@ -47,7 +48,7 @@ private:
   void startFadeInAnimation();
 
   void setupButtonLoquendo();
-  void setupButtons(QStringList list);
+  void setupButtonsFromSounds(const QList<SoundEntry> &sounds);
   void setupButtonsMenu(QMap<QString, QPair<QChar, QChar>> list);
   QList<ButtonData *> m_buttons;
   QList<ButtonDataMenu *> m_buttonsMenu;
@@ -72,8 +73,6 @@ private:
   bool angleInRange(double angle, double start, double end);
   double angularDistance(double a, double b) const;
   double distanceToSectorEdge(double angle, double start, double end) const;
-  void setupAudioPaths();
-
   static constexpr double kHysteresis = 8.0;
   void speakText(const QString &text);
   void stopSpeech();

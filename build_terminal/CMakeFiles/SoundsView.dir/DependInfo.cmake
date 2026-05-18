@@ -14,6 +14,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/Tiopaz/SoundsView/src/common/iconmanager.cpp" "CMakeFiles/SoundsView.dir/src/common/iconmanager.cpp.o" "gcc" "CMakeFiles/SoundsView.dir/src/common/iconmanager.cpp.o.d"
   "/home/Tiopaz/SoundsView/src/common/utils.cpp" "CMakeFiles/SoundsView.dir/src/common/utils.cpp.o" "gcc" "CMakeFiles/SoundsView.dir/src/common/utils.cpp.o.d"
   "/home/Tiopaz/SoundsView/src/core/audiomanager.cpp" "CMakeFiles/SoundsView.dir/src/core/audiomanager.cpp.o" "gcc" "CMakeFiles/SoundsView.dir/src/core/audiomanager.cpp.o.d"
+  "/home/Tiopaz/SoundsView/src/core/soundmanager.cpp" "CMakeFiles/SoundsView.dir/src/core/soundmanager.cpp.o" "gcc" "CMakeFiles/SoundsView.dir/src/core/soundmanager.cpp.o.d"
   "/home/Tiopaz/SoundsView/src/main.cpp" "CMakeFiles/SoundsView.dir/src/main.cpp.o" "gcc" "CMakeFiles/SoundsView.dir/src/main.cpp.o.d"
   "/home/Tiopaz/SoundsView/src/ui/circularbutton.cpp" "CMakeFiles/SoundsView.dir/src/ui/circularbutton.cpp.o" "gcc" "CMakeFiles/SoundsView.dir/src/ui/circularbutton.cpp.o.d"
   "/home/Tiopaz/SoundsView/src/ui/circulartrianglebutton.cpp" "CMakeFiles/SoundsView.dir/src/ui/circulartrianglebutton.cpp.o" "gcc" "CMakeFiles/SoundsView.dir/src/ui/circulartrianglebutton.cpp.o.d"

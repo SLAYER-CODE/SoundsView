@@ -13,6 +13,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/SoundsView.dir/src/common/utils.cpp.o.d"
   "CMakeFiles/SoundsView.dir/src/core/audiomanager.cpp.o"
   "CMakeFiles/SoundsView.dir/src/core/audiomanager.cpp.o.d"
+  "CMakeFiles/SoundsView.dir/src/core/soundmanager.cpp.o"
+  "CMakeFiles/SoundsView.dir/src/core/soundmanager.cpp.o.d"
   "CMakeFiles/SoundsView.dir/src/main.cpp.o"
   "CMakeFiles/SoundsView.dir/src/main.cpp.o.d"
   "CMakeFiles/SoundsView.dir/src/ui/circularbutton.cpp.o"

@@ -13,6 +13,7 @@ SoundsView: \
   CMakeFiles/SoundsView.dir/src/common/iconmanager.cpp.o \
   CMakeFiles/SoundsView.dir/src/common/utils.cpp.o \
   CMakeFiles/SoundsView.dir/src/core/audiomanager.cpp.o \
+  CMakeFiles/SoundsView.dir/src/core/soundmanager.cpp.o \
   CMakeFiles/SoundsView.dir/SoundsView_autogen/3YJK5W5UP7/qrc_images.cpp.o \
   lib/QtAwesome/libQtAwesome.a \
   /usr/lib/libQt6Widgets.so.6.11.0 \
@@ -118,6 +119,8 @@ CMakeFiles/SoundsView.dir/src/common/iconmanager.cpp.o:
 CMakeFiles/SoundsView.dir/src/common/utils.cpp.o:
 
 CMakeFiles/SoundsView.dir/src/core/audiomanager.cpp.o:
+
+CMakeFiles/SoundsView.dir/src/core/soundmanager.cpp.o:
 
 CMakeFiles/SoundsView.dir/SoundsView_autogen/3YJK5W5UP7/qrc_images.cpp.o:
 

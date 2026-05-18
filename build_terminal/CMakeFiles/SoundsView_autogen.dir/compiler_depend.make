@@ -15,6 +15,8 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
   /home/Tiopaz/SoundsView/src/common/utils.h \
   /home/Tiopaz/SoundsView/src/core/audiomanager.cpp \
   /home/Tiopaz/SoundsView/src/core/audiomanager.h \
+  /home/Tiopaz/SoundsView/src/core/soundmanager.cpp \
+  /home/Tiopaz/SoundsView/src/core/soundmanager.h \
   /home/Tiopaz/SoundsView/src/main.cpp \
   /home/Tiopaz/SoundsView/src/ui/circularbutton.cpp \
   /home/Tiopaz/SoundsView/src/ui/circularbutton.h \
@@ -227,6 +229,7 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
   /usr/include/c++/15.2.1/ext/numeric_traits.h \
   /usr/include/c++/15.2.1/ext/string_conversions.h \
   /usr/include/c++/15.2.1/ext/type_traits.h \
+  /usr/include/c++/15.2.1/filesystem \
   /usr/include/c++/15.2.1/functional \
   /usr/include/c++/15.2.1/initializer_list \
   /usr/include/c++/15.2.1/iosfwd \
@@ -294,6 +297,8 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
   /usr/include/linux/types.h \
   /usr/include/locale.h \
   /usr/include/pthread.h \
+  /usr/include/qt6/QtCore/QDir \
+  /usr/include/qt6/QtCore/QFileInfo \
   /usr/include/qt6/QtCore/QHash \
   /usr/include/qt6/QtCore/QMap \
   /usr/include/qt6/QtCore/QObject \
@@ -329,6 +334,7 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
   /usr/include/qt6/QtCore/qbytearrayalgorithms.h \
   /usr/include/qt6/QtCore/qbytearraylist.h \
   /usr/include/qt6/QtCore/qbytearrayview.h \
+  /usr/include/qt6/QtCore/qcalendar.h \
   /usr/include/qt6/QtCore/qchar.h \
   /usr/include/qt6/QtCore/qcheckedint_impl.h \
   /usr/include/qt6/QtCore/qcompare.h \
@@ -343,10 +349,16 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
   /usr/include/qt6/QtCore/qcontiguouscache.h \
   /usr/include/qt6/QtCore/qdarwinhelpers.h \
   /usr/include/qt6/QtCore/qdatastream.h \
+  /usr/include/qt6/QtCore/qdatetime.h \
   /usr/include/qt6/QtCore/qdebug.h \
+  /usr/include/qt6/QtCore/qdir.h \
+  /usr/include/qt6/QtCore/qdirlisting.h \
   /usr/include/qt6/QtCore/qeasingcurve.h \
   /usr/include/qt6/QtCore/qendian.h \
   /usr/include/qt6/QtCore/qexceptionhandling.h \
+  /usr/include/qt6/QtCore/qfile.h \
+  /usr/include/qt6/QtCore/qfiledevice.h \
+  /usr/include/qt6/QtCore/qfileinfo.h \
   /usr/include/qt6/QtCore/qflags.h \
   /usr/include/qt6/QtCore/qfloat16.h \
   /usr/include/qt6/QtCore/qforeach.h \
@@ -364,6 +376,7 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
   /usr/include/qt6/QtCore/qlatin1stringview.h \
   /usr/include/qt6/QtCore/qline.h \
   /usr/include/qt6/QtCore/qlist.h \
+  /usr/include/qt6/QtCore/qlocale.h \
   /usr/include/qt6/QtCore/qlogging.h \
   /usr/include/qt6/QtCore/qmalloc.h \
   /usr/include/qt6/QtCore/qmap.h \
@@ -421,6 +434,7 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
   /usr/include/qt6/QtCore/qtenvironmentvariables.h \
   /usr/include/qt6/QtCore/qtextstream.h \
   /usr/include/qt6/QtCore/qtformat_impl.h \
+  /usr/include/qt6/QtCore/qtimezone.h \
   /usr/include/qt6/QtCore/qtmetamacros.h \
   /usr/include/qt6/QtCore/qtnoop.h \
   /usr/include/qt6/QtCore/qtpreprocessorsupport.h \
@@ -444,6 +458,7 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
   /usr/include/qt6/QtGui/QIcon \
   /usr/include/qt6/QtGui/QIconEngine \
   /usr/include/qt6/QtGui/QPainter \
+  /usr/include/qt6/QtGui/QPainterPath \
   /usr/include/qt6/QtGui/QPolygonF \
   /usr/include/qt6/QtGui/qaction.h \
   /usr/include/qt6/QtGui/qbitmap.h \
@@ -460,6 +475,7 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
   /usr/include/qt6/QtGui/qkeysequence.h \
   /usr/include/qt6/QtGui/qpaintdevice.h \
   /usr/include/qt6/QtGui/qpainter.h \
+  /usr/include/qt6/QtGui/qpainterpath.h \
   /usr/include/qt6/QtGui/qpalette.h \
   /usr/include/qt6/QtGui/qpen.h \
   /usr/include/qt6/QtGui/qpicture.h \
@@ -1039,8 +1055,6 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
 
 /usr/lib/cmake/Qt6Gui/Qt6QWebpPluginConfig.cmake:
 
-/usr/lib/cmake/Qt6Gui/Qt6QWebpPluginAdditionalTargetInfo.cmake:
-
 /usr/lib/cmake/Qt6Gui/Qt6QWbmpPluginTargets.cmake:
 
 /usr/lib/cmake/Qt6Gui/Qt6QWbmpPluginTargets-relwithdebinfo.cmake:
@@ -1132,8 +1146,6 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
 /usr/lib/cmake/Qt6Gui/Qt6QSvgIconPluginTargetsPrecheck.cmake:
 
 /usr/lib/cmake/Qt6Gui/Qt6QSvgIconPluginTargets-relwithdebinfo.cmake:
-
-/usr/lib/cmake/Qt6Gui/Qt6QSvgIconPluginConfig.cmake:
 
 /usr/lib/cmake/Qt6Gui/Qt6QSvgIconPluginAdditionalTargetInfo.cmake:
 
@@ -1325,8 +1337,6 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
 
 /usr/lib/cmake/Qt6DBusTools/Qt6DBusToolsConfigVersion.cmake:
 
-/usr/lib/cmake/Qt6DBusTools/Qt6DBusToolsConfig.cmake:
-
 /usr/lib/cmake/Qt6DBus/Qt6DBusVersionlessAliasTargets.cmake:
 
 /usr/lib/cmake/Qt6Gui/Qt6QEvdevMousePluginAdditionalTargetInfo.cmake:
@@ -1377,8 +1387,6 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
 
 /usr/lib/cmake/Qt6/QtPublicWalkLibsHelpers.cmake:
 
-/usr/lib/cmake/Qt6/QtPublicTestHelpers.cmake:
-
 /usr/lib/cmake/Qt6/QtPublicSbomSystemDepHelpers.cmake:
 
 /usr/lib/cmake/Qt6Widgets/Qt6WidgetsVersionlessAliasTargets.cmake:
@@ -1399,11 +1407,33 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
 
 /usr/lib/cmake/Qt6/QtPublicSbomGenerationCycloneDXHelpers.cmake:
 
-/usr/lib/cmake/Qt6Gui/Qt6QGtk3ThemePluginTargets.cmake:
+/usr/lib/cmake/Qt6/QtPublicSbomCycloneDXHelpers.cmake:
 
-/usr/include/c++/15.2.1/tr1/poly_hermite.tcc:
+/usr/lib/cmake/Qt6DBus/Qt6DBusConfig.cmake:
 
-/usr/include/bits/types/timer_t.h:
+/usr/lib/cmake/Qt6/QtPublicSbomCpeHelpers.cmake:
+
+/usr/share/cmake/Modules/Platform/Linker/Linux-GNU.cmake:
+
+/usr/lib/cmake/Qt6/QtPublicSbomAttributionHelpers.cmake:
+
+/usr/lib/cmake/Qt6/QtPublicSbomDocumentNamespaceHelpers.cmake:
+
+/usr/lib/cmake/Qt6/QtPublicPluginHelpers_v2.cmake:
+
+/usr/lib/cmake/Qt6/QtPublicPluginHelpers.cmake:
+
+/usr/lib/cmake/Qt6/QtPublicGitHelpers.cmake:
+
+/usr/lib/cmake/Qt6Core/Qt6CoreConfigVersion.cmake:
+
+/usr/lib/cmake/Qt6/QtPublicExternalProjectHelpers.cmake:
+
+/usr/lib/cmake/Qt6/QtPublicCMakeHelpers.cmake:
+
+/usr/lib/cmake/Qt6Gui/Qt6QVncIntegrationPluginTargetsPrecheck.cmake:
+
+/usr/lib/cmake/Qt6/QtPublicCMakeEarlyPolicyHelpers.cmake:
 
 /usr/include/qt6/QtGui/qcolor.h:
 
@@ -1445,9 +1475,11 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
 
 /usr/include/c++/15.2.1/functional:
 
-/usr/lib/cmake/Qt6Core/Qt6CoreConfigVersion.cmake:
+/usr/lib/cmake/Qt6Gui/Qt6QSvgIconPluginConfig.cmake:
 
-/usr/lib/cmake/Qt6/QtPublicExternalProjectHelpers.cmake:
+/usr/include/c++/15.2.1/filesystem:
+
+/usr/include/bits/types/struct_FILE.h:
 
 /usr/include/c++/15.2.1/ext/type_traits.h:
 
@@ -1469,8 +1501,6 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
 
 /home/Tiopaz/SoundsView/src/ui/structdata.cpp:
 
-/usr/lib/cmake/Qt6/QtPublicPluginHelpers.cmake:
-
 /usr/lib/cmake/Qt6Gui/Qt6QEvdevMousePluginTargets-relwithdebinfo.cmake:
 
 /usr/include/c++/15.2.1/ext/aligned_buffer.h:
@@ -1486,10 +1516,6 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
 /usr/include/c++/15.2.1/cstddef:
 
 /usr/include/qt6/QtCore/qcheckedint_impl.h:
-
-/usr/lib/cmake/Qt6Gui/Qt6QEvdevTabletPluginTargetsPrecheck.cmake:
-
-/usr/include/c++/15.2.1/concepts:
 
 /usr/include/endian.h:
 
@@ -1518,6 +1544,8 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
 /usr/include/c++/15.2.1/bits/vector.tcc:
 
 /usr/include/c++/15.2.1/bits/utility.h:
+
+/home/Tiopaz/SoundsView/src/core/soundmanager.cpp:
 
 /usr/include/bits/types/FILE.h:
 
@@ -1563,6 +1591,12 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
 
 /usr/include/c++/15.2.1/exception:
 
+/usr/lib/cmake/Qt6Gui/Qt6QTiffPluginAdditionalTargetInfo.cmake:
+
+/usr/lib/cmake/Qt6/QtPublicFinalizerHelpers.cmake:
+
+/usr/include/c++/15.2.1/bits/stl_heap.h:
+
 /usr/include/c++/15.2.1/bits/basic_string.h:
 
 /usr/include/asm-generic/types.h:
@@ -1586,8 +1620,6 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
 /usr/lib/cmake/Qt6/QtPublicSbomCommonGenerationHelpers.cmake:
 
 /usr/include/c++/15.2.1/bits/stl_multimap.h:
-
-/usr/include/c++/15.2.1/bits/stl_iterator_base_types.h:
 
 /usr/lib/cmake/Qt6Gui/Qt6QEglFSKmsGbmIntegrationPluginTargets.cmake:
 
@@ -1735,38 +1767,6 @@ SoundsView_autogen/timestamp: /home/Tiopaz/SoundsView/CMakeLists.txt \
 
 /usr/include/c++/15.2.1/bits/cxxabi_init_exception.h:
 
-/usr/lib/cmake/Qt6Gui/Qt6DrmEglServerBufferPluginAdditionalTargetInfo.cmake:
-
-/usr/include/c++/15.2.1/bits/stl_algobase.h:
-
-/usr/include/qt6/QtCore/qprocess.h:
-
-/usr/include/qt6/QtWidgets/QLabel:
-
-/usr/include/bits/types/__FILE.h:
-
-/usr/lib/cmake/Qt6/QtPublicSbomFileHelpers.cmake:
-
-/usr/include/c++/15.2.1/cstdlib:
-
-/usr/include/bits/types/cookie_io_functions_t.h:
-
-/usr/include/bits/pthreadtypes.h:
-
-/usr/lib/cmake/Qt6Gui/Qt6QTiffPluginConfig.cmake:
-
-/usr/include/c++/15.2.1/tr1/beta_function.tcc:
-
-/usr/include/c++/15.2.1/optional:
-
-/usr/include/c++/15.2.1/iosfwd:
-
-/usr/include/c++/15.2.1/bits/node_handle.h:
-
-/usr/include/bits/types/struct_timeval.h:
-
-/usr/include/c++/15.2.1/bits/atomic_lockfree_defines.h:
-
 /usr/include/bits/pthreadtypes-arch.h:
 
 /usr/include/c++/15.2.1/bits/atomic_base.h:
@@ -1831,17 +1831,17 @@ SoundsView_autogen/moc_predefs.h:
 
 /home/Tiopaz/SoundsView/src/main.cpp:
 
+/usr/lib/cmake/Qt6Gui/Qt6GuiConfigVersionImpl.cmake:
+
+/usr/lib/cmake/Qt6/QtPublicSbomDepHelpers.cmake:
+
+/usr/include/bits/stdint-intn.h:
+
 /usr/include/qt6/QtCore/qbytearray.h:
 
 /usr/include/c++/15.2.1/compare:
 
 /usr/include/asm/posix_types_64.h:
-
-/usr/lib/cmake/Qt6Gui/Qt6QTiffPluginAdditionalTargetInfo.cmake:
-
-/usr/include/c++/15.2.1/bits/stl_heap.h:
-
-/usr/lib/cmake/Qt6/QtPublicFinalizerHelpers.cmake:
 
 /usr/include/c++/15.2.1/streambuf:
 
@@ -1907,21 +1907,11 @@ SoundsView_autogen/moc_predefs.h:
 
 CMakeFiles/4.2.3/CMakeSystem.cmake:
 
-/usr/lib/cmake/Qt6CoreTools/Qt6CoreToolsConfig.cmake:
-
-/usr/include/c++/15.2.1/cstdio:
-
-/usr/include/qt6/QtCore/qrefcount.h:
-
 /usr/include/bits/posix1_lim.h:
 
 /usr/include/wchar.h:
 
 /usr/include/bits/floatn.h:
-
-/usr/lib/cmake/Qt6DBus/Qt6DBusConfig.cmake:
-
-/usr/lib/cmake/Qt6/QtPublicSbomCpeHelpers.cmake:
 
 /usr/lib/cmake/Qt6Core/Qt6CoreDependencies.cmake:
 
@@ -1937,7 +1927,25 @@ CMakeFiles/4.2.3/CMakeSystem.cmake:
 
 /usr/include/qt6/QtCore/qsharedpointer.h:
 
+/usr/include/c++/15.2.1/optional:
+
+/usr/include/c++/15.2.1/bits/node_handle.h:
+
+/usr/include/bits/types/struct_timeval.h:
+
+/usr/include/c++/15.2.1/bits/atomic_lockfree_defines.h:
+
+/usr/include/bits/pthreadtypes.h:
+
+/usr/lib/cmake/Qt6Gui/Qt6QTiffPluginConfig.cmake:
+
+/usr/include/c++/15.2.1/tr1/beta_function.tcc:
+
 /usr/include/c++/15.2.1/bits/range_access.h:
+
+/usr/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake:
+
+/home/Tiopaz/SoundsView/src/ui/polygonbutton.cpp:
 
 /usr/lib/cmake/Qt6Gui/Qt6ShmServerBufferPluginAdditionalTargetInfo.cmake:
 
@@ -1953,19 +1961,11 @@ CMakeFiles/4.2.3/CMakeSystem.cmake:
 
 /usr/include/bits/types/wint_t.h:
 
-/usr/include/c++/15.2.1/tr1/modified_bessel_func.tcc:
-
-/usr/include/c++/15.2.1/tr1/poly_laguerre.tcc:
-
 /usr/include/bits/types/__sigset_t.h:
 
 /usr/lib/cmake/Qt6Gui/Qt6QLibInputPluginTargets.cmake:
 
 /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/c++config.h:
-
-/usr/include/qt6/QtCore/qvariant.h:
-
-/home/Tiopaz/SoundsView/src/ui/voiceroulette.cpp:
 
 /usr/lib/cmake/Qt6Gui/Qt6QWaylandAdwaitaDecorationPluginAdditionalTargetInfo.cmake:
 
@@ -1979,13 +1979,31 @@ CMakeFiles/4.2.3/CMakeSystem.cmake:
 
 /usr/include/c++/15.2.1/bits/concept_check.h:
 
+/usr/include/c++/15.2.1/bits/stl_iterator_base_types.h:
+
+/usr/include/c++/15.2.1/bits/unique_ptr.h:
+
+/usr/include/qt6/QtCore/qcompare.h:
+
+/usr/lib/cmake/Qt6/QtPublicTestHelpers.cmake:
+
+/usr/include/qt6/QtCore/qdir.h:
+
+/usr/include/bits/types/clock_t.h:
+
+/usr/include/c++/15.2.1/bits/string_view.tcc:
+
+/usr/include/bits/types/__fpos_t.h:
+
+/usr/include/c++/15.2.1/tr1/riemann_zeta.tcc:
+
+/usr/include/qt6/QtCore/qvariantmap.h:
+
 /usr/include/bits/types/time_t.h:
 
 /usr/lib/cmake/Qt6Core/Qt6CoreConfig.cmake:
 
 /usr/include/asm/types.h:
-
-/usr/include/bits/types/struct_FILE.h:
 
 /usr/lib/cmake/Qt6Gui/Qt6QTuioTouchPluginConfig.cmake:
 
@@ -2002,6 +2020,10 @@ CMakeFiles/4.2.3/CMakeSystem.cmake:
 /usr/include/bits/time.h:
 
 /home/Tiopaz/SoundsView/src/ui/circulartrianglebutton.h:
+
+/usr/lib/cmake/Qt6DBusTools/Qt6DBusToolsConfig.cmake:
+
+/usr/include/qt6/QtCore/qdatetime.h:
 
 /usr/lib/cmake/Qt6/QtPublicSbomLicenseHelpers.cmake:
 
@@ -2033,19 +2055,21 @@ CMakeFiles/4.2.3/CMakeSystem.cmake:
 
 /usr/include/bits/types/locale_t.h:
 
-/usr/include/bits/types/clock_t.h:
+/usr/lib/cmake/Qt6Gui/Qt6DrmEglServerBufferPluginAdditionalTargetInfo.cmake:
 
-/usr/share/cmake/Modules/Platform/Linker/Linux-GNU.cmake:
+/usr/include/c++/15.2.1/bits/stl_algobase.h:
 
-/usr/lib/cmake/Qt6/QtPublicSbomAttributionHelpers.cmake:
+/usr/include/qt6/QtCore/qprocess.h:
 
-/usr/include/c++/15.2.1/bits/string_view.tcc:
+/usr/include/qt6/QtWidgets/QLabel:
 
-/usr/include/bits/types/__fpos_t.h:
+/usr/include/bits/types/__FILE.h:
 
-/usr/include/c++/15.2.1/tr1/riemann_zeta.tcc:
+/usr/lib/cmake/Qt6/QtPublicSbomFileHelpers.cmake:
 
-/usr/include/qt6/QtCore/qvariantmap.h:
+/usr/include/c++/15.2.1/cstdlib:
+
+/usr/include/bits/types/cookie_io_functions_t.h:
 
 /usr/lib/cmake/Qt6Gui/Qt6QTsLibPluginTargets-relwithdebinfo.cmake:
 
@@ -2054,8 +2078,6 @@ CMakeFiles/4.2.3/CMakeSystem.cmake:
 /usr/include/bits/select.h:
 
 CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
-
-/usr/lib/cmake/Qt6/QtPublicGitHelpers.cmake:
 
 /usr/lib/cmake/Qt6Gui/Qt6QWaylandXdgShellIntegrationPluginTargetsPrecheck.cmake:
 
@@ -2074,8 +2096,6 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 /usr/include/bits/waitstatus.h:
 
 /usr/include/bits/types/__mbstate_t.h:
-
-/usr/include/bits/stdio_lim.h:
 
 /usr/include/bits/time64.h:
 
@@ -2155,17 +2175,35 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 
 /usr/include/c++/15.2.1/climits:
 
-/usr/include/asm/posix_types.h:
+/usr/include/bits/types/timer_t.h:
 
-/usr/include/qt6/QtCore/qtdeprecationdefinitions.h:
+/usr/lib/cmake/Qt6Gui/Qt6QGtk3ThemePluginTargets.cmake:
 
-/home/Tiopaz/SoundsView/CMakeLists.txt:
+/usr/include/c++/15.2.1/tr1/poly_hermite.tcc:
+
+/home/Tiopaz/SoundsView/src/ui/voiceroulette.cpp:
+
+/usr/include/qt6/QtCore/qvariant.h:
+
+/usr/lib/cmake/Qt6CoreTools/Qt6CoreToolsConfig.cmake:
+
+/usr/include/c++/15.2.1/cstdio:
+
+/usr/include/qt6/QtCore/qrefcount.h:
+
+/usr/include/qt6/QtCore/qcalendar.h:
 
 /usr/include/qt6/QtCore/qstringview.h:
 
 /usr/include/bits/uio_lim.h:
 
 /usr/include/bits/timesize.h:
+
+/usr/lib/cmake/Qt6/QtPublicFindPackageHelpers.cmake:
+
+/usr/include/c++/15.2.1/bits/memoryfwd.h:
+
+/usr/include/c++/15.2.1/bits/algorithmfwd.h:
 
 /usr/include/qt6/QtGui/qfontvariableaxis.h:
 
@@ -2215,6 +2253,16 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 
 /usr/include/c++/15.2.1/bits/charconv.h:
 
+/usr/include/c++/15.2.1/tr1/modified_bessel_func.tcc:
+
+/usr/include/c++/15.2.1/tr1/poly_laguerre.tcc:
+
+/usr/include/asm/posix_types.h:
+
+/home/Tiopaz/SoundsView/CMakeLists.txt:
+
+/usr/include/qt6/QtCore/qtdeprecationdefinitions.h:
+
 /usr/include/c++/15.2.1/bits/std_abs.h:
 
 /usr/include/c++/15.2.1/tr1/special_function_util.h:
@@ -2254,8 +2302,6 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/c++locale.h:
 
 /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/error_constants.h:
-
-/usr/lib/cmake/Qt6/QtPublicCMakeHelpers.cmake:
 
 /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/gthr-default.h:
 
@@ -2309,6 +2355,14 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 
 /usr/include/linux/stddef.h:
 
+/usr/include/qt6/QtGui/QPainter:
+
+/usr/include/qt6/QtCore/QFileInfo:
+
+/usr/lib/cmake/Qt6Gui/Qt6QEglFSKmsGbmIntegrationPluginTargets-relwithdebinfo.cmake:
+
+/usr/include/qt6/QtCore/qbindingstorage.h:
+
 /usr/lib/cmake/Qt6Gui/Qt6QIbusPlatformInputContextPluginAdditionalTargetInfo.cmake:
 
 /usr/include/qt6/QtCore/QString:
@@ -2328,6 +2382,8 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 /usr/include/qt6/QtCore/QVariant:
 
 /usr/lib/cmake/Qt6Gui/Qt6QEvdevKeyboardPluginConfig.cmake:
+
+/usr/include/qt6/QtCore/QDir:
 
 /usr/include/qt6/QtCore/q20functional.h:
 
@@ -2381,10 +2437,6 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 
 /usr/include/qt6/QtCore/qbasicatomic.h:
 
-/usr/lib/cmake/Qt6Gui/Qt6QEglFSKmsGbmIntegrationPluginTargets-relwithdebinfo.cmake:
-
-/usr/include/qt6/QtCore/qbindingstorage.h:
-
 /usr/include/qt6/QtCore/qbytearraylist.h:
 
 /usr/lib/cmake/Qt6Widgets/Qt6WidgetsConfigVersionImpl.cmake:
@@ -2398,10 +2450,6 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 /usr/include/c++/15.2.1/bits/uses_allocator_args.h:
 
 /usr/include/qt6/QtCore/qchar.h:
-
-/usr/include/c++/15.2.1/bits/unique_ptr.h:
-
-/usr/include/qt6/QtCore/qcompare.h:
 
 /usr/include/qt6/QtCore/qcomparehelpers.h:
 
@@ -2437,6 +2485,16 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 
 /usr/include/qt6/QtCore/qdatastream.h:
 
+/usr/include/c++/15.2.1/iosfwd:
+
+/usr/include/qt6/QtCore/qdirlisting.h:
+
+/usr/include/qt6/QtCore/qfiledevice.h:
+
+/usr/include/bits/stdio_lim.h:
+
+/usr/include/qt6/QtCore/qtimezone.h:
+
 /usr/include/c++/15.2.1/bits/locale_classes.tcc:
 
 /usr/include/qt6/QtCore/qendian.h:
@@ -2444,6 +2502,12 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 /usr/lib/cmake/Qt6Gui/Qt6QWbmpPluginAdditionalTargetInfo.cmake:
 
 /usr/include/qt6/QtCore/qexceptionhandling.h:
+
+/usr/lib/cmake/Qt6Gui/Qt6QWebpPluginAdditionalTargetInfo.cmake:
+
+/usr/include/qt6/QtCore/qfile.h:
+
+/usr/include/qt6/QtCore/qfileinfo.h:
 
 /usr/include/qt6/QtCore/qfloat16.h:
 
@@ -2460,12 +2524,6 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 /usr/include/c++/15.2.1/tr1/gamma.tcc:
 
 /usr/include/qt6/QtCore/qglobal.h:
-
-/usr/lib/cmake/Qt6Gui/Qt6GuiConfigVersionImpl.cmake:
-
-/usr/include/bits/stdint-intn.h:
-
-/usr/lib/cmake/Qt6/QtPublicSbomDepHelpers.cmake:
 
 /usr/lib/cmake/Qt6Gui/Qt6QWaylandEglClientBufferPluginTargets-relwithdebinfo.cmake:
 
@@ -2540,10 +2598,6 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 /usr/include/qt6/QtCore/qobjectdefs_impl.h:
 
 /usr/include/qt6/QtCore/qpoint.h:
-
-/usr/lib/cmake/Qt6Gui/Qt6QGtk3ThemePluginConfig.cmake:
-
-/usr/include/qt6/QtCore/qprocessordetection.h:
 
 /usr/include/qt6/QtCore/qshareddata.h:
 
@@ -2633,7 +2687,11 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 
 /usr/include/qt6/QtGui/QColor:
 
-/usr/include/qt6/QtGui/QPainter:
+/usr/lib/cmake/Qt6Gui/Qt6QEvdevTabletPluginTargetsPrecheck.cmake:
+
+/usr/include/c++/15.2.1/concepts:
+
+/usr/include/qt6/QtGui/QPainterPath:
 
 /usr/share/cmake/Modules/CheckIncludeFileCXX.cmake:
 
@@ -2656,6 +2714,12 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 /usr/include/qt6/QtGui/qkeysequence.h:
 
 /usr/include/qt6/QtGui/qpixelformat.h:
+
+/usr/lib/cmake/Qt6Gui/Qt6QGtk3ThemePluginConfig.cmake:
+
+/usr/include/qt6/QtCore/qprocessordetection.h:
+
+/usr/include/qt6/QtGui/qpainterpath.h:
 
 /usr/include/qt6/QtCore/qstringconverter_base.h:
 
@@ -2707,6 +2771,8 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 
 /usr/include/qt6/QtWidgets/qtwidgetsexports.h:
 
+/home/Tiopaz/SoundsView/src/core/soundmanager.h:
+
 /usr/include/qt6/QtWidgets/qtwidgetsglobal.h:
 
 /usr/include/sched.h:
@@ -2720,6 +2786,8 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 /usr/include/sys/cdefs.h:
 
 /usr/include/sys/types.h:
+
+/usr/include/qt6/QtCore/qlocale.h:
 
 /usr/include/time.h:
 
@@ -2748,23 +2816,3 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 /usr/include/strings.h:
 
 /usr/lib/cmake/Qt6/QtPublicAndroidHelpers.cmake:
-
-/usr/lib/cmake/Qt6Gui/Qt6QVncIntegrationPluginTargetsPrecheck.cmake:
-
-/usr/lib/cmake/Qt6/QtPublicCMakeEarlyPolicyHelpers.cmake:
-
-/home/Tiopaz/SoundsView/src/ui/polygonbutton.cpp:
-
-/usr/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake:
-
-/usr/include/c++/15.2.1/bits/memoryfwd.h:
-
-/usr/include/c++/15.2.1/bits/algorithmfwd.h:
-
-/usr/lib/cmake/Qt6/QtPublicFindPackageHelpers.cmake:
-
-/usr/lib/cmake/Qt6/QtPublicSbomCycloneDXHelpers.cmake:
-
-/usr/lib/cmake/Qt6/QtPublicPluginHelpers_v2.cmake:
-
-/usr/lib/cmake/Qt6/QtPublicSbomDocumentNamespaceHelpers.cmake:

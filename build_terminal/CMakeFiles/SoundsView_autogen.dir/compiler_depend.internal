@@ -16,6 +16,8 @@
  /home/Tiopaz/SoundsView/src/common/utils.h
  /home/Tiopaz/SoundsView/src/core/audiomanager.cpp
  /home/Tiopaz/SoundsView/src/core/audiomanager.h
+ /home/Tiopaz/SoundsView/src/core/soundmanager.cpp
+ /home/Tiopaz/SoundsView/src/core/soundmanager.h
  /home/Tiopaz/SoundsView/src/main.cpp
  /home/Tiopaz/SoundsView/src/ui/circularbutton.cpp
  /home/Tiopaz/SoundsView/src/ui/circularbutton.h
@@ -228,6 +230,7 @@
  /usr/include/c++/15.2.1/ext/numeric_traits.h
  /usr/include/c++/15.2.1/ext/string_conversions.h
  /usr/include/c++/15.2.1/ext/type_traits.h
+ /usr/include/c++/15.2.1/filesystem
  /usr/include/c++/15.2.1/functional
  /usr/include/c++/15.2.1/initializer_list
  /usr/include/c++/15.2.1/iosfwd
@@ -295,6 +298,8 @@
  /usr/include/linux/types.h
  /usr/include/locale.h
  /usr/include/pthread.h
+ /usr/include/qt6/QtCore/QDir
+ /usr/include/qt6/QtCore/QFileInfo
  /usr/include/qt6/QtCore/QHash
  /usr/include/qt6/QtCore/QMap
  /usr/include/qt6/QtCore/QObject
@@ -330,6 +335,7 @@
  /usr/include/qt6/QtCore/qbytearrayalgorithms.h
  /usr/include/qt6/QtCore/qbytearraylist.h
  /usr/include/qt6/QtCore/qbytearrayview.h
+ /usr/include/qt6/QtCore/qcalendar.h
  /usr/include/qt6/QtCore/qchar.h
  /usr/include/qt6/QtCore/qcheckedint_impl.h
  /usr/include/qt6/QtCore/qcompare.h
@@ -344,10 +350,16 @@
  /usr/include/qt6/QtCore/qcontiguouscache.h
  /usr/include/qt6/QtCore/qdarwinhelpers.h
  /usr/include/qt6/QtCore/qdatastream.h
+ /usr/include/qt6/QtCore/qdatetime.h
  /usr/include/qt6/QtCore/qdebug.h
+ /usr/include/qt6/QtCore/qdir.h
+ /usr/include/qt6/QtCore/qdirlisting.h
  /usr/include/qt6/QtCore/qeasingcurve.h
  /usr/include/qt6/QtCore/qendian.h
  /usr/include/qt6/QtCore/qexceptionhandling.h
+ /usr/include/qt6/QtCore/qfile.h
+ /usr/include/qt6/QtCore/qfiledevice.h
+ /usr/include/qt6/QtCore/qfileinfo.h
  /usr/include/qt6/QtCore/qflags.h
  /usr/include/qt6/QtCore/qfloat16.h
  /usr/include/qt6/QtCore/qforeach.h
@@ -365,6 +377,7 @@
  /usr/include/qt6/QtCore/qlatin1stringview.h
  /usr/include/qt6/QtCore/qline.h
  /usr/include/qt6/QtCore/qlist.h
+ /usr/include/qt6/QtCore/qlocale.h
  /usr/include/qt6/QtCore/qlogging.h
  /usr/include/qt6/QtCore/qmalloc.h
  /usr/include/qt6/QtCore/qmap.h
@@ -422,6 +435,7 @@
  /usr/include/qt6/QtCore/qtenvironmentvariables.h
  /usr/include/qt6/QtCore/qtextstream.h
  /usr/include/qt6/QtCore/qtformat_impl.h
+ /usr/include/qt6/QtCore/qtimezone.h
  /usr/include/qt6/QtCore/qtmetamacros.h
  /usr/include/qt6/QtCore/qtnoop.h
  /usr/include/qt6/QtCore/qtpreprocessorsupport.h
@@ -445,6 +459,7 @@
  /usr/include/qt6/QtGui/QIcon
  /usr/include/qt6/QtGui/QIconEngine
  /usr/include/qt6/QtGui/QPainter
+ /usr/include/qt6/QtGui/QPainterPath
  /usr/include/qt6/QtGui/QPolygonF
  /usr/include/qt6/QtGui/qaction.h
  /usr/include/qt6/QtGui/qbitmap.h
@@ -461,6 +476,7 @@
  /usr/include/qt6/QtGui/qkeysequence.h
  /usr/include/qt6/QtGui/qpaintdevice.h
  /usr/include/qt6/QtGui/qpainter.h
+ /usr/include/qt6/QtGui/qpainterpath.h
  /usr/include/qt6/QtGui/qpalette.h
  /usr/include/qt6/QtGui/qpen.h
  /usr/include/qt6/QtGui/qpicture.h

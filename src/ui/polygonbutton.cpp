@@ -1,8 +1,9 @@
 #include "polygonbutton.h"
+#include <QBitmap>
 #include <QFontMetrics>
 #include <QLinearGradient>
 #include <QPainter>
-#include <QPainterPath> // Asegúrate de incluir QPainterPath
+#include <QPainterPath>
 #include <QPolygon>
 #include <QPropertyAnimation>
 #include <QTextDocument>
@@ -55,22 +56,52 @@ PolygonButton::PolygonButton(const QString &text, qreal centerX_a,
 
 void PolygonButton::updatePolygon() {
   QPointF center(m_centerX, m_centerY);
-  QPolygonF polygon;
-  polygon << center
-          << QPointF(m_centerX + ((rad + m_radius) * m_size) *
-                                     cos(qDegreesToRadians(m_angle)),
-                     m_centerY + ((rad + m_radius) * m_size) *
-                                     sin(qDegreesToRadians(m_angle)))
-          << QPointF(m_centerX + ((rad + m_radius) * m_size) *
-                                     cos(qDegreesToRadians(m_nextangle)),
-                     m_centerY + ((rad + m_radius) * m_size) *
-                                     sin(qDegreesToRadians(m_nextangle)));
+  qreal R = (rad + m_radius) * m_size;
+  bool fullCircle = qAbs(m_nextangle - m_angle) >= 359.9;
 
-  QRegion region(polygon.toPolygon());
-  setMask(region);
-  inscribedRect = Utils::CalculateRec(polygon);
+  QPointF p1(m_centerX + R * cos(qDegreesToRadians(m_angle)),
+             m_centerY + R * sin(qDegreesToRadians(m_angle)));
+  QPointF p2(m_centerX + R * cos(qDegreesToRadians(m_nextangle)),
+             m_centerY + R * sin(qDegreesToRadians(m_nextangle)));
+
+  QPolygonF polygon;
+  polygon << center << p1 << p2;
+
+  QPainterPath arcPath;
+  if (fullCircle) {
+    QRectF circleRect(m_centerX - R, m_centerY - R, 2 * R, 2 * R);
+    arcPath.addEllipse(circleRect);
+  } else {
+    arcPath.moveTo(center);
+    arcPath.lineTo(p1);
+    QRectF arcRect(m_centerX - R, m_centerY - R, 2 * R, 2 * R);
+    arcPath.arcTo(arcRect, -m_angle, -(m_nextangle - m_angle));
+    arcPath.closeSubpath();
+  }
+  m_arcPath = arcPath;
+
+  QSize sz = QWidget::size();
+  QBitmap maskBitmap(sz);
+  maskBitmap.fill(Qt::color0);
+  QPainter p(&maskBitmap);
+  p.setRenderHint(QPainter::Antialiasing);
+  p.setBrush(Qt::color1);
+  p.setPen(Qt::NoPen);
+  p.drawPath(arcPath);
+  p.end();
+  setMask(maskBitmap);
+
+  m_polygon = polygon;
+
+  double midAngle = qDegreesToRadians((m_angle + m_nextangle) / 2.0);
+  double textR = R * 0.55;
+  double tx = m_centerX + textR * cos(midAngle);
+  double ty = m_centerY + textR * sin(midAngle);
+  double tw = R * 0.5;
+  double th = R * 0.15;
+  inscribedRect = QRectF(tx - tw / 2, ty - th / 2, tw, th);
   fontSize =
-      calculateFontSize(Utils::getLongestWord(text()), inscribedRect, 15);
+      calculateFontSize(Utils::getLongestWord(text()), inscribedRect, 20);
   update();
 }
 
@@ -94,27 +125,29 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
   QPainter painter(this);
   painter.setRenderHint(QPainter::Antialiasing);
 
-  // Guardar el estado inicial del pintor
   painter.save();
 
-  // Calcular y dibujar el polígono
+  qreal R = (rad + m_radius) * m_size;
   QPointF center(m_centerX, m_centerY);
-  QPointF p1(m_centerX +
-                 ((rad + m_radius) * m_size) * cos(qDegreesToRadians(m_angle)),
-             m_centerY +
-                 ((rad + m_radius) * m_size) * sin(qDegreesToRadians(m_angle)));
-  QPointF p2(m_centerX + ((rad + m_radius) * m_size) *
-                             cos(qDegreesToRadians(m_nextangle)),
-             m_centerY + ((rad + m_radius) * m_size) *
-                             sin(qDegreesToRadians(m_nextangle)));
-  QPolygonF polygon;
-  polygon << center << p1 << p2;
-  QRectF inscribe = Utils::CalculateRec(polygon);
+  bool fullCircle = qAbs(m_nextangle - m_angle) >= 359.9;
 
-  // Gradiente: no-foco=oscuro (progress=0), foco=transparente (progress=1)
   qreal fade = m_gradientProgress;
-  qreal minV = 0.18;  // 18 % visibilidad minima cuando enfocado
-  QLinearGradient grad(polygon.at(0), (polygon.at(2) + polygon.at(1)) / 2);
+  qreal minV = 0.18;
+  QLinearGradient grad;
+
+  if (fullCircle) {
+    grad.setStart(center.x() - R, center.y());
+    grad.setFinalStop(center.x() + R, center.y());
+  } else {
+    QPointF p1(m_centerX + R * cos(qDegreesToRadians(m_angle)),
+               m_centerY + R * sin(qDegreesToRadians(m_angle)));
+    QPointF p2(m_centerX + R * cos(qDegreesToRadians(m_nextangle)),
+               m_centerY + R * sin(qDegreesToRadians(m_nextangle)));
+    QPolygonF polygon;
+    polygon << center << p1 << p2;
+    grad.setStart(polygon.at(0));
+    grad.setFinalStop((polygon.at(2) + polygon.at(1)) / 2);
+  }
   int aOuter = qMax(qRound(120 * (1.0 - fade)), qRound(120 * minV));
   int aMid   = qMax(qRound(250 * (1.0 - fade)), qRound(250 * minV));
   int aInner = qMax(qRound(206 * (1.0 - fade)), qRound(206 * minV));
@@ -123,48 +156,26 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
   grad.setColorAt(0, QColor(0, 0, 0, aInner));
 
   painter.setBrush(grad);
-  painter.setPen(Qt::NoPen); // Deshabilitar el borde
-  painter.drawPolygon(polygon);
+  painter.setPen(Qt::NoPen);
+  painter.drawPath(m_arcPath);
 
-  // Restaurar el estado del pintor después de dibujar el polígono
   painter.restore();
 
-  // Guardar el estado del pintor para la parte del texto
   painter.save();
-
-  QTextDocument textDoc;
-  textDoc.setTextWidth(inscribedRect.width());
 
   QFont font = painter.font();
   font.setBold(true);
-  font.setFamily(
-      "CaskaydiaCove Nerd Font"); // Cambia la familia de la fuente aquí
+  font.setFamily("CaskaydiaCove Nerd Font");
   font.setPointSize(fontSize);
-  textDoc.setDefaultFont(font);
-  QTextOption textOption;
-  textOption.setWrapMode(QTextOption::WordWrap); // Asegura el ajuste del texto
-  textOption.setAlignment(Qt::AlignHCenter);
-  textDoc.setDefaultTextOption(textOption);
+  painter.setFont(font);
+  painter.setPen(Qt::white);
 
-  // Ajustar el tamaño del texto si es necesario
   QString displayText = text();
   QFontMetrics fm(font);
-  QRectF textBoundingRect = fm.boundingRect(displayText);
-  QRectF boundingRect = polygon.boundingRect();
-  qreal textHeight = textDoc.size().height();
-  QPointF topLeft(inscribe.left(),
-                  inscribe.top() + (inscribe.height() - textHeight) / 2);
+  QString elided = fm.elidedText(displayText, Qt::ElideRight,
+                                 qRound(inscribedRect.width()));
+  painter.drawText(inscribedRect, Qt::AlignCenter, elided);
 
-  // Configurar el texto
-  QString htmlText =
-      QString("<strong style=\"color: #ffffff\">%1</strong>").arg(displayText);
-  textDoc.setHtml(htmlText);
-
-  painter.translate(topLeft); // Mover el pintor a la esquina superior izquierda
-                              // del rectángulo centrado
-  textDoc.drawContents(&painter, QRectF(QPointF(0, 0), inscribe.size()));
-
-  // Restaurar el estado del pintor después de dibujar el texto
   painter.restore();
 }
 

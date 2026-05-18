@@ -32,6 +32,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/common/iconmanager.h src/common/iconmanager.cpp
         src/common/utils.h src/common/utils.cpp
         src/core/audiomanager.h src/core/audiomanager.cpp
+        src/core/soundmanager.h src/core/soundmanager.cpp
         resources/images.qrc
     )
 endif()

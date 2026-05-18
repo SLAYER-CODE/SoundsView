@@ -356,6 +356,40 @@ CMakeFiles/SoundsView.dir/SoundsView_autogen/mocs_compilation.cpp.o: \
  /usr/include/qt6/QtCore/QHash /usr/include/qt6/QtCore/QProcess \
  /usr/include/qt6/QtCore/qprocess.h /usr/include/qt6/QtCore/qiodevice.h \
  /usr/include/qt6/QtCore/QStringList \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/PRMOGMWJPH/moc_soundmanager.cpp \
+ /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/PRMOGMWJPH/../../../src/core/soundmanager.h \
+ /usr/include/qt6/QtCore/QDir /usr/include/qt6/QtCore/qdir.h \
+ /usr/include/qt6/QtCore/qdirlisting.h \
+ /usr/include/qt6/QtCore/qfiledevice.h /usr/include/c++/15.2.1/filesystem \
+ /usr/include/c++/15.2.1/bits/fs_fwd.h \
+ /usr/include/c++/15.2.1/bits/fs_path.h /usr/include/c++/15.2.1/locale \
+ /usr/include/c++/15.2.1/bits/locale_facets.h \
+ /usr/include/c++/15.2.1/cwctype /usr/include/wctype.h \
+ /usr/include/bits/wctype-wchar.h \
+ /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/ctype_base.h \
+ /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/ctype_inline.h \
+ /usr/include/c++/15.2.1/bits/locale_facets.tcc \
+ /usr/include/c++/15.2.1/bits/locale_facets_nonio.h \
+ /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/time_members.h \
+ /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/messages_members.h \
+ /usr/include/libintl.h /usr/include/c++/15.2.1/bits/codecvt.h \
+ /usr/include/c++/15.2.1/bits/locale_facets_nonio.tcc \
+ /usr/include/c++/15.2.1/bits/locale_conv.h \
+ /usr/include/c++/15.2.1/iomanip \
+ /usr/include/c++/15.2.1/bits/quoted_string.h \
+ /usr/include/c++/15.2.1/sstream /usr/include/c++/15.2.1/istream \
+ /usr/include/c++/15.2.1/ios /usr/include/c++/15.2.1/bits/basic_ios.h \
+ /usr/include/c++/15.2.1/bits/basic_ios.tcc \
+ /usr/include/c++/15.2.1/ostream /usr/include/c++/15.2.1/bits/ostream.h \
+ /usr/include/c++/15.2.1/bits/ostream.tcc \
+ /usr/include/c++/15.2.1/bits/istream.tcc \
+ /usr/include/c++/15.2.1/bits/sstream.tcc /usr/include/c++/15.2.1/codecvt \
+ /usr/include/c++/15.2.1/bits/fs_dir.h \
+ /usr/include/c++/15.2.1/bits/fs_ops.h \
+ /usr/include/qt6/QtCore/qdatetime.h /usr/include/qt6/QtCore/qcalendar.h \
+ /usr/include/qt6/QtCore/qlocale.h /usr/include/qt6/QtCore/qfile.h \
+ /usr/include/qt6/QtCore/qfileinfo.h /usr/include/qt6/QtCore/qtimezone.h \
+ /usr/include/qt6/QtCore/QFileInfo \
  /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/moc_circularbutton.cpp \
  /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/../../../src/ui/circularbutton.h \
  /home/Tiopaz/SoundsView/src/common/iconmanager.h \
@@ -393,11 +427,13 @@ CMakeFiles/SoundsView.dir/SoundsView_autogen/mocs_compilation.cpp.o: \
  /usr/include/qt6/QtWidgets/qabstractscrollarea.h \
  /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/moc_polygonbutton.cpp \
  /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/../../../src/ui/polygonbutton.h \
- /usr/include/qt6/QtGui/QPolygonF \
+ /usr/include/qt6/QtGui/QPainterPath \
+ /usr/include/qt6/QtGui/qpainterpath.h /usr/include/qt6/QtGui/QPolygonF \
  /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/moc_voiceroulette.cpp \
  /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/../../../src/ui/voiceroulette.h \
  /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/../../../src/ui/cirlebutoneditconvert.h \
  /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/../../../src/ui/polygonbutton.h \
+ /home/Tiopaz/SoundsView/src/core/soundmanager.h \
  /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/../../../src/ui/structdata.h \
  /home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/YPKJ5OE7LN/../../../src/ui/circulartrianglebutton.h \
  /usr/include/qt6/QtWidgets/QDialog /usr/include/qt6/QtWidgets/qdialog.h \

@@ -4,6 +4,7 @@
 #include "cirlebutoneditconvert.h"
 #include "iconmanager.h"
 #include "polygonbutton.h"
+#include "soundmanager.h"
 #include <QApplication>
 #include <QCursor>
 #include <QDebug>
@@ -53,20 +54,7 @@ VoiceRoulette::VoiceRoulette(QWidget *parent)
        qMakePair(QChar(static_cast<char16_t>(fa::fa_microphone)), QChar(static_cast<char16_t>(fa::fa_microphone_lines_slash)))},
       {"Sound", qMakePair(QChar(static_cast<char16_t>(fa::fa_headphones_simple)), QChar(static_cast<char16_t>(fa::fa_volume_xmark)))}};
 
-  QStringList Musics = {
-      "python", "1", "Culebra python 1 ", "Culebra python 1 ",
-      "Culebra python ", "Culebra python 1 ", "Culebra python 1 ",
-      "Culebra pythinscribedRectinscribedRectinscribedRectpython 1Culebra python 11"};
-
-  QMap<QString, QChar> configMap = {
-      {"Profiles init on", QChar(static_cast<char16_t>(fa::fa_youtube))},
-      {"Edit Youtube mix", QChar(static_cast<char16_t>(fa::fa_youtube))},
-      {"Edit music and shorts", QChar(static_cast<char16_t>(fa::fa_music))},
-      {"Edit Profiles", QChar(static_cast<char16_t>(fa::fa_user_gear))},
-      {"Select Theme", QChar(static_cast<char16_t>(fa::fa_palette))},
-      {"Select and configure Microphone", QChar(static_cast<char16_t>(fa::fa_microphone_lines))},
-      {"Select output sound", QChar(static_cast<char16_t>(fa::fa_play))},
-  };
+  QList<SoundEntry> sounds = SoundManager::instance().scanSounds();
 
   m_animation = new QPropertyAnimation(this, "windowOpacity");
   m_animation->setDuration(300);
@@ -83,8 +71,7 @@ VoiceRoulette::VoiceRoulette(QWidget *parent)
   animation_radius->setStartValue(0);
   animation_radius->setEndValue(200);
 
-  setupAudioPaths();
-  setupButtons(Musics);
+  setupButtonsFromSounds(sounds);
   setupButtonsMenu(iconMap);
   setupButtonLoquendo();
   m_buttonloquendo->setInitialExpanded();
@@ -102,13 +89,37 @@ VoiceRoulette::VoiceRoulette(QWidget *parent)
           });
 }
 
-void VoiceRoulette::setupAudioPaths() {
+void VoiceRoulette::setupButtonsFromSounds(const QList<SoundEntry> &sounds) {
   AudioManager &audio = AudioManager::instance();
-  audio.setSoundPath("python", "/home/Tiopaz/SoundsView/resources/sounds/python.wav");
-  audio.setSoundPath("1", "/home/Tiopaz/SoundsView/resources/sounds/one.wav");
-  audio.setSoundPath("Culebra python 1 ", "/home/Tiopaz/SoundsView/resources/sounds/culebra.wav");
-  audio.setSoundPath("Culebra python ", "/home/Tiopaz/SoundsView/resources/sounds/culebra.wav");
-  audio.setSoundPath("Culebra python 1Culebra python 11", "/home/Tiopaz/SoundsView/resources/sounds/culebra.wav");
+
+  if (sounds.isEmpty()) {
+    PolygonButton *btn = new PolygonButton("no hay sonidos", width() / 2, height() / 2, 400, 0, 360, this);
+    btn->setGeometry(0, 0, 2 * 400 + width() / 2, 2 * 400 + height() / 2);
+    btn->setVisualHighlight(false);
+    ButtonData *data = new ButtonData(btn, 0, 360);
+    data->button->setEnabled(false);
+    m_buttons.append(data);
+    btn->show();
+    QTimer::singleShot(0, this, &VoiceRoulette::startAnimations);
+    return;
+  }
+
+  double angleStep = 360.0 / sounds.size();
+  int radius = 400;
+  int centerX = width() / 2;
+  int centerY = height() / 2;
+
+  for (int i = 0; i < sounds.size(); ++i) {
+    double angle = i * angleStep;
+    double nextAngle = angle + angleStep;
+    PolygonButton *btn = new PolygonButton(sounds[i].name, centerX, centerY, radius, angle, nextAngle, this);
+    btn->setGeometry(0, 0, 2 * radius + centerX, 2 * radius + centerY);
+    audio.setSoundPath(sounds[i].name, sounds[i].filePath);
+    ButtonData *data = new ButtonData(btn, angle, nextAngle);
+    m_buttons.append(data);
+    btn->show();
+  }
+  QTimer::singleShot(0, this, &VoiceRoulette::startAnimations);
 }
 
 void VoiceRoulette::paintEvent(QPaintEvent *event) {
@@ -178,25 +189,6 @@ void VoiceRoulette::setupButtonLoquendo() {
   m_buttonloquendo->setGeometry(centerX - radiusMin, centerY - radiusMin,
                                 radiusMin, radiusMin);
   m_buttonloquendo->show();
-}
-
-void VoiceRoulette::setupButtons(QStringList list) {
-  double angleStep = 360.0 / list.size();
-  int radius = 400;
-  int centerX = width() / 2;
-  int centerY = height() / 2;
-  for (int i = 0; i < list.size(); ++i) {
-    double angle = i * angleStep;
-    double nextAngle = angle + angleStep;
-    PolygonButton *button = new PolygonButton(list[i], centerX, centerY, radius,
-                                              angle, nextAngle, this);
-    button->setGeometry(0, 0, 2 * radius + centerX, 2 * radius + centerY);
-
-    ButtonData *data = new ButtonData(button, angle, nextAngle);
-    m_buttons.append(data);
-    button->show();
-  }
-  QTimer::singleShot(0, this, &VoiceRoulette::startAnimations);
 }
 
 void VoiceRoulette::setupButtonsMenu(QMap<QString, QPair<QChar, QChar>> list) {
