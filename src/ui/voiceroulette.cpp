@@ -104,14 +104,21 @@ void VoiceRoulette::setupButtonsFromSounds(const QList<SoundEntry> &sounds) {
     return;
   }
 
+  double gap = 2.0;
   double angleStep = 360.0 / sounds.size();
   int radius = 400;
   int centerX = width() / 2;
   int centerY = height() / 2;
 
   for (int i = 0; i < sounds.size(); ++i) {
-    double angle = i * angleStep;
-    double nextAngle = angle + angleStep;
+    double angle, nextAngle;
+    if (sounds.size() == 1) {
+      angle = 0;
+      nextAngle = 360;
+    } else {
+      angle = i * angleStep + gap / 2.0;
+      nextAngle = (i + 1) * angleStep - gap / 2.0;
+    }
     PolygonButton *btn = new PolygonButton(sounds[i].name, centerX, centerY, radius, angle, nextAngle, this);
     btn->setGeometry(0, 0, 2 * radius + centerX, 2 * radius + centerY);
     audio.setSoundPath(sounds[i].name, sounds[i].filePath);

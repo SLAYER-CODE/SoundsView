@@ -104,6 +104,7 @@ private:
   QPolygonF m_polygon;
   QPolygonF m_realpolygon;
   QPainterPath m_arcPath;
+  QPainterPath m_innerArcPath;
 
   qreal rad;
   qreal m_radius;

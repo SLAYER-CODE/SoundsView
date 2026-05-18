@@ -1,4 +1,5 @@
 #include "polygonbutton.h"
+#include "iconmanager.h"
 #include <QBitmap>
 #include <QFontMetrics>
 #include <QLinearGradient>
@@ -57,26 +58,47 @@ PolygonButton::PolygonButton(const QString &text, qreal centerX_a,
 void PolygonButton::updatePolygon() {
   QPointF center(m_centerX, m_centerY);
   qreal R = (rad + m_radius) * m_size;
+  qreal innerR = R * 0.44;
   bool fullCircle = qAbs(m_nextangle - m_angle) >= 359.9;
 
   QPointF p1(m_centerX + R * cos(qDegreesToRadians(m_angle)),
              m_centerY + R * sin(qDegreesToRadians(m_angle)));
   QPointF p2(m_centerX + R * cos(qDegreesToRadians(m_nextangle)),
              m_centerY + R * sin(qDegreesToRadians(m_nextangle)));
+  QPointF p1_inner(m_centerX + innerR * cos(qDegreesToRadians(m_angle)),
+                   m_centerY + innerR * sin(qDegreesToRadians(m_angle)));
+  QPointF p2_inner(m_centerX + innerR * cos(qDegreesToRadians(m_nextangle)),
+                   m_centerY + innerR * sin(qDegreesToRadians(m_nextangle)));
 
   QPolygonF polygon;
-  polygon << center << p1 << p2;
+  polygon << p1_inner << p1 << p2 << p2_inner;
 
   QPainterPath arcPath;
   if (fullCircle) {
-    QRectF circleRect(m_centerX - R, m_centerY - R, 2 * R, 2 * R);
-    arcPath.addEllipse(circleRect);
+    QRectF outerRect(m_centerX - R, m_centerY - R, 2 * R, 2 * R);
+    QRectF innerRect(m_centerX - innerR, m_centerY - innerR,
+                     2 * innerR, 2 * innerR);
+    QPainterPath outerP, innerP;
+    outerP.addEllipse(outerRect);
+    innerP.addEllipse(innerRect);
+    arcPath = outerP - innerP;
+
+    m_innerArcPath = QPainterPath();
+    m_innerArcPath.addEllipse(innerRect);
   } else {
-    arcPath.moveTo(center);
+    QRectF outerRect(m_centerX - R, m_centerY - R, 2 * R, 2 * R);
+    QRectF innerRect(m_centerX - innerR, m_centerY - innerR,
+                     2 * innerR, 2 * innerR);
+    arcPath.moveTo(p1_inner);
     arcPath.lineTo(p1);
-    QRectF arcRect(m_centerX - R, m_centerY - R, 2 * R, 2 * R);
-    arcPath.arcTo(arcRect, -m_angle, -(m_nextangle - m_angle));
+    arcPath.arcTo(outerRect, -m_angle, -(m_nextangle - m_angle));
+    arcPath.lineTo(p2_inner);
+    arcPath.arcTo(innerRect, -m_nextangle, +(m_nextangle - m_angle));
     arcPath.closeSubpath();
+
+    m_innerArcPath = QPainterPath();
+    m_innerArcPath.moveTo(p2_inner);
+    m_innerArcPath.arcTo(innerRect, -m_nextangle, +(m_nextangle - m_angle));
   }
   m_arcPath = arcPath;
 
@@ -94,14 +116,14 @@ void PolygonButton::updatePolygon() {
   m_polygon = polygon;
 
   double midAngle = qDegreesToRadians((m_angle + m_nextangle) / 2.0);
-  double textR = R * 0.55;
+  double textR = R * 0.72;
   double tx = m_centerX + textR * cos(midAngle);
   double ty = m_centerY + textR * sin(midAngle);
-  double tw = R * 0.5;
-  double th = R * 0.15;
+  double tw = R * 0.4;
+  double th = R * 0.22;
   inscribedRect = QRectF(tx - tw / 2, ty - th / 2, tw, th);
   fontSize =
-      calculateFontSize(Utils::getLongestWord(text()), inscribedRect, 20);
+      calculateFontSize(Utils::getLongestWord(text()), inscribedRect, 16);
   update();
 }
 
@@ -128,53 +150,59 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
   painter.save();
 
   qreal R = (rad + m_radius) * m_size;
+  qreal innerR = R * 0.44;
   QPointF center(m_centerX, m_centerY);
-  bool fullCircle = qAbs(m_nextangle - m_angle) >= 359.9;
 
   qreal fade = m_gradientProgress;
   qreal minV = 0.18;
-  QLinearGradient grad;
-
-  if (fullCircle) {
-    grad.setStart(center.x() - R, center.y());
-    grad.setFinalStop(center.x() + R, center.y());
-  } else {
-    QPointF p1(m_centerX + R * cos(qDegreesToRadians(m_angle)),
-               m_centerY + R * sin(qDegreesToRadians(m_angle)));
-    QPointF p2(m_centerX + R * cos(qDegreesToRadians(m_nextangle)),
-               m_centerY + R * sin(qDegreesToRadians(m_nextangle)));
-    QPolygonF polygon;
-    polygon << center << p1 << p2;
-    grad.setStart(polygon.at(0));
-    grad.setFinalStop((polygon.at(2) + polygon.at(1)) / 2);
-  }
+  QRadialGradient grad(center, R, center);
+  grad.setFocalPoint(center);
   int aOuter = qMax(qRound(120 * (1.0 - fade)), qRound(120 * minV));
   int aMid   = qMax(qRound(250 * (1.0 - fade)), qRound(250 * minV));
   int aInner = qMax(qRound(206 * (1.0 - fade)), qRound(206 * minV));
-  grad.setColorAt(1, QColor(31, 31, 31, aOuter));
-  grad.setColorAt(0.5, QColor(1, 1, 1, aMid));
-  grad.setColorAt(0, QColor(0, 0, 0, aInner));
+  grad.setColorAt(0.44, QColor(0, 0, 0, aInner));
+  grad.setColorAt(0.72, QColor(1, 1, 1, aMid));
+  grad.setColorAt(1.0, QColor(31, 31, 31, aOuter));
 
   painter.setBrush(grad);
   painter.setPen(Qt::NoPen);
   painter.drawPath(m_arcPath);
 
+  if (m_visualHighlighted || m_isHovered) {
+    QPen whitePen(Qt::white, 6, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    painter.setPen(whitePen);
+    painter.setBrush(Qt::NoBrush);
+    painter.drawPath(m_innerArcPath);
+  }
+
   painter.restore();
 
   painter.save();
 
-  QFont font = painter.font();
-  font.setBold(true);
-  font.setFamily("CaskaydiaCove Nerd Font");
-  font.setPointSize(fontSize);
-  painter.setFont(font);
+  fa::QtAwesome *awesome = IconManager::instance().awesome();
+  QFont iconFont = awesome->font(fa::fa_solid, fontSize * 1.4);
+  painter.setFont(iconFont);
   painter.setPen(Qt::white);
 
+  QRectF iconRect(inscribedRect.x(), inscribedRect.y(),
+                  inscribedRect.width(), inscribedRect.height() * 0.45);
+  painter.drawText(iconRect, Qt::AlignCenter,
+                   QChar(static_cast<char16_t>(fa::fa_music)));
+
+  QFont textFont = painter.font();
+  textFont.setBold(true);
+  textFont.setFamily("CaskaydiaCove Nerd Font");
+  textFont.setPointSize(fontSize * 0.8);
+  painter.setFont(textFont);
+
   QString displayText = text();
-  QFontMetrics fm(font);
+  QFontMetrics fm(textFont);
   QString elided = fm.elidedText(displayText, Qt::ElideRight,
                                  qRound(inscribedRect.width()));
-  painter.drawText(inscribedRect, Qt::AlignCenter, elided);
+
+  QRectF textRect(inscribedRect.x(), inscribedRect.y() + inscribedRect.height() * 0.45,
+                  inscribedRect.width(), inscribedRect.height() * 0.55);
+  painter.drawText(textRect, Qt::AlignCenter, elided);
 
   painter.restore();
 }

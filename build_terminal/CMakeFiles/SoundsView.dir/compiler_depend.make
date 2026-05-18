@@ -5525,6 +5525,10 @@ CMakeFiles/SoundsView.dir/src/ui/cirlebutoneditconvert.cpp.o: /home/Tiopaz/Sound
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/syslimits.h
 
 CMakeFiles/SoundsView.dir/src/ui/polygonbutton.cpp.o: /home/Tiopaz/SoundsView/src/ui/polygonbutton.cpp \
+  /home/Tiopaz/SoundsView/lib/QtAwesome/QtAwesome/QtAwesome.h \
+  /home/Tiopaz/SoundsView/lib/QtAwesome/QtAwesome/QtAwesomeAnim.h \
+  /home/Tiopaz/SoundsView/lib/QtAwesome/QtAwesome/QtAwesomeEnumGenerated.h \
+  /home/Tiopaz/SoundsView/src/common/iconmanager.h \
   /home/Tiopaz/SoundsView/src/common/utils.h \
   /home/Tiopaz/SoundsView/src/ui/polygonbutton.h \
   /usr/include/alloca.h \
@@ -5808,6 +5812,7 @@ CMakeFiles/SoundsView.dir/src/ui/polygonbutton.cpp.o: /home/Tiopaz/SoundsView/sr
   /usr/include/math.h \
   /usr/include/pthread.h \
   /usr/include/qt6/QtCore/QList \
+  /usr/include/qt6/QtCore/QMap \
   /usr/include/qt6/QtCore/QObject \
   /usr/include/qt6/QtCore/QPropertyAnimation \
   /usr/include/qt6/QtCore/QRect \
@@ -5815,6 +5820,8 @@ CMakeFiles/SoundsView.dir/src/ui/polygonbutton.cpp.o: /home/Tiopaz/SoundsView/sr
   /usr/include/qt6/QtCore/QSizeF \
   /usr/include/qt6/QtCore/QString \
   /usr/include/qt6/QtCore/QStringList \
+  /usr/include/qt6/QtCore/QVariant \
+  /usr/include/qt6/QtCore/QVariantMap \
   /usr/include/qt6/QtCore/q17memory.h \
   /usr/include/qt6/QtCore/q20bit.h \
   /usr/include/qt6/QtCore/q20functional.h \
@@ -5954,6 +5961,7 @@ CMakeFiles/SoundsView.dir/src/ui/polygonbutton.cpp.o: /home/Tiopaz/SoundsView/sr
   /usr/include/qt6/QtCore/qutf8stringview.h \
   /usr/include/qt6/QtCore/qvariant.h \
   /usr/include/qt6/QtCore/qvariantanimation.h \
+  /usr/include/qt6/QtCore/qvariantmap.h \
   /usr/include/qt6/QtCore/qvarlengtharray.h \
   /usr/include/qt6/QtCore/qversiontagging.h \
   /usr/include/qt6/QtCore/qxptype_traits.h \
@@ -5961,6 +5969,8 @@ CMakeFiles/SoundsView.dir/src/ui/polygonbutton.cpp.o: /home/Tiopaz/SoundsView/sr
   /usr/include/qt6/QtGui/QBitmap \
   /usr/include/qt6/QtGui/QColor \
   /usr/include/qt6/QtGui/QFontMetrics \
+  /usr/include/qt6/QtGui/QIcon \
+  /usr/include/qt6/QtGui/QIconEngine \
   /usr/include/qt6/QtGui/QLinearGradient \
   /usr/include/qt6/QtGui/QMouseEvent \
   /usr/include/qt6/QtGui/QPainter \
@@ -5985,6 +5995,7 @@ CMakeFiles/SoundsView.dir/src/ui/polygonbutton.cpp.o: /home/Tiopaz/SoundsView/sr
   /usr/include/qt6/QtGui/qguiapplication.h \
   /usr/include/qt6/QtGui/qguiapplication_platform.h \
   /usr/include/qt6/QtGui/qicon.h \
+  /usr/include/qt6/QtGui/qiconengine.h \
   /usr/include/qt6/QtGui/qimage.h \
   /usr/include/qt6/QtGui/qinputdevice.h \
   /usr/include/qt6/QtGui/qinputmethod.h \
