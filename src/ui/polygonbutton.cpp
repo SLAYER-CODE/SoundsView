@@ -111,32 +111,18 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
   polygon << center << p1 << p2;
   QRectF inscribe = Utils::CalculateRec(polygon);
 
-  // Configurar el gradiente
-  QLinearGradient gradient(polygon.at(0), (polygon.at(2) + polygon.at(1)) / 2);
-  QLinearGradient transitionGradient(gradient);
-  transitionGradient.setColorAt(1, m_gradientColorStart);
-  transitionGradient.setColorAt(
-      0.5, QColor::fromRgbF(
-               m_gradientColorMiddle.redF() * m_gradientProgress +
-                   m_gradientColorStart.redF() * (1 - m_gradientProgress),
-               m_gradientColorMiddle.greenF() * m_gradientProgress +
-                   m_gradientColorStart.greenF() * (1 - m_gradientProgress),
-               m_gradientColorMiddle.blueF() * m_gradientProgress +
-                   m_gradientColorStart.blueF() * (1 - m_gradientProgress),
-               m_gradientColorMiddle.alphaF() * m_gradientProgress +
-                   m_gradientColorStart.alphaF() * (1 - m_gradientProgress)));
-  transitionGradient.setColorAt(
-      0, QColor::fromRgbF(
-             m_gradientColorEnd.redF() * m_gradientProgress +
-                 m_gradientColorMiddle.redF() * (1 - m_gradientProgress),
-             m_gradientColorEnd.greenF() * m_gradientProgress +
-                 m_gradientColorMiddle.greenF() * (1 - m_gradientProgress),
-             m_gradientColorEnd.blueF() * m_gradientProgress +
-                 m_gradientColorMiddle.blueF() * (1 - m_gradientProgress),
-             m_gradientColorEnd.alphaF() * m_gradientProgress +
-                 m_gradientColorMiddle.alphaF() * (1 - m_gradientProgress)));
+  // Gradiente: no-foco=oscuro (progress=0), foco=transparente (progress=1)
+  qreal fade = m_gradientProgress;
+  qreal minV = 0.18;  // 18 % visibilidad minima cuando enfocado
+  QLinearGradient grad(polygon.at(0), (polygon.at(2) + polygon.at(1)) / 2);
+  int aOuter = qMax(qRound(120 * (1.0 - fade)), qRound(120 * minV));
+  int aMid   = qMax(qRound(250 * (1.0 - fade)), qRound(250 * minV));
+  int aInner = qMax(qRound(206 * (1.0 - fade)), qRound(206 * minV));
+  grad.setColorAt(1, QColor(31, 31, 31, aOuter));
+  grad.setColorAt(0.5, QColor(1, 1, 1, aMid));
+  grad.setColorAt(0, QColor(0, 0, 0, aInner));
 
-  painter.setBrush(transitionGradient);
+  painter.setBrush(grad);
   painter.setPen(Qt::NoPen); // Deshabilitar el borde
   painter.drawPolygon(polygon);
 
