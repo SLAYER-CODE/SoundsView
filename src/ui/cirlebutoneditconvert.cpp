@@ -186,14 +186,12 @@ void CirleButonEditConvert::setInitialExpanded() {
   m_backgroundColor = Qt::black;
   m_hoverBackgroundColor = Qt::black;
 
+  qreal v = (radius * 3.5) / 2;
+  m_pos = v;
+  mov = QPointF(v, v);
   setExpancion(3.5);
-  mov = QPointF((radius * 3.5) / 2, (radius * 3.5) / 2);
+  setmog(m_pos);
   updatePlaceholderPosition();
-  {
-    qreal v = (radius * 3.5) / 2;
-    m_pos = v;
-    setmog(m_pos);
-  }
   m_mogAnimation->setStartValue(m_pos);
   m_mogAnimation->setEndValue(m_pos);
 
@@ -224,6 +222,16 @@ void CirleButonEditConvert::updatePlaceholder() {
 void CirleButonEditConvert::showEvent(QShowEvent *event) {
   QWidget::showEvent(event);
   editline->viewport()->setCursor(Qt::BlankCursor);
+  if (m_firstShow) {
+    m_firstShow = false;
+    if (m_check) {
+      qreal v = (radius * 3.5) / 2;
+      m_pos = v;
+      mov = QPointF(v, v);
+      setmog(m_pos);
+      updatePlaceholderPosition();
+    }
+  }
 }
 
 static QPixmap makeNoiseTexture() {

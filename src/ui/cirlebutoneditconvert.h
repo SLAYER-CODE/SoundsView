@@ -162,6 +162,7 @@ private:
   bool m_clearActive = false;
   bool m_altActive = false;
   Side m_highlightedSide = None;
+  bool m_firstShow = true;
 
 signals:
   void scaleSizeChanged(QSize point);
