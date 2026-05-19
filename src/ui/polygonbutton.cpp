@@ -60,7 +60,7 @@ PolygonButton::PolygonButton(const QString &text, qreal centerX_a,
 void PolygonButton::updatePolygon() {
   QPointF center(m_centerX, m_centerY);
   qreal R = (rad + m_radius) * m_size;
-  qreal innerR = R * 0.44;
+  qreal innerR = R * m_innerRadiusRatio;
   bool fullCircle = qAbs(m_nextangle - m_angle) >= 359.9;
 
   QPointF p1(m_centerX + R * cos(qDegreesToRadians(m_angle)),
@@ -152,21 +152,44 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
   painter.save();
 
   qreal R = (rad + m_radius) * m_size;
-  qreal innerR = R * 0.44;
+  qreal innerR = R * m_innerRadiusRatio;
   QPointF center(m_centerX, m_centerY);
 
   qreal fade = m_gradientProgress;
   qreal minV = 0.18;
-  QRadialGradient grad(center, R, center);
-  grad.setFocalPoint(center);
-  int aOuter = qMax(qRound(120 * (1.0 - fade)), qRound(120 * minV));
-  int aMid   = qMax(qRound(250 * (1.0 - fade)), qRound(250 * minV));
-  int aInner = qMax(qRound(206 * (1.0 - fade)), qRound(206 * minV));
-  grad.setColorAt(0.44, QColor(0, 0, 0, aInner));
-  grad.setColorAt(0.72, QColor(1, 1, 1, aMid));
-  grad.setColorAt(1.0, QColor(31, 31, 31, aOuter));
 
-  painter.setBrush(grad);
+  if (m_fillOverride.isValid()) {
+    QColor c = m_fillOverride;
+    if (m_visualHighlighted || m_isHovered)
+      c = c.lighter(180);
+    QColor fillCol(c.red(), c.green(), c.blue(), 220);
+    painter.setBrush(fillCol);
+    if (m_bluntCorners)
+      painter.setPen(QPen(fillCol, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    else
+      painter.setPen(Qt::NoPen);
+  } else {
+    QRadialGradient grad(center, R, center);
+    grad.setFocalPoint(center);
+    int aOuter = qMax(qRound(120 * (1.0 - fade)), qRound(120 * minV));
+    int aMid   = qMax(qRound(250 * (1.0 - fade)), qRound(250 * minV));
+    int aInner = qMax(qRound(206 * (1.0 - fade)), qRound(206 * minV));
+
+    {
+      QColor cInner = m_gradientColorEnd;
+      QColor cMid   = m_gradientColorMiddle;
+      QColor cOuter = m_gradientColorStart;
+      if (m_visualHighlighted || m_isHovered) {
+        cInner = cInner.lighter(150);
+        cMid   = cMid.lighter(180);
+        cOuter = cOuter.lighter(200);
+      }
+      grad.setColorAt(0.44, QColor(cInner.red(), cInner.green(), cInner.blue(), aInner));
+      grad.setColorAt(0.72, QColor(cMid.red(), cMid.green(), cMid.blue(), aMid));
+      grad.setColorAt(1.0, QColor(cOuter.red(), cOuter.green(), cOuter.blue(), aOuter));
+    }
+    painter.setBrush(grad);
+  }
   painter.setPen(Qt::NoPen);
   painter.drawPath(m_arcPath);
 
@@ -181,47 +204,89 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
 
   painter.save();
 
+  if (m_rotateWithAngle) {
+    double midAngle = fmod((m_angle + m_nextangle) / 2.0, 360.0);
+    QPointF c = inscribedRect.center();
+    painter.translate(c);
+    painter.rotate(midAngle);
+    painter.translate(-c);
+  }
+
   fa::QtAwesome *awesome = IconManager::instance().awesome();
   bool focused = m_visualHighlighted || m_isHovered;
 
-  QRectF iconRect(inscribedRect.x(), inscribedRect.y(),
-                  inscribedRect.width(), inscribedRect.height() * 0.45);
+  if (m_iconLeftTextRight) {
+    // Icon on the left, text on the right, side by side
+    qreal half = inscribedRect.width() * 0.35;
+    QRectF iconRect(inscribedRect.x(), inscribedRect.y(),
+                    half, inscribedRect.height());
+    QRectF textRect(inscribedRect.x() + half, inscribedRect.y(),
+                    inscribedRect.width() - half, inscribedRect.height());
 
-  QFont iconFont = awesome->font(fa::fa_solid, fontSize * 1.4);
-  painter.setFont(iconFont);
-  if (focused) {
-    painter.setPen(m_focusColor.darker(150));
-    painter.drawText(iconRect.adjusted(0, 0, 2, 2), Qt::AlignCenter,
+    QFont iconFont = awesome->font(fa::fa_solid, fontSize * 1.6);
+    painter.setFont(iconFont);
+    if (focused) {
+      painter.setPen(m_focusColor.darker(150));
+      painter.drawText(iconRect.adjusted(2, 2, 2, 2), Qt::AlignCenter, m_icon);
+      painter.setPen(m_focusColor);
+    } else {
+      painter.setPen(m_nonFocusColor);
+    }
+    painter.drawText(iconRect, Qt::AlignCenter, m_icon);
+
+    QFont tf = m_customFont.family().isEmpty() ? painter.font() : m_customFont;
+    painter.setFont(tf);
+    QString displayText = text();
+    if (focused) {
+      painter.setPen(m_focusColor.darker(150));
+      painter.drawText(textRect.adjusted(1, 1, 1, 1), Qt::AlignLeft | Qt::AlignVCenter, displayText);
+      painter.setPen(m_focusColor);
+    } else {
+      painter.setPen(m_nonFocusColor);
+    }
+    painter.drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, displayText);
+  } else {
+    QRectF iconRect(inscribedRect.x(), inscribedRect.y(),
+                    inscribedRect.width(), inscribedRect.height() * 0.45);
+
+    QFont iconFont = awesome->font(fa::fa_solid, fontSize * 1.4);
+    painter.setFont(iconFont);
+    if (focused) {
+      painter.setPen(m_focusColor.darker(150));
+      painter.drawText(iconRect.adjusted(0, 0, 2, 2), Qt::AlignCenter,
+                       m_icon);
+      painter.setPen(m_focusColor);
+    } else {
+      painter.setPen(m_nonFocusColor);
+    }
+    painter.drawText(iconRect, Qt::AlignCenter,
                      m_icon);
-    painter.setPen(m_focusColor);
-  } else {
-    painter.setPen(m_nonFocusColor);
+
+    QFont textFont = painter.font();
+    textFont.setBold(true);
+    textFont.setFamily("CaskaydiaCove Nerd Font");
+    textFont.setPointSize(fontSize * 0.8);
+    if (!m_customFont.family().isEmpty())
+      textFont = m_customFont;
+    painter.setFont(textFont);
+
+    QString displayText = text();
+    QFontMetrics fm(textFont);
+    QString elided = fm.elidedText(displayText, Qt::ElideRight,
+                                   qRound(inscribedRect.width()));
+
+    QRectF textRect(inscribedRect.x(), inscribedRect.y() + inscribedRect.height() * 0.45,
+                    inscribedRect.width(), inscribedRect.height() * 0.55);
+
+    if (focused) {
+      painter.setPen(m_focusColor.darker(150));
+      painter.drawText(textRect.adjusted(0, 1, 0, 1), Qt::AlignCenter, elided);
+      painter.setPen(m_focusColor);
+    } else {
+      painter.setPen(m_nonFocusColor);
+    }
+    painter.drawText(textRect, Qt::AlignCenter, elided);
   }
-  painter.drawText(iconRect, Qt::AlignCenter,
-                   m_icon);
-
-  QFont textFont = painter.font();
-  textFont.setBold(true);
-  textFont.setFamily("CaskaydiaCove Nerd Font");
-  textFont.setPointSize(fontSize * 0.8);
-  painter.setFont(textFont);
-
-  QString displayText = text();
-  QFontMetrics fm(textFont);
-  QString elided = fm.elidedText(displayText, Qt::ElideRight,
-                                 qRound(inscribedRect.width()));
-
-  QRectF textRect(inscribedRect.x(), inscribedRect.y() + inscribedRect.height() * 0.45,
-                  inscribedRect.width(), inscribedRect.height() * 0.55);
-
-  if (focused) {
-    painter.setPen(m_focusColor.darker(150));
-    painter.drawText(textRect.adjusted(0, 1, 0, 1), Qt::AlignCenter, elided);
-    painter.setPen(m_focusColor);
-  } else {
-    painter.setPen(m_nonFocusColor);
-  }
-  painter.drawText(textRect, Qt::AlignCenter, elided);
 
   painter.restore();
 }

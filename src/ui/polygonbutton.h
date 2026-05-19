@@ -58,6 +58,12 @@ public:
   void setHighlightColor(const QColor &color) { m_highlightColor = color; }
   void setFocusColor(const QColor &c) { m_focusColor = c; }
   void setNonFocusColor(const QColor &c) { m_nonFocusColor = c; }
+  void setInnerRadiusRatio(qreal r) { m_innerRadiusRatio = r; }
+  void setFillOverride(const QColor &c) { m_fillOverride = c; }
+  void setBluntCorners(bool b) { m_bluntCorners = b; }
+  void setIconLeftTextRight(bool b) { m_iconLeftTextRight = b; }
+  void setRotateWithAngle(bool b) { m_rotateWithAngle = b; }
+  void setCustomFont(const QFont &f) { m_customFont = f; }
   void setRotationAngle(double angle); // Agregar este método
 
   qreal gradientProgress() const;
@@ -138,6 +144,12 @@ private:
   QColor m_highlightColor{Qt::white};
   QColor m_focusColor{QColor(180, 230, 255)};
   QColor m_nonFocusColor{QColor(200, 200, 200)};
+  qreal m_innerRadiusRatio = 0.44;
+  QColor m_fillOverride{};
+  bool m_bluntCorners = false;
+  bool m_iconLeftTextRight = false;
+  bool m_rotateWithAngle = false;
+  QFont m_customFont{};
 
   QString m_text;
   QChar m_icon;

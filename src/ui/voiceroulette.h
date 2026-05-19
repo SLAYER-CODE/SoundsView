@@ -75,6 +75,7 @@ private:
 
   QPointF m_restoreMouse;
   QPoint m_hoverPos; // Position of the hovered button's center
+  QPointF m_crosshairPos;
   bool isHovering;   // Flag to check if a button is being hovered
   bool m_menuSelect;
   bool m_altHeld = false;

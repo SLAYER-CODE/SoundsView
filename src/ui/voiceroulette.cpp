@@ -43,6 +43,7 @@ VoiceRoulette::VoiceRoulette(QWidget *parent)
   setMouseTracking(true);
   QScreen *primaryScreen = QGuiApplication::primaryScreen();
   setGeometry(primaryScreen->geometry());
+  m_crosshairPos = QPointF(width() / 2.0, height() / 2.0);
 
   fa::QtAwesome *awesome = IconManager::instance().awesome();
 
@@ -113,41 +114,57 @@ void VoiceRoulette::setupButtonsFromSounds(const QList<SoundEntry> &sounds, bool
   clearButtons();
   AudioManager &audio = AudioManager::instance();
 
-  if (sounds.isEmpty()) {
-    PolygonButton *btn = new PolygonButton("no hay sonidos", width() / 2, height() / 2, 400, 0, 360, this);
-    btn->setGeometry(0, 0, 2 * 400 + width() / 2, 2 * 400 + height() / 2);
-    btn->setVisualHighlight(false);
-    ButtonData *data = new ButtonData(btn, 0, 360);
-    data->button->setEnabled(false);
-    m_buttons.append(data);
-    btn->show();
-    if (animate)
-      QTimer::singleShot(0, this, &VoiceRoulette::startAnimations);
-    return;
-  }
-
-  double gap = 2.0;
-  double angleStep = 360.0 / sounds.size();
+  const qreal gap = 2.0;
+  const qreal kAddButtonSpan = 10.0;
   int radius = 400;
   int centerX = width() / 2;
   int centerY = height() / 2;
 
+  // Reserve space for the + Agregar button (fixed span + gap)
+  qreal availableForSounds = 360.0 - kAddButtonSpan - gap;
+  qreal angleStep = sounds.isEmpty() ? 0 : availableForSounds / sounds.size();
+  qreal cur = 0;
+
   for (int i = 0; i < sounds.size(); ++i) {
-    double angle, nextAngle;
-    if (sounds.size() == 1) {
-      angle = 0;
-      nextAngle = 360;
-    } else {
-      angle = i * angleStep + gap / 2.0;
-      nextAngle = (i + 1) * angleStep - gap / 2.0;
-    }
-    PolygonButton *btn = new PolygonButton(sounds[i].name, centerX, centerY, radius, angle, nextAngle, this);
+    qreal start = cur + gap / 2.0;
+    qreal end = cur + angleStep - gap / 2.0;
+    PolygonButton *btn = new PolygonButton(sounds[i].name, centerX, centerY,
+                                           radius, start, end, this);
     btn->setGeometry(0, 0, 2 * radius + centerX, 2 * radius + centerY);
     audio.setSoundPath(sounds[i].name, sounds[i].filePath);
-    ButtonData *data = new ButtonData(btn, angle, nextAngle);
+    ButtonData *data = new ButtonData(btn, start, end);
+    m_buttons.append(data);
+    btn->show();
+    cur += angleStep;
+  }
+
+  // + Agregar fixed button at the end
+  {
+    qreal addStart = cur + gap / 2.0;
+    qreal addEnd = addStart + kAddButtonSpan;
+    PolygonButton *btn = new PolygonButton("Agregar", centerX, centerY,
+                                           radius + 60, addStart, addEnd,
+                                           this, QChar('+'));
+    btn->setGeometry(0, 0, 2 * radius + centerX, 2 * radius + centerY);
+    btn->setInnerRadiusRatio(0.44 * radius / (radius + 60));
+    btn->setHighlightColor(Qt::black);
+    btn->setFocusColor(Qt::white);
+    btn->setNonFocusColor(Qt::white);
+    btn->setFillOverride(QColor(60, 5, 5));
+    btn->setBluntCorners(true);
+    btn->setIconLeftTextRight(true);
+    btn->setRotateWithAngle(true);
+    QFont addFont;
+    addFont.setBold(true);
+    addFont.setFamily("CaskaydiaCove Nerd Font");
+    addFont.setPointSize(11);
+    btn->setCustomFont(addFont);
+    btn->setEnabled(true);
+    ButtonData *data = new ButtonData(btn, addStart, addEnd);
     m_buttons.append(data);
     btn->show();
   }
+
   if (animate)
     QTimer::singleShot(0, this, &VoiceRoulette::startAnimations);
 }
@@ -416,6 +433,16 @@ void VoiceRoulette::paintEvent(QPaintEvent *event) {
   painter.setBrush(gradient);
   painter.setPen(Qt::NoPen);
   painter.drawRect(rect());
+
+  // Crosshair
+  painter.setRenderHint(QPainter::Antialiasing);
+  double cx = m_crosshairPos.x();
+  double cy = m_crosshairPos.y();
+  double len = 10.0;
+  QPen crossPen(Qt::white, 2.0);
+  painter.setPen(crossPen);
+  painter.drawLine(QPointF(cx - len, cy), QPointF(cx + len, cy));
+  painter.drawLine(QPointF(cx, cy - len), QPointF(cx, cy + len));
 }
 
 void VoiceRoulette::showEvent(QShowEvent *event) {
@@ -611,17 +638,28 @@ double VoiceRoulette::distanceToSectorEdge(double angle, double start,
 void VoiceRoulette::mouseMoveEvent(QMouseEvent *event) {
   QPoint pos = mapFromGlobal(event->globalPosition().toPoint());
 
+  // Compute constrained crosshair position
+  QPoint center(width() / 2, height() / 2);
+  double dx = pos.x() - center.x();
+  double dy = pos.y() - center.y();
+  double dist = std::sqrt(dx * dx + dy * dy);
+  double maxR = m_altHeld ? 160.0 : 400.0;
+  if (dist > maxR) {
+    dx = dx / dist * maxR;
+    dy = dy / dist * maxR;
+  }
+  m_crosshairPos = QPointF(center.x() + dx, center.y() + dy);
+  update();
+
   if (m_buttonloquendo->isExpanded() && m_altHeld) {
     m_buttonloquendo->updateEmojiHighlight(pos.x());
     return;
   }
 
-  QPoint center(width() / 2, height() / 2);
+  int dx2 = pos.x() - center.x();
+  int dy2 = pos.y() - center.y();
 
-  int dx = pos.x() - center.x();
-  int dy = pos.y() - center.y();
-
-  double angle = qAtan2(dy, dx) * (180.0 / M_PI);
+  double angle = qAtan2(dy2, dx2) * (180.0 / M_PI);
   if (angle < 0) angle += 360;
 
   if (m_menuSelect) {
@@ -758,6 +796,8 @@ void VoiceRoulette::activateCurrentSector() {
     for (const ButtonData *data : m_buttons) {
       if (angleInRange(angle, data->startAngle, data->endAngle)) {
         QString name = data->button->text().trimmed();
+        if (name == "Agregar")
+          break;
         AudioManager::instance().playSound(name);
         break;
       }
