@@ -176,7 +176,7 @@ void VoiceRoulette::setupButtonsFromLists(const QStringList &lists) {
   for (const QString &l : lists)
     items << l;
   items << "Favoritos"
-        << "+";
+        << "Agregar";
 
   double gap = 2.0;
   double angleStep = 360.0 / items.size();
@@ -197,8 +197,8 @@ void VoiceRoulette::setupButtonsFromLists(const QStringList &lists) {
     QChar icon;
     if (items[i] == "Favoritos")
       icon = QChar(static_cast<char16_t>(fa::fa_heart));
-    else if (items[i] == "+")
-      icon = QChar(static_cast<char16_t>(fa::fa_plus));
+    else if (items[i] == "Agregar")
+      icon = QChar('+');
     else
       icon = QChar(static_cast<char16_t>(fa::fa_folder));
 
@@ -246,19 +246,24 @@ void VoiceRoulette::setTransition(qreal t) {
 }
 
 void VoiceRoulette::switchToListMode() {
+  qDebug() << "[SWITCH] switchToListMode called";
   m_listMode = true;
-  if (m_buttons.isEmpty()) return;
+  if (m_buttons.isEmpty()) {
+    qDebug() << "[SWITCH] m_buttons empty, returning";
+    return;
+  }
 
   // Pick entry point: between last and first sector
   qreal entry = m_buttons.last()->endAngle;
   g_entryAngle = entry;
+  qDebug() << "[SWITCH] entry angle=" << entry;
 
   // Build new list buttons
   QStringList lists = SoundManager::instance().scanSoundLists();
   clearListButtons();
   QStringList items;
   for (const QString &l : lists) items << l;
-  items << "Favoritos" << "+";
+  items << "Favoritos" << "Agregar";
 
   double gap = 2.0;
   double totalSpan = 360.0 - gap * items.size();
@@ -285,7 +290,7 @@ void VoiceRoulette::switchToListMode() {
 
     QChar icon;
     if (items[i] == "Favoritos") icon = QChar(static_cast<char16_t>(fa::fa_heart));
-    else if (items[i] == "+") icon = QChar(static_cast<char16_t>(fa::fa_plus));
+    else if (items[i] == "Agregar") icon = QChar('+');
     else icon = QChar(static_cast<char16_t>(fa::fa_folder));
 
     PolygonButton *btn = new PolygonButton(items[i], centerX, centerY, radius, s, e, this, icon);
@@ -297,6 +302,7 @@ void VoiceRoulette::switchToListMode() {
     ButtonData *d = new ButtonData(btn, s, e);
     m_listButtons.append(d);
     g_animSectors.append({btn, entry, entry, s, e});
+    qDebug() << "[SWITCH] list btn" << i << items[i] << "s=" << s << "e=" << e;
   }
 
   // Animate
@@ -304,8 +310,11 @@ void VoiceRoulette::switchToListMode() {
   m_transitionAnim->setStartValue(0.0);
   m_transitionAnim->setEndValue(1.0);
   m_transitionAnim->start();
+  qDebug() << "[SWITCH] transition started, m_listButtons.size=" << m_listButtons.size();
 
   connect(m_transitionAnim, &QPropertyAnimation::finished, this, [this]() {
+    qDebug() << "[SWITCH] transition finished";
+    qDebug() << "[SWITCH] m_listMode=" << m_listMode << "m_listButtons.size=" << m_listButtons.size();
     for (ButtonData *bd : m_buttons) {
       bd->button->hide();
       bd->button->deleteLater();
@@ -364,9 +373,6 @@ void VoiceRoulette::switchToSoundMode(const QString &folderName) {
       delete bd;
     }
     m_listButtons.clear();
-
-    if (!m_menuLarge && !m_buttonloquendo->isExpanded())
-      m_buttonloquendo->toggleExpansion();
   }, Qt::SingleShotConnection);
 }
 
@@ -562,6 +568,8 @@ void VoiceRoulette::keyReleaseEvent(QKeyEvent *event) {
 }
 
 double VoiceRoulette::angularDistance(double a, double b) const {
+  a = fmod(a, 360.0);
+  b = fmod(b, 360.0);
   double diff = fmod(a - b + 360, 360);
   if (diff > 180) diff = 360 - diff;
   return diff;
@@ -587,6 +595,12 @@ void VoiceRoulette::mouseMoveEvent(QMouseEvent *event) {
 
   double angle = qAtan2(dy, dx) * (180.0 / M_PI);
   if (angle < 0) angle += 360;
+
+  qDebug() << "[TRACK] mouseMove mode=" << (m_menuSelect ? "menu" : m_listMode ? "list" : "sound")
+           << "angle=" << angle
+           << "focused=" << (m_focusedButton ? "yes" : "no")
+           << "listBtns=" << m_listButtons.size()
+           << "soundBtns=" << m_buttons.size();
 
   if (m_menuSelect) {
     ButtonDataMenu *rawSector = nullptr;
@@ -654,7 +668,7 @@ void VoiceRoulette::mouseMoveEvent(QMouseEvent *event) {
         }
       }
       if (current && distanceToSectorEdge(angle, current->startAngle,
-                                          current->endAngle) < kHysteresis)
+                                           current->endAngle) < kHysteresis)
         target = current->button;
     }
     for (const ButtonData *data : m_buttons)
@@ -673,6 +687,8 @@ void VoiceRoulette::mouseReleaseEvent(QMouseEvent *event) {
 }
 
 bool VoiceRoulette::angleInRange(double angle, double start, double end) {
+  start = fmod(start, 360.0);
+  end = fmod(end, 360.0);
   if (start <= end)
     return angle >= start && angle < end;
   else
@@ -699,7 +715,7 @@ void VoiceRoulette::activateCurrentSector() {
     for (const ButtonData *data : m_listButtons) {
       if (angleInRange(angle, data->startAngle, data->endAngle)) {
         QString name = data->button->text().trimmed();
-        if (name == "Favoritos" || name == "+")
+        if (name == "Favoritos" || name == "Agregar")
           break;
         saveProfile(name);
         break;
@@ -709,7 +725,6 @@ void VoiceRoulette::activateCurrentSector() {
     for (const ButtonData *data : m_buttons) {
       if (angleInRange(angle, data->startAngle, data->endAngle)) {
         QString name = data->button->text().trimmed();
-        qDebug() << "Playing sound:" << name;
         AudioManager::instance().playSound(name);
         break;
       }
@@ -728,6 +743,7 @@ void VoiceRoulette::handleMenuAction(const QString &name) {
   } else if (name == "Config") {
     qDebug() << "Open config";
   } else if (name == "Process Audio") {
+    qDebug() << "[TRACK] Process Audio clicked, m_listMode=" << m_listMode;
     if (m_listMode) {
       switchToSoundMode();
     } else {
@@ -735,6 +751,8 @@ void VoiceRoulette::handleMenuAction(const QString &name) {
     }
   }
 }
+
+
 
 void VoiceRoulette::speakText(const QString &text) {
   QProcess::startDetached("spd-say", QStringList() << "-e" << "-r" << "-50" << text);
