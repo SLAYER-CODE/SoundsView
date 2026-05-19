@@ -364,6 +364,9 @@ void VoiceRoulette::switchToSoundMode(const QString &folderName) {
       delete bd;
     }
     m_listButtons.clear();
+
+    if (!m_menuLarge && !m_buttonloquendo->isExpanded())
+      m_buttonloquendo->toggleExpansion();
   }, Qt::SingleShotConnection);
 }
 
@@ -385,8 +388,28 @@ void VoiceRoulette::showEvent(QShowEvent *event) {
   QWidget::showEvent(event);
   m_restoreMouse = QCursor::pos();
   setCursor(Qt::BlankCursor);
-  if (!m_buttonloquendo->isExpanded())
-    m_buttonloquendo->setInitialExpanded();
+
+  if (m_listMode) {
+    for (ButtonData *data : m_buttons) data->button->hide();
+    for (ButtonData *data : m_listButtons) {
+      data->button->setSize(1.0);
+      data->button->show();
+    }
+    m_buttonloquendo->collapse();
+  } else {
+    for (ButtonData *data : m_buttons) data->button->show();
+    for (ButtonData *data : m_listButtons) data->button->hide();
+    if (m_menuLarge) {
+      m_buttonloquendo->collapse();
+    } else if (!m_buttonloquendo->isExpanded()) {
+      m_buttonloquendo->setInitialExpanded();
+    }
+  }
+
+  for (ButtonDataMenu *data : m_buttonsMenu) {
+    data->button->setScale(m_menuLarge ? 1.0 : 0.3);
+  }
+
   for (const ButtonData *data : m_buttons) data->button->setVisualHighlight(false);
   for (const ButtonData *data : m_listButtons) data->button->setVisualHighlight(false);
   for (const ButtonDataMenu *data : m_buttonsMenu) data->button->setVisualHighlight(false);
