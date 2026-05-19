@@ -6872,10 +6872,14 @@ CMakeFiles/SoundsView.dir/src/ui/voiceroulette.cpp.o: /home/Tiopaz/SoundsView/sr
   /usr/include/locale.h \
   /usr/include/math.h \
   /usr/include/pthread.h \
+  /usr/include/qt6/QtCore/QCoreApplication \
   /usr/include/qt6/QtCore/QDebug \
   /usr/include/qt6/QtCore/QDir \
+  /usr/include/qt6/QtCore/QFile \
   /usr/include/qt6/QtCore/QFileInfo \
   /usr/include/qt6/QtCore/QHash \
+  /usr/include/qt6/QtCore/QJsonDocument \
+  /usr/include/qt6/QtCore/QJsonObject \
   /usr/include/qt6/QtCore/QList \
   /usr/include/qt6/QtCore/QMap \
   /usr/include/qt6/QtCore/QObject \
@@ -6918,6 +6922,8 @@ CMakeFiles/SoundsView.dir/src/ui/voiceroulette.cpp.o: /home/Tiopaz/SoundsView/sr
   /usr/include/qt6/QtCore/qbytearraylist.h \
   /usr/include/qt6/QtCore/qbytearrayview.h \
   /usr/include/qt6/QtCore/qcalendar.h \
+  /usr/include/qt6/QtCore/qcborcommon.h \
+  /usr/include/qt6/QtCore/qcborvalue.h \
   /usr/include/qt6/QtCore/qchar.h \
   /usr/include/qt6/QtCore/qcheckedint_impl.h \
   /usr/include/qt6/QtCore/qcompare.h \
@@ -6961,6 +6967,10 @@ CMakeFiles/SoundsView.dir/src/ui/voiceroulette.cpp.o: /home/Tiopaz/SoundsView/sr
   /usr/include/qt6/QtCore/qiodevicebase.h \
   /usr/include/qt6/QtCore/qiterable.h \
   /usr/include/qt6/QtCore/qiterator.h \
+  /usr/include/qt6/QtCore/qjsondocument.h \
+  /usr/include/qt6/QtCore/qjsonobject.h \
+  /usr/include/qt6/QtCore/qjsonparseerror.h \
+  /usr/include/qt6/QtCore/qjsonvalue.h \
   /usr/include/qt6/QtCore/qlatin1stringview.h \
   /usr/include/qt6/QtCore/qline.h \
   /usr/include/qt6/QtCore/qlist.h \
@@ -6989,6 +6999,7 @@ CMakeFiles/SoundsView.dir/src/ui/voiceroulette.cpp.o: /home/Tiopaz/SoundsView/sr
   /usr/include/qt6/QtCore/qrandom.h \
   /usr/include/qt6/QtCore/qrect.h \
   /usr/include/qt6/QtCore/qrefcount.h \
+  /usr/include/qt6/QtCore/qregularexpression.h \
   /usr/include/qt6/QtCore/qscopedpointer.h \
   /usr/include/qt6/QtCore/qscopeguard.h \
   /usr/include/qt6/QtCore/qset.h \
@@ -7038,6 +7049,7 @@ CMakeFiles/SoundsView.dir/src/ui/voiceroulette.cpp.o: /home/Tiopaz/SoundsView/sr
   /usr/include/qt6/QtCore/qtypes.h \
   /usr/include/qt6/QtCore/qurl.h \
   /usr/include/qt6/QtCore/qutf8stringview.h \
+  /usr/include/qt6/QtCore/quuid.h \
   /usr/include/qt6/QtCore/qvariant.h \
   /usr/include/qt6/QtCore/qvariantanimation.h \
   /usr/include/qt6/QtCore/qvariantmap.h \
@@ -7322,11 +7334,23 @@ CMakeFiles/SoundsView.dir/SoundsView_autogen/3YJK5W5UP7/qrc_images.cpp.o:
 
 /usr/lib/libm.so:
 
-/usr/lib/libgcc_s.so.1:
-
 /usr/lib/crti.o:
 
 /usr/lib/Scrt1.o:
+
+/usr/include/qt6/QtGui/QPalette:
+
+/usr/include/qt6/QtGui/QGuiApplication:
+
+/usr/lib/libgcc_s.so.1:
+
+/usr/include/qt6/QtCore/quuid.h:
+
+/usr/include/qt6/QtCore/qregularexpression.h:
+
+/usr/include/qt6/QtCore/qtimer.h:
+
+/usr/lib/cmake/Qt6/QtPublicAndroidHelpers.cmake:
 
 /usr/include/strings.h:
 
@@ -7467,8 +7491,6 @@ CMakeFiles/SoundsView.dir/SoundsView_autogen/3YJK5W5UP7/qrc_images.cpp.o:
 /usr/include/qt6/QtGui/qpainter.h:
 
 /usr/include/qt6/QtCore/qtcoreglobal.h:
-
-/usr/include/qt6/QtCore/qswap.h:
 
 /usr/include/qt6/QtCore/qstringtokenizer.h:
 
@@ -7806,6 +7828,8 @@ SoundsView_autogen/PRMOGMWJPH/moc_soundmanager.cpp:
 
 /usr/include/c++/15.2.1/bits/postypes.h:
 
+/usr/include/qt6/QtCore/qjsondocument.h:
+
 /usr/include/stdio.h:
 
 /usr/include/qt6/QtGui/qfontvariableaxis.h:
@@ -7965,6 +7989,10 @@ CMakeFiles/4.2.3/CMakeCXXCompiler.cmake:
 /usr/include/c++/15.2.1/pstl/pstl_config.h:
 
 /usr/include/c++/15.2.1/ext/concurrence.h:
+
+/usr/include/qt6/QtGui/QCursor:
+
+/usr/include/qt6/QtCore/qxptype_traits.h:
 
 /usr/lib/cmake/Qt6/QtPublicSbomLicenseHelpers.cmake:
 
@@ -8152,6 +8180,10 @@ CMakeFiles/4.2.3/CMakeSystem.cmake:
 
 SoundsView_autogen/YPKJ5OE7LN/moc_voiceroulette.cpp:
 
+/usr/include/qt6/QtCore/qswap.h:
+
+/usr/include/qt6/QtCore/QCoreApplication:
+
 /usr/lib/cmake/Qt6Gui/Qt6QEglFSKmsGbmIntegrationPluginConfig.cmake:
 
 /usr/lib/cmake/Qt6Gui/Qt6QWaylandXdgShellIntegrationPluginConfig.cmake:
@@ -8173,6 +8205,8 @@ SoundsView_autogen/YPKJ5OE7LN/moc_voiceroulette.cpp:
 /usr/lib/cmake/Qt6Gui/Qt6GuiConfigVersionImpl.cmake:
 
 /usr/include/bits/wctype-wchar.h:
+
+/usr/include/qt6/QtCore/qjsonparseerror.h:
 
 /home/Tiopaz/SoundsView/src/main.cpp:
 
@@ -8280,6 +8314,8 @@ SoundsView_autogen/moc_predefs.h:
 
 /usr/include/qt6/QtCore/qtcore-config.h:
 
+/usr/include/qt6/QtCore/qjsonobject.h:
+
 /usr/include/c++/15.2.1/bits/hash_bytes.h:
 
 /usr/include/c++/15.2.1/backward/binders.h:
@@ -8349,8 +8385,6 @@ SoundsView_autogen/moc_predefs.h:
 /home/Tiopaz/SoundsView/src/ui/cirlebutoneditconvert.h:
 
 /usr/include/qt6/QtGui/qinputdevice.h:
-
-/usr/include/qt6/QtGui/QPalette:
 
 /usr/include/c++/15.2.1/system_error:
 
@@ -8490,6 +8524,8 @@ SoundsView_autogen/YPKJ5OE7LN/moc_polygonbutton.cpp:
 
 /usr/include/qt6/QtWidgets/qboxlayout.h:
 
+/usr/include/qt6/QtCore/qcborvalue.h:
+
 /usr/include/qt6/QtCore/qtconfiginclude.h:
 
 /usr/include/c++/15.2.1/list:
@@ -8622,6 +8658,10 @@ SoundsView_autogen/YPKJ5OE7LN/moc_polygonbutton.cpp:
 
 /usr/include/qt6/QtGui/qcolor.h:
 
+/usr/include/qt6/QtGui/QKeyEvent:
+
+/usr/lib/cmake/Qt6/QtPublicCMakeEarlyPolicyHelpers.cmake:
+
 /usr/include/c++/15.2.1/bits/new_allocator.h:
 
 /usr/lib/cmake/Qt6Gui/Qt6QVncIntegrationPluginTargetsPrecheck.cmake:
@@ -8709,6 +8749,8 @@ CMakeFiles/SoundsView.dir/src/common/iconmanager.cpp.o:
 /usr/lib/cmake/Qt6Core/Qt6CoreTargets-relwithdebinfo.cmake:
 
 /usr/lib/cmake/Qt6Gui/Qt6QEglFSKmsGbmIntegrationPluginTargetsPrecheck.cmake:
+
+/usr/include/qt6/QtCore/QFile:
 
 /usr/include/c++/15.2.1/istream:
 
@@ -9424,8 +9466,6 @@ SoundsView_autogen/YPKJ5OE7LN/moc_circulartrianglebutton.cpp:
 
 /usr/include/bits/mathcalls.h:
 
-/usr/include/qt6/QtGui/QGuiApplication:
-
 /usr/include/c++/15.2.1/bits/basic_ios.tcc:
 
 /usr/include/c++/15.2.1/bits/codecvt.h:
@@ -9558,9 +9598,7 @@ SoundsView_autogen/YPKJ5OE7LN/moc_circulartrianglebutton.cpp:
 
 /usr/include/qt6/QtGui/QFontDatabase:
 
-/usr/lib/cmake/Qt6/QtPublicCMakeEarlyPolicyHelpers.cmake:
-
-/usr/include/qt6/QtGui/QKeyEvent:
+/usr/include/qt6/QtCore/qjsonvalue.h:
 
 /usr/include/c++/15.2.1/memory:
 
@@ -9598,10 +9636,8 @@ SoundsView_autogen/YPKJ5OE7LN/moc_circulartrianglebutton.cpp:
 
 /usr/include/qt6/QtGui/QBitmap:
 
-/usr/lib/cmake/Qt6/QtPublicAndroidHelpers.cmake:
+/usr/include/qt6/QtCore/qcborcommon.h:
 
-/usr/include/qt6/QtCore/qtimer.h:
+/usr/include/qt6/QtCore/QJsonDocument:
 
-/usr/include/qt6/QtCore/qxptype_traits.h:
-
-/usr/include/qt6/QtGui/QCursor:
+/usr/include/qt6/QtCore/QJsonObject:

@@ -17,6 +17,8 @@ public:
   static SoundManager &instance();
 
   QList<SoundEntry> scanSounds() const;
+  QStringList scanSoundLists() const;
+  QList<SoundEntry> scanSoundsInFolder(const QString &folderName) const;
   QStringList supportedExtensions() const;
 
 private:

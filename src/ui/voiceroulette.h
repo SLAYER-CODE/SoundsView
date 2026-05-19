@@ -14,6 +14,7 @@ class VoiceRoulette : public QWidget {
   Q_PROPERTY(double radiusButons READ radiusButons WRITE setradiusButons NOTIFY
                  radiusButonsChanged)
   Q_PROPERTY(QPoint hoverPos READ hoverPos WRITE setHoverPos)
+  Q_PROPERTY(qreal transition READ transition WRITE setTransition)
 
 public:
   double windowOpacity() const;
@@ -24,6 +25,9 @@ public:
 
   qreal radiusButons() const;
   void setradiusButons(const qreal &border);
+
+  qreal transition() const { return m_transition; }
+  void setTransition(qreal t);
 
   QPointF m_mouseRestore() const;
   void m_setMRestore(const QPointF &point);
@@ -48,10 +52,18 @@ private:
   void startFadeInAnimation();
 
   void setupButtonLoquendo();
-  void setupButtonsFromSounds(const QList<SoundEntry> &sounds);
+  void setupButtonsFromSounds(const QList<SoundEntry> &sounds, bool animate = true);
   void setupButtonsMenu(QMap<QString, QPair<QChar, QChar>> list);
+  void setupButtonsFromLists(const QStringList &lists);
+  void clearButtons();
+  void clearListButtons();
+  void switchToListMode();
+  void switchToSoundMode(const QString &folderName = QString());
+  void saveProfile(const QString &folderName);
+  QString loadProfile();
   QList<ButtonData *> m_buttons;
   QList<ButtonDataMenu *> m_buttonsMenu;
+  QList<ButtonData *> m_listButtons;
 
   CirleButonEditConvert *m_buttonloquendo;
   QPropertyAnimation *m_animation;
@@ -80,6 +92,10 @@ private:
 
   bool m_micMuted = false;
   bool m_headphoneMuted = false;
+  bool m_listMode = false;
+  QList<SoundEntry> m_originalSounds;
+  qreal m_transition = 0.0;
+  QPropertyAnimation *m_transitionAnim = nullptr;
 
 signals:
   void windowOpacityChanged(double opacity);

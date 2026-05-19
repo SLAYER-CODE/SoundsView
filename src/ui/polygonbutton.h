@@ -19,11 +19,15 @@ class PolygonButton : public QWidget {
   Q_PROPERTY(
       QColor gradientColorEnd READ gradientColorEnd WRITE setGradientColorEnd)
   Q_PROPERTY(qreal size READ size WRITE setSize)
+  Q_PROPERTY(qreal startAngle READ angle WRITE setAngle)
+  Q_PROPERTY(qreal endAngle READ nextangle WRITE setnextAngle)
 
 public:
   explicit PolygonButton(const QString &text, qreal centerX_a, qreal centerY_a,
                          qreal radius, qreal angle, qreal nextangle,
-                         QWidget *parent = nullptr);
+                         QWidget *parent = nullptr,
+                         const QChar &icon = QChar());
+  void setIcon(const QChar &icon) { m_icon = icon; }
 
   void setText(const QString &text);
   QString text() const;
@@ -40,10 +44,10 @@ public:
   qreal centerY() const;
   void setCenterY(qreal centerY);
 
-  qreal angle() const;
+  qreal angle() const { return m_angle; }
   void setAngle(qreal angle);
 
-  qreal nextangle() const;
+  qreal nextangle() const { return m_nextangle; }
   void setnextAngle(qreal nextangle);
 
   void setBackgroundColor(const QColor &color);
@@ -130,6 +134,7 @@ private:
   double m_rotationAngle; // Agregar esta variable
 
   QString m_text;
+  QChar m_icon;
 };
 
 #endif // POLYGONBUTTON_H

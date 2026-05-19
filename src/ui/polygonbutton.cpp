@@ -21,8 +21,10 @@
 
 PolygonButton::PolygonButton(const QString &text, qreal centerX_a,
                              qreal centerY_a, qreal radius, qreal angle,
-                             qreal nextangle, QWidget *parent)
-    : QWidget(parent), m_text(text), m_centerX(centerX_a), m_centerY(centerY_a),
+                             qreal nextangle, QWidget *parent,
+                             const QChar &icon)
+    : QWidget(parent), m_text(text), m_icon(icon.isNull() ? QChar(static_cast<char16_t>(fa::fa_music)) : icon),
+      m_centerX(centerX_a), m_centerY(centerY_a),
       m_angle(angle), m_nextangle(nextangle), m_backgroundColor(Qt::red),
       m_hoverBackgroundColor(Qt::black), m_borderColor(Qt::black),
       m_hoverBorderColor(Qt::white), m_isHovered(false),
@@ -190,13 +192,13 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
   if (focused) {
     painter.setPen(QColor(180, 230, 255));
     painter.drawText(iconRect.adjusted(0, 0, 2, 2), Qt::AlignCenter,
-                     QChar(static_cast<char16_t>(fa::fa_music)));
+                     m_icon);
     painter.setPen(Qt::white);
   } else {
     painter.setPen(QColor(200, 200, 200));
   }
   painter.drawText(iconRect, Qt::AlignCenter,
-                   QChar(static_cast<char16_t>(fa::fa_music)));
+                   m_icon);
 
   QFont textFont = painter.font();
   textFont.setBold(true);
@@ -331,6 +333,18 @@ void PolygonButton::animateSizeTo(qreal target) {
   m_sizeAnimation->setStartValue(m_size);
   m_sizeAnimation->setEndValue(target);
   m_sizeAnimation->start();
+}
+
+void PolygonButton::setAngle(qreal a) {
+  m_angle = a;
+  updatePolygon();
+  update();
+}
+
+void PolygonButton::setnextAngle(qreal a) {
+  m_nextangle = a;
+  updatePolygon();
+  update();
 }
 
 void PolygonButton::mousePressEvent(QMouseEvent *event) {

@@ -7,8 +7,12 @@
 #include "soundmanager.h"
 #include <QApplication>
 #include <QCursor>
+#include <QCoreApplication>
 #include <QDebug>
+#include <QFile>
 #include <QGuiApplication>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QKeyEvent>
 #include <QLabel>
 #include <QMouseEvent>
@@ -55,6 +59,7 @@ VoiceRoulette::VoiceRoulette(QWidget *parent)
       {"Sound", qMakePair(QChar(static_cast<char16_t>(fa::fa_headphones_simple)), QChar(static_cast<char16_t>(fa::fa_volume_xmark)))}};
 
   QList<SoundEntry> sounds = SoundManager::instance().scanSounds();
+  m_originalSounds = sounds;
 
   m_animation = new QPropertyAnimation(this, "windowOpacity");
   m_animation->setDuration(300);
@@ -78,6 +83,10 @@ VoiceRoulette::VoiceRoulette(QWidget *parent)
   setupButtonLoquendo();
   m_buttonloquendo->setInitialExpanded();
 
+  m_transitionAnim = new QPropertyAnimation(this, "transition");
+  m_transitionAnim->setDuration(400);
+  m_transitionAnim->setEasingCurve(QEasingCurve::InOutQuad);
+
   connect(m_buttonloquendo, &CirleButonEditConvert::sendRequested, this,
           [this](const QString &text) {
             if (text.isEmpty()) return;
@@ -89,9 +98,18 @@ VoiceRoulette::VoiceRoulette(QWidget *parent)
             stopSpeech();
             m_buttonloquendo->setNeutral();
           });
+
+  QString saved = loadProfile();
+  if (!saved.isEmpty()) {
+    QList<SoundEntry> profileSounds = SoundManager::instance().scanSoundsInFolder(saved);
+    if (!profileSounds.isEmpty()) {
+      setupButtonsFromSounds(profileSounds);
+    }
+  }
 }
 
-void VoiceRoulette::setupButtonsFromSounds(const QList<SoundEntry> &sounds) {
+void VoiceRoulette::setupButtonsFromSounds(const QList<SoundEntry> &sounds, bool animate) {
+  clearButtons();
   AudioManager &audio = AudioManager::instance();
 
   if (sounds.isEmpty()) {
@@ -102,7 +120,8 @@ void VoiceRoulette::setupButtonsFromSounds(const QList<SoundEntry> &sounds) {
     data->button->setEnabled(false);
     m_buttons.append(data);
     btn->show();
-    QTimer::singleShot(0, this, &VoiceRoulette::startAnimations);
+    if (animate)
+      QTimer::singleShot(0, this, &VoiceRoulette::startAnimations);
     return;
   }
 
@@ -128,7 +147,224 @@ void VoiceRoulette::setupButtonsFromSounds(const QList<SoundEntry> &sounds) {
     m_buttons.append(data);
     btn->show();
   }
-  QTimer::singleShot(0, this, &VoiceRoulette::startAnimations);
+  if (animate)
+    QTimer::singleShot(0, this, &VoiceRoulette::startAnimations);
+}
+
+void VoiceRoulette::clearButtons() {
+  for (ButtonData *data : m_buttons) {
+    data->button->hide();
+    data->button->deleteLater();
+    delete data;
+  }
+  m_buttons.clear();
+}
+
+void VoiceRoulette::clearListButtons() {
+  for (ButtonData *data : m_listButtons) {
+    data->button->hide();
+    data->button->deleteLater();
+    delete data;
+  }
+  m_listButtons.clear();
+}
+
+void VoiceRoulette::setupButtonsFromLists(const QStringList &lists) {
+  clearListButtons();
+
+  QStringList items;
+  for (const QString &l : lists)
+    items << l;
+  items << "Favoritos"
+        << "+";
+
+  double gap = 2.0;
+  double angleStep = 360.0 / items.size();
+  int radius = 400;
+  int centerX = width() / 2;
+  int centerY = height() / 2;
+
+  for (int i = 0; i < items.size(); ++i) {
+    double angle, nextAngle;
+    if (items.size() == 1) {
+      angle = 0;
+      nextAngle = 360;
+    } else {
+      angle = i * angleStep + gap / 2.0;
+      nextAngle = (i + 1) * angleStep - gap / 2.0;
+    }
+
+    QChar icon;
+    if (items[i] == "Favoritos")
+      icon = QChar(static_cast<char16_t>(fa::fa_heart));
+    else if (items[i] == "+")
+      icon = QChar(static_cast<char16_t>(fa::fa_plus));
+    else
+      icon = QChar(static_cast<char16_t>(fa::fa_folder));
+
+    PolygonButton *btn = new PolygonButton(items[i], centerX, centerY, radius, angle, nextAngle, this, icon);
+    btn->setGeometry(0, 0, 2 * radius + centerX, 2 * radius + centerY);
+    btn->setEnabled(true);
+    ButtonData *data = new ButtonData(btn, angle, nextAngle);
+    m_listButtons.append(data);
+  }
+  for (ButtonData *data : m_listButtons)
+    data->button->show();
+
+  QTimer::singleShot(0, this, [this]() {
+    QList<int> indices;
+    for (int i = 0; i < m_listButtons.size(); ++i)
+      indices.append(i);
+    auto rng = std::default_random_engine{QRandomGenerator::global()->generate()};
+    std::shuffle(indices.begin(), indices.end(), rng);
+    for (int i = 0; i < indices.size(); ++i) {
+      int delay = QRandomGenerator::global()->bounded(0, 50);
+      QTimer::singleShot(i * delay, this, [=]() {
+        m_listButtons[indices[i]]->button->startSizeAnimation();
+      });
+    }
+  });
+}
+
+struct AnimSector {
+  PolygonButton *btn;
+  qreal startAngle, endAngle;     // at transition=0
+  qreal targetStart, targetEnd;   // at transition=1
+};
+
+static QList<AnimSector> g_animSectors;
+static qreal g_entryAngle = 0;
+
+void VoiceRoulette::setTransition(qreal t) {
+  m_transition = t;
+  for (const AnimSector &as : g_animSectors) {
+    qreal a0 = as.startAngle + (as.targetStart - as.startAngle) * t;
+    qreal a1 = as.endAngle + (as.targetEnd - as.endAngle) * t;
+    as.btn->setAngle(a0);
+    as.btn->setnextAngle(a1);
+  }
+}
+
+void VoiceRoulette::switchToListMode() {
+  m_listMode = true;
+  if (m_buttons.isEmpty()) return;
+
+  // Pick entry point: between last and first sector
+  qreal entry = m_buttons.last()->endAngle;
+  g_entryAngle = entry;
+
+  // Build new list buttons
+  QStringList lists = SoundManager::instance().scanSoundLists();
+  clearListButtons();
+  QStringList items;
+  for (const QString &l : lists) items << l;
+  items << "Favoritos" << "+";
+
+  double gap = 2.0;
+  double totalSpan = 360.0 - gap * items.size();
+  int radius = 400;
+  int centerX = width() / 2;
+  int centerY = height() / 2;
+
+  g_animSectors.clear();
+
+  // Old sound sectors: start with current angles, target 0 at entry point
+  for (ButtonData *bd : m_buttons) {
+    qreal s = bd->startAngle;
+    qreal e = bd->endAngle;
+    g_animSectors.append({bd->button, s, e, entry, entry});
+  }
+
+  // New list sectors: start at entry point (0 span), target their real angles
+  qreal cur = entry;
+  for (int i = 0; i < items.size(); ++i) {
+    qreal span = (items.size() == 1) ? 360.0 : (360.0 / items.size()) - gap;
+    qreal s = cur;
+    qreal e = cur + span;
+    cur = e + gap;
+
+    QChar icon;
+    if (items[i] == "Favoritos") icon = QChar(static_cast<char16_t>(fa::fa_heart));
+    else if (items[i] == "+") icon = QChar(static_cast<char16_t>(fa::fa_plus));
+    else icon = QChar(static_cast<char16_t>(fa::fa_folder));
+
+    PolygonButton *btn = new PolygonButton(items[i], centerX, centerY, radius, s, e, this, icon);
+    btn->setGeometry(0, 0, 2 * radius + centerX, 2 * radius + centerY);
+    btn->setEnabled(true);
+    btn->setSize(1.0);
+    btn->show();
+
+    ButtonData *d = new ButtonData(btn, s, e);
+    m_listButtons.append(d);
+    g_animSectors.append({btn, entry, entry, s, e});
+  }
+
+  // Animate
+  m_transitionAnim->stop();
+  m_transitionAnim->setStartValue(0.0);
+  m_transitionAnim->setEndValue(1.0);
+  m_transitionAnim->start();
+
+  connect(m_transitionAnim, &QPropertyAnimation::finished, this, [this]() {
+    for (ButtonData *bd : m_buttons) {
+      bd->button->hide();
+      bd->button->deleteLater();
+      delete bd;
+    }
+    m_buttons.clear();
+  }, Qt::SingleShotConnection);
+}
+
+void VoiceRoulette::switchToSoundMode(const QString &folderName) {
+  m_listMode = false;
+
+  for (ButtonDataMenu *data : m_buttonsMenu) {
+    if (data->button->text() == "Process Audio" && data->button->isChecked())
+      data->button->toggle();
+  }
+
+  // Build new sound buttons (they will animate in)
+  if (folderName.isEmpty())
+    setupButtonsFromSounds(m_originalSounds, false);
+  else {
+    QList<SoundEntry> sounds = SoundManager::instance().scanSoundsInFolder(folderName);
+    setupButtonsFromSounds(sounds, false);
+  }
+  for (ButtonData *bd : m_buttons) {
+    bd->button->setSize(1.0);
+    bd->button->show();
+  }
+
+  // Animate: list sectors shrink to entry, sound sectors grow from entry
+  qreal entry = g_entryAngle;
+  g_animSectors.clear();
+
+  for (ButtonData *bd : m_listButtons) {
+    qreal s = bd->startAngle;
+    qreal e = bd->endAngle;
+    g_animSectors.append({bd->button, s, e, entry, entry});
+  }
+
+  qreal cur = entry;
+  for (ButtonData *bd : m_buttons) {
+    qreal s = bd->startAngle;
+    qreal e = bd->endAngle;
+    g_animSectors.append({bd->button, entry, entry, s, e});
+  }
+
+  m_transitionAnim->stop();
+  m_transitionAnim->setStartValue(0.0);
+  m_transitionAnim->setEndValue(1.0);
+  m_transitionAnim->start();
+
+  connect(m_transitionAnim, &QPropertyAnimation::finished, this, [this]() {
+    for (ButtonData *bd : m_listButtons) {
+      bd->button->hide();
+      bd->button->deleteLater();
+      delete bd;
+    }
+    m_listButtons.clear();
+  }, Qt::SingleShotConnection);
 }
 
 void VoiceRoulette::paintEvent(QPaintEvent *event) {
@@ -152,6 +388,7 @@ void VoiceRoulette::showEvent(QShowEvent *event) {
   if (!m_buttonloquendo->isExpanded())
     m_buttonloquendo->setInitialExpanded();
   for (const ButtonData *data : m_buttons) data->button->setVisualHighlight(false);
+  for (const ButtonData *data : m_listButtons) data->button->setVisualHighlight(false);
   for (const ButtonDataMenu *data : m_buttonsMenu) data->button->setVisualHighlight(false);
   m_focusedButton = nullptr;
   raise();
@@ -161,6 +398,7 @@ void VoiceRoulette::showEvent(QShowEvent *event) {
 void VoiceRoulette::hideEvent(QHideEvent *event) {
   menuSelect_change(false);
   for (const ButtonData *data : m_buttons) data->button->setVisualHighlight(false);
+  for (const ButtonData *data : m_listButtons) data->button->setVisualHighlight(false);
   for (const ButtonDataMenu *data : m_buttonsMenu) data->button->setVisualHighlight(false);
   m_focusedButton = nullptr;
   m_buttonloquendo->collapse();
@@ -251,11 +489,16 @@ void VoiceRoulette::setupButtonsMenu(QMap<QString, QPair<QChar, QChar>> list) {
 
 void VoiceRoulette::keyPressEvent(QKeyEvent *event) {
   if (event->key() == Qt::Key_Escape) {
-    menuSelect_change(false);
-    for (const ButtonData *data : m_buttons) data->button->setVisualHighlight(false);
-    for (const ButtonDataMenu *data : m_buttonsMenu) data->button->setVisualHighlight(false);
-    m_focusedButton = nullptr;
-    hide();
+    if (m_listMode) {
+      switchToSoundMode();
+    } else {
+      menuSelect_change(false);
+      for (const ButtonData *data : m_buttons) data->button->setVisualHighlight(false);
+      for (const ButtonData *data : m_listButtons) data->button->setVisualHighlight(false);
+      for (const ButtonDataMenu *data : m_buttonsMenu) data->button->setVisualHighlight(false);
+      m_focusedButton = nullptr;
+      hide();
+    }
     event->accept();
   } else if (event->key() == Qt::Key_Control) {
     m_menuLarge = !m_menuLarge;
@@ -340,10 +583,34 @@ void VoiceRoulette::mouseMoveEvent(QMouseEvent *event) {
         }
       }
       if (current && distanceToSectorEdge(angle, current->startAngle,
-                                          current->endAngle) < kHysteresis)
+                                           current->endAngle) < kHysteresis)
         target = current->button;
     }
     for (const ButtonDataMenu *data : m_buttonsMenu)
+      data->button->setVisualHighlight(data->button == target);
+    m_focusedButton = target;
+  } else if (m_listMode) {
+    ButtonData *rawSector = nullptr;
+    for (ButtonData *data : m_listButtons) {
+      if (angleInRange(angle, data->startAngle, data->endAngle)) {
+        rawSector = data;
+        break;
+      }
+    }
+    QWidget *target = rawSector ? rawSector->button : nullptr;
+    if (target && m_focusedButton && target != m_focusedButton) {
+      ButtonData *current = nullptr;
+      for (ButtonData *data : m_listButtons) {
+        if (data->button == m_focusedButton) {
+          current = data;
+          break;
+        }
+      }
+      if (current && distanceToSectorEdge(angle, current->startAngle,
+                                           current->endAngle) < kHysteresis)
+        target = current->button;
+    }
+    for (const ButtonData *data : m_listButtons)
       data->button->setVisualHighlight(data->button == target);
     m_focusedButton = target;
   } else {
@@ -405,6 +672,16 @@ void VoiceRoulette::activateCurrentSector() {
         break;
       }
     }
+  } else if (m_listMode) {
+    for (const ButtonData *data : m_listButtons) {
+      if (angleInRange(angle, data->startAngle, data->endAngle)) {
+        QString name = data->button->text().trimmed();
+        if (name == "Favoritos" || name == "+")
+          break;
+        saveProfile(name);
+        break;
+      }
+    }
   } else {
     for (const ButtonData *data : m_buttons) {
       if (angleInRange(angle, data->startAngle, data->endAngle)) {
@@ -428,13 +705,38 @@ void VoiceRoulette::handleMenuAction(const QString &name) {
   } else if (name == "Config") {
     qDebug() << "Open config";
   } else if (name == "Process Audio") {
-    qDebug() << "Process audio";
+    if (m_listMode) {
+      switchToSoundMode();
+    } else {
+      switchToListMode();
+    }
   }
 }
 
 void VoiceRoulette::speakText(const QString &text) {
   QProcess::startDetached("spd-say", QStringList() << "-e" << "-r" << "-50" << text);
   m_buttonloquendo->animateProgress(1.0);
+}
+
+void VoiceRoulette::saveProfile(const QString &folderName) {
+  QFile file(QCoreApplication::applicationDirPath() + "/perfil.json");
+  if (file.open(QIODevice::WriteOnly)) {
+    QJsonObject obj;
+    obj["profile"] = folderName;
+    file.write(QJsonDocument(obj).toJson());
+    file.close();
+  }
+}
+
+QString VoiceRoulette::loadProfile() {
+  QFile file(QCoreApplication::applicationDirPath() + "/perfil.json");
+  if (file.open(QIODevice::ReadOnly)) {
+    QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+    file.close();
+    if (doc.isObject())
+      return doc.object()["profile"].toString();
+  }
+  return {};
 }
 
 void VoiceRoulette::stopSpeech() {

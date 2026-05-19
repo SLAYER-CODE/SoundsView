@@ -74,7 +74,7 @@ void CircularTriangleButton::paintEvent(QPaintEvent *event) {
   c /= m_polygon.size();
 
   QRadialGradient grad(c, maxDist * m_scale);
-  if (m_isHovered) {
+  if (m_isChecked || m_isHovered) {
     grad.setColorAt(0.0, QColor(180, 0, 0, 220));
     grad.setColorAt(0.5, QColor(120, 0, 0, 160));
     grad.setColorAt(1.0, QColor(0, 0, 0, 0));
