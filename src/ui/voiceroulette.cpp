@@ -73,6 +73,8 @@ VoiceRoulette::VoiceRoulette(QWidget *parent)
 
   setupButtonsFromSounds(sounds);
   setupButtonsMenu(iconMap);
+  for (ButtonDataMenu *data : m_buttonsMenu)
+    data->button->setScale(0.3);
   setupButtonLoquendo();
   m_buttonloquendo->setInitialExpanded();
 
@@ -256,7 +258,16 @@ void VoiceRoulette::keyPressEvent(QKeyEvent *event) {
     hide();
     event->accept();
   } else if (event->key() == Qt::Key_Control) {
-    m_buttonloquendo->toggleExpansion();
+    m_menuLarge = !m_menuLarge;
+    if (m_menuLarge) {
+      for (ButtonDataMenu *data : m_buttonsMenu)
+        data->button->animateScale(1.0);
+      m_buttonloquendo->collapse();
+    } else {
+      for (ButtonDataMenu *data : m_buttonsMenu)
+        data->button->animateScale(0.3);
+      m_buttonloquendo->toggleExpansion();
+    }
     event->accept();
   } else if (event->key() == Qt::Key_Alt) {
     m_altHeld = true;

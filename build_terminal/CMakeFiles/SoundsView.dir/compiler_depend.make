@@ -5127,6 +5127,8 @@ CMakeFiles/SoundsView.dir/src/ui/cirlebutoneditconvert.cpp.o: /home/Tiopaz/Sound
   /usr/include/c++/15.2.1/bits/postypes.h \
   /usr/include/c++/15.2.1/bits/predefined_ops.h \
   /usr/include/c++/15.2.1/bits/ptr_traits.h \
+  /usr/include/c++/15.2.1/bits/random.h \
+  /usr/include/c++/15.2.1/bits/random.tcc \
   /usr/include/c++/15.2.1/bits/range_access.h \
   /usr/include/c++/15.2.1/bits/refwrap.h \
   /usr/include/c++/15.2.1/bits/requires_hosted.h \
@@ -5214,6 +5216,7 @@ CMakeFiles/SoundsView.dir/src/ui/cirlebutoneditconvert.cpp.o: /home/Tiopaz/Sound
   /usr/include/c++/15.2.1/pstl/glue_memory_defs.h \
   /usr/include/c++/15.2.1/pstl/glue_numeric_defs.h \
   /usr/include/c++/15.2.1/pstl/pstl_config.h \
+  /usr/include/c++/15.2.1/random \
   /usr/include/c++/15.2.1/ratio \
   /usr/include/c++/15.2.1/set \
   /usr/include/c++/15.2.1/stdexcept \
@@ -5251,6 +5254,7 @@ CMakeFiles/SoundsView.dir/src/ui/cirlebutoneditconvert.cpp.o: /home/Tiopaz/Sound
   /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/error_constants.h \
   /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/gthr-default.h \
   /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/gthr.h \
+  /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/opt_random.h \
   /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/os_defines.h \
   /usr/include/ctype.h \
   /usr/include/endian.h \
@@ -5273,6 +5277,7 @@ CMakeFiles/SoundsView.dir/src/ui/cirlebutoneditconvert.cpp.o: /home/Tiopaz/Sound
   /usr/include/qt6/QtCore/QMap \
   /usr/include/qt6/QtCore/QObject \
   /usr/include/qt6/QtCore/QPropertyAnimation \
+  /usr/include/qt6/QtCore/QRandomGenerator \
   /usr/include/qt6/QtCore/QRect \
   /usr/include/qt6/QtCore/QSize \
   /usr/include/qt6/QtCore/QSizeF \
@@ -5367,6 +5372,7 @@ CMakeFiles/SoundsView.dir/src/ui/cirlebutoneditconvert.cpp.o: /home/Tiopaz/Sound
   /usr/include/qt6/QtCore/qpoint.h \
   /usr/include/qt6/QtCore/qprocessordetection.h \
   /usr/include/qt6/QtCore/qpropertyanimation.h \
+  /usr/include/qt6/QtCore/qrandom.h \
   /usr/include/qt6/QtCore/qrect.h \
   /usr/include/qt6/QtCore/qrefcount.h \
   /usr/include/qt6/QtCore/qscopedpointer.h \
@@ -9564,20 +9570,6 @@ SoundsView_autogen/YPKJ5OE7LN/moc_circulartrianglebutton.cpp:
 
 /usr/include/qt6/QtGui/qscreen.h:
 
-/usr/include/c++/15.2.1/bits/atomic_lockfree_defines.h:
-
-/usr/include/qt6/QtGui/QTextFrame:
-
-/usr/include/qt6/QtGui/qtextobject.h:
-
-/usr/include/qt6/QtWidgets/qlayoutitem.h:
-
-/usr/include/qt6/QtWidgets/qgridlayout.h:
-
-/usr/include/qt6/QtWidgets/qlayout.h:
-
-/usr/include/qt6/QtGui/QBitmap:
-
 /usr/include/c++/15.2.1/bits/random.tcc:
 
 /usr/include/linux/posix_types.h:
@@ -9591,6 +9583,20 @@ SoundsView_autogen/YPKJ5OE7LN/moc_circulartrianglebutton.cpp:
 /usr/share/cmake/Modules/GNUInstallDirs.cmake:
 
 /usr/include/qt6/QtCore/qrandom.h:
+
+/usr/include/c++/15.2.1/bits/atomic_lockfree_defines.h:
+
+/usr/include/qt6/QtGui/QTextFrame:
+
+/usr/include/qt6/QtGui/qtextobject.h:
+
+/usr/include/qt6/QtWidgets/qlayoutitem.h:
+
+/usr/include/qt6/QtWidgets/qgridlayout.h:
+
+/usr/include/qt6/QtWidgets/qlayout.h:
+
+/usr/include/qt6/QtGui/QBitmap:
 
 /usr/lib/cmake/Qt6/QtPublicAndroidHelpers.cmake:
 

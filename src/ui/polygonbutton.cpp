@@ -180,12 +180,30 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
   painter.save();
 
   fa::QtAwesome *awesome = IconManager::instance().awesome();
-  QFont iconFont = awesome->font(fa::fa_solid, fontSize * 1.4);
-  painter.setFont(iconFont);
-  painter.setPen(Qt::white);
+  bool focused = m_visualHighlighted || m_isHovered;
 
   QRectF iconRect(inscribedRect.x(), inscribedRect.y(),
                   inscribedRect.width(), inscribedRect.height() * 0.45);
+
+  if (focused) {
+    QRadialGradient glow(iconRect.center(), qMax(iconRect.width(), iconRect.height()) * 0.7);
+    glow.setColorAt(0, QColor(100, 200, 255, 100));
+    glow.setColorAt(1, QColor(100, 200, 255, 0));
+    painter.setBrush(glow);
+    painter.setPen(Qt::NoPen);
+    painter.drawEllipse(iconRect.center(), iconRect.width() * 0.5, iconRect.height() * 0.5);
+  }
+
+  QFont iconFont = awesome->font(fa::fa_solid, fontSize * 1.4);
+  painter.setFont(iconFont);
+  if (focused) {
+    painter.setPen(QColor(180, 230, 255));
+    painter.drawText(iconRect.adjusted(0, 0, 2, 2), Qt::AlignCenter,
+                     QChar(static_cast<char16_t>(fa::fa_music)));
+    painter.setPen(Qt::white);
+  } else {
+    painter.setPen(QColor(200, 200, 200));
+  }
   painter.drawText(iconRect, Qt::AlignCenter,
                    QChar(static_cast<char16_t>(fa::fa_music)));
 
@@ -202,6 +220,14 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
 
   QRectF textRect(inscribedRect.x(), inscribedRect.y() + inscribedRect.height() * 0.45,
                   inscribedRect.width(), inscribedRect.height() * 0.55);
+
+  if (focused) {
+    painter.setPen(QColor(180, 230, 255));
+    painter.drawText(textRect.adjusted(0, 1, 0, 1), Qt::AlignCenter, elided);
+    painter.setPen(Qt::white);
+  } else {
+    painter.setPen(QColor(200, 200, 200));
+  }
   painter.drawText(textRect, Qt::AlignCenter, elided);
 
   painter.restore();
@@ -307,6 +333,14 @@ void PolygonButton::setVisualHighlight(bool highlighted) {
 }
 
 void PolygonButton::startSizeAnimation() { m_sizeAnimation->start(); }
+
+void PolygonButton::animateSizeTo(qreal target) {
+  if (m_sizeAnimation->state() == QPropertyAnimation::Running)
+    m_sizeAnimation->stop();
+  m_sizeAnimation->setStartValue(m_size);
+  m_sizeAnimation->setEndValue(target);
+  m_sizeAnimation->start();
+}
 
 void PolygonButton::mousePressEvent(QMouseEvent *event) {
   // Ignora los eventos de mouse

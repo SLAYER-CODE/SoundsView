@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QRandomGenerator>
 #include <QStackedWidget>
 #include <QTextCharFormat>
 #include <QTextCursor>
@@ -238,20 +239,33 @@ void CirleButonEditConvert::showEvent(QShowEvent *event) {
   editline->viewport()->setCursor(Qt::BlankCursor);
 }
 
+static QPixmap makeNoiseTexture() {
+  QPixmap tex(64, 64);
+  tex.fill(Qt::transparent);
+  QPainter p(&tex);
+  p.setRenderHint(QPainter::Antialiasing);
+  for (int i = 0; i < 600; ++i) {
+    int x = QRandomGenerator::global()->bounded(64);
+    int y = QRandomGenerator::global()->bounded(64);
+    int a = QRandomGenerator::global()->bounded(8, 25);
+    p.setPen(QPen(QColor(255, 255, 255, a), 1));
+    p.drawPoint(x, y);
+  }
+  p.end();
+  return tex;
+}
+
 void CirleButonEditConvert::paintEvent(QPaintEvent *event) {
   QWidget::paintEvent(event);
   QPainter painter(this);
-
   painter.setRenderHint(QPainter::Antialiasing);
   painter.save();
-  // Dibujar el círculo
-  painter.setBrush(m_backgroundColor);
 
-  if (m_isHovered) {
-    painter.setBrush(m_hoverBackgroundColor);
-  }
+  QRectF circleRect(0, 0, 2 * (radius * exp), 2 * (radius * exp));
+
+  painter.setBrush(Qt::black);
   painter.setPen(Qt::NoPen);
-  painter.drawEllipse(0, 0, 2 * (radius * exp), 2 * (radius * exp));
+  painter.drawEllipse(circleRect);
 
   painter.restore();
 }

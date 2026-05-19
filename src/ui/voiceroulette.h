@@ -66,6 +66,7 @@ private:
   bool isHovering;   // Flag to check if a button is being hovered
   bool m_menuSelect;
   bool m_altHeld = false;
+  bool m_menuLarge = false;
   QWidget *m_focusedButton;
 
   void activateCurrentSector();

@@ -68,6 +68,7 @@ public:
   qreal size() const;
   void setSize(qreal size);
   void startSizeAnimation();
+  void animateSizeTo(qreal target);
   void setVisualHighlight(bool highlighted);
 
   int calculateFontSize(const QString &text, const QRectF &inscribedRect,

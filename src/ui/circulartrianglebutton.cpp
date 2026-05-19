@@ -30,12 +30,16 @@ CircularTriangleButton::CircularTriangleButton(
   setAttribute(Qt::WA_Hover);
 
   m_zoomAnimation = new QPropertyAnimation(this, "zoom");
-  m_zoomAnimation->setDuration(300);
+  m_zoomAnimation->setDuration(120);
   m_zoomAnimation->setStartValue(0);
   m_zoomAnimation->setEndValue(0.5);
 
   m_radiusAnimation = new QPropertyAnimation(this, "radius");
-  m_radiusAnimation->setDuration(300);
+  m_radiusAnimation->setDuration(120);
+
+  m_scaleAnim = new QPropertyAnimation(this, "scale");
+  m_scaleAnim->setDuration(250);
+  m_scaleAnim->setEasingCurve(QEasingCurve::InOutQuad);
 
   // Configurar QLabel
   m_iconLabel->setAlignment(Qt::AlignCenter);
@@ -60,45 +64,55 @@ void CircularTriangleButton::paintEvent(QPaintEvent *event) {
   QPainter painter(this);
   fa::QtAwesome *awesome = IconManager::instance().awesome();
   painter.setRenderHint(QPainter::Antialiasing);
-  painter.setBrush(m_backgroundColor);
-  painter.drawRect(rect());
 
-  QPen pen(m_borderColor, 3); // Ajusta el grosor del borde aquí
-  painter.setPen(pen);
-  painter.setBrush(Qt::NoBrush);
+  QPointF c;
+  qreal maxDist = 0;
+  for (const QPointF &pt : m_polygon) {
+    c += pt;
+    maxDist = qMax(maxDist, (pt - m_originalPolygon.last()).manhattanLength());
+  }
+  c /= m_polygon.size();
 
+  QRadialGradient grad(c, maxDist * m_scale);
   if (m_isHovered) {
-    painter.setBrush(m_hoverBackgroundColor);
-    painter.drawRect(rect());
+    grad.setColorAt(0.0, QColor(180, 0, 0, 220));
+    grad.setColorAt(0.5, QColor(120, 0, 0, 160));
+    grad.setColorAt(1.0, QColor(0, 0, 0, 0));
+  } else {
+    grad.setColorAt(0.0, QColor(0, 0, 0, 220));
+    grad.setColorAt(0.5, QColor(0, 0, 0, 120));
+    grad.setColorAt(1.0, QColor(0, 0, 0, 0));
   }
 
-  // Configurar el font para el ícono de FontAwesome
-  QFont font = awesome->font(
-      fa::fa_solid, 35 * (1 + m_zoom)); // Establecer el tamaño de fuente 16
-  painter.setFont(font);
+  painter.setBrush(grad);
+  painter.setPen(Qt::NoPen);
+  painter.drawPolygon(m_polygon);
 
-  // Configurar el ícono que deseas mostrar
-  QString iconText = m_icon; // Utilizar el ícono almacenado en la clase
+  // Icon
+  int iconSize = qRound(qMax(8.0, 35.0 * m_scale * (1.0 + m_zoom)));
+  QFont iconFont = awesome->font(fa::fa_solid, iconSize);
+  painter.setFont(iconFont);
+  QFontMetrics fm(iconFont);
+  QRectF iconRect = fm.boundingRect(QString(m_icon));
+  QPointF iconPos(c.x() - iconRect.width() / 2, c.y() - iconRect.height() / 2);
+  painter.setPen(Qt::white);
+  painter.drawText(QRectF(iconPos, iconRect.size()), Qt::AlignCenter,
+                   QString(m_icon));
 
-  // Calcular el centro del polígono
-  QPointF center;
-  for (const QPointF &point : m_polygon) {
-    center += point;
-  }
-  center /= m_polygon.size();
+  // Text label below icon
+  int labelSize = qMax(6, qRound(10 * m_scale));
+  QFont labelFont;
+  labelFont.setPixelSize(labelSize);
+  painter.setFont(labelFont);
+  painter.setPen(Qt::white);
 
-  // Calcular el rectángulo de los límites del ícono
-  QFontMetrics fm(font);
-  QRectF iconBoundingRect = fm.boundingRect(iconText);
-
-  // Calcular la posición superior izquierda del ícono para centrarlo en el
-  // centro del polígono
-  QPointF iconTopLeft(center.x() - iconBoundingRect.width() / 2,
-                      center.y() - iconBoundingRect.height() / 2);
-
-  // Dibujar el ícono centrado en el polígono
-  painter.drawText(QRectF(iconTopLeft, iconBoundingRect.size()),
-                   Qt::AlignCenter, iconText);
+  qreal labelW = qMin(c.x() * 2, maxDist * m_scale * 1.2);
+  qreal labelY = c.y() + iconRect.height() / 2 + 2;
+  QRectF labelRect(c.x() - labelW / 2, labelY, labelW, 16);
+  QFontMetrics lfm(labelFont);
+  QString elided = lfm.elidedText(m_text, Qt::ElideRight,
+                                  static_cast<int>(labelW));
+  painter.drawText(labelRect, Qt::AlignHCenter | Qt::AlignTop, elided);
 }
 
 void CircularTriangleButton::focusInEvent(QFocusEvent *event) {
@@ -182,6 +196,7 @@ QPolygonF CircularTriangleButton::polygon() const { return m_polygon; }
 
 void CircularTriangleButton::setPolygon(const QPolygonF &polygon) {
   m_polygon = polygon;
+  m_originalPolygon = polygon;
   QRegion region(m_polygon.toPolygon());
   setMask(region);
   update();
@@ -204,4 +219,24 @@ void CircularTriangleButton::setBackgroundColor(const QColor &color) {
 void CircularTriangleButton::setTextColor(const QColor &color) {
   m_textColor = color;
   update();
+}
+
+void CircularTriangleButton::setScale(qreal s) {
+  m_scale = s;
+  if (m_originalPolygon.isEmpty()) return;
+  QPointF anchor = m_originalPolygon.last();
+  m_polygon.clear();
+  for (const QPointF &pt : m_originalPolygon)
+    m_polygon << anchor + (pt - anchor) * s;
+  QRegion region(m_polygon.toPolygon());
+  setMask(region);
+  update();
+}
+
+void CircularTriangleButton::animateScale(qreal target) {
+  if (m_scaleAnim->state() == QPropertyAnimation::Running)
+    m_scaleAnim->stop();
+  m_scaleAnim->setStartValue(m_scale);
+  m_scaleAnim->setEndValue(target);
+  m_scaleAnim->start();
 }

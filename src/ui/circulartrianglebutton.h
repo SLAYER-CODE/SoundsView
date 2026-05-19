@@ -9,6 +9,7 @@ class CircularTriangleButton : public QWidget {
   Q_OBJECT
   Q_PROPERTY(qreal radius READ radius WRITE setRadius)
   Q_PROPERTY(qreal zoom READ zoom WRITE setzoom)
+  Q_PROPERTY(qreal scale READ scale WRITE setScale)
 
 public:
   explicit CircularTriangleButton(const QString &text, const QChar &icon,
@@ -55,6 +56,9 @@ public:
   void setChecked(bool checked);
   void toggle() { setChecked(!m_isChecked); }
   void setVisualHighlight(bool highlighted);
+  void animateScale(qreal target);
+  qreal scale() const { return m_scale; }
+  void setScale(qreal s);
 
 protected:
   void focusInEvent(QFocusEvent *event) override;
@@ -82,6 +86,7 @@ private:
   qreal m_radius;
   QPropertyAnimation *m_zoomAnimation;
   QPropertyAnimation *m_radiusAnimation;
+  QPropertyAnimation *m_scaleAnim;
 
   qreal m_centerX;
   qreal m_centerY;
@@ -91,7 +96,9 @@ private:
   QLabel *m_iconLabel;
 
   qreal m_zoom;
+  qreal m_scale = 1.0;
   QPolygonF m_polygon;
+  QPolygonF m_originalPolygon;
 
   QString m_text;
   QChar m_icon;
