@@ -67,42 +67,25 @@ CirleButonEditConvert::CirleButonEditConvert(const QString &text, qreal radius,
 
   placeholder = new QLabel(this);
   placeholder->setStyleSheet(
-      "color: gray; font-size: 25pt;background: transparent;"); // Tamaño del
-                                                                // placeholder
-  placeholder->setWordWrap(true); // Permite el ajuste de texto
-  placeholder->setText("Escribe ...");
+      "color: #999999; font-size: 16pt; background: transparent;");
   placeholder->setAlignment(Qt::AlignCenter);
+  placeholder->setText("Escribir texto...");
 
   editline = new QTextEdit(this);
   editline->setEnabled(false);
   editline->setStyleSheet(
-      "QTextEdit { "
-      "color: white;"                  // Color del texto
-      "font-weight: bold;"             // Texto en negrita (bold)
-      "font-size: 25pt;"               // Tamaño de fuente 25 puntos
-      "background-color: transparent;" // Fondo negro opcional
-      "padding: 5px;" // Padding de 10 píxeles en todos los lados
+      "QTextEdit {"
+      "color: #f0f0f0;"
+      "font-size: 16pt;"
+      "background: transparent;"
+      "padding: 0px;"
+      "border: none;"
       "}");
   editline->setAlignment(Qt::AlignCenter);
   editline->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   editline->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   editline->viewport()->setCursor(Qt::BlankCursor);
   editline->setCursorWidth(0);
-
-  // Centrar el texto horizontalmente
-  QTextCursor cursor(editline->textCursor());
-  QTextBlockFormat blockFormat;
-  blockFormat.setAlignment(Qt::AlignCenter);
-  cursor.setBlockFormat(blockFormat);
-  editline->setTextCursor(cursor);
-
-  // Ajustar la altura del documento para centrar el texto verticalmente
-  QTextDocument *doc = editline->document();
-  QTextFrame *frame = doc->rootFrame();
-  QTextFrameFormat frameFormat = frame->frameFormat();
-  frameFormat.setTopMargin(editline->height() / 2);
-  frameFormat.setBottomMargin(editline->height() / 2);
-  frame->setFrameFormat(frameFormat);
 
   placeholder->show();
   editline->show();
@@ -464,30 +447,51 @@ void CirleButonEditConvert::resizeEvent(QResizeEvent *event) {
 }
 
 void CirleButonEditConvert::updatePlaceholderPosition() {
+  qreal R = radius * exp;
+  qreal cx = width() / 2.0;
+  qreal cy = height() / 2.0;
+
   placeholder->setGeometry(0, 0, width(), height());
-  // placeholder->setAlignment(Qt::AlignCenter);
-  editline->setGeometry(0, radius * 2, width(), height() - (radius * 2 * 2));
-  // editline->setAlignment(Qt::AlignCenter);
+
+  bool expanded = m_check;
+  placeholder->setVisible(expanded);
+  editline->setVisible(expanded);
+
+  if (expanded) {
+    qreal textW = R * 1.2;
+    qreal textH = R * 0.5;
+    editline->setGeometry(static_cast<int>(cx - textW / 2),
+                          static_cast<int>(cy - textH / 2),
+                          static_cast<int>(textW), static_cast<int>(textH));
+
+    QTextDocument *doc = editline->document();
+    QTextFrame *frame = doc->rootFrame();
+    QTextFrameFormat fmt = frame->frameFormat();
+    fmt.setTopMargin(0);
+    fmt.setBottomMargin(0);
+    frame->setFrameFormat(fmt);
+  }
+
   if (m_check) {
-    treants->setGeometry(width() / 2 - mog() - radius / 2,
-                         height() / 2 - mov.x() - radius / 2, radius, radius);
-
-    clear->setGeometry(width() / 2 + mog() - radius / 2,
-                       height() / 2 - mov.x() - radius / 2, radius, radius);
-    icon_place->setGeometry(width() / 2 - radius / 2,
-                            height() / 2 - (mov.x() * 1.5) - radius / 2, radius,
-                            radius);
-
+    treants->setGeometry(static_cast<int>(cx - mog() - radius / 2.0),
+                         static_cast<int>(cy - mov.x() - radius / 2.0),
+                         radius, radius);
+    clear->setGeometry(static_cast<int>(cx + mog() - radius / 2.0),
+                       static_cast<int>(cy - mov.x() - radius / 2.0),
+                       radius, radius);
+    icon_place->setGeometry(static_cast<int>(cx - radius / 2.0),
+                            static_cast<int>(cy - (mov.x() * 1.5) - radius / 2.0),
+                            radius, radius);
   } else {
-    treants->setGeometry(width() / 2 - mov.y() - radius / 2,
-                         height() / 2 - mov.x() - radius / 2, radius, radius);
-
-    clear->setGeometry(width() / 2 + mov.y() - radius / 2,
-                       height() / 2 - mov.x() - radius / 2, radius, radius);
-
-    icon_place->setGeometry(width() / 2 - radius / 2,
-                            height() / 2 - (mov.x() * 1.5) - radius / 2, radius,
-                            radius);
+    treants->setGeometry(static_cast<int>(cx - mov.y() - radius / 2.0),
+                         static_cast<int>(cy - mov.x() - radius / 2.0),
+                         radius, radius);
+    clear->setGeometry(static_cast<int>(cx + mov.y() - radius / 2.0),
+                       static_cast<int>(cy - mov.x() - radius / 2.0),
+                       radius, radius);
+    icon_place->setGeometry(static_cast<int>(cx - radius / 2.0),
+                            static_cast<int>(cy - (mov.x() * 1.5) - radius / 2.0),
+                            radius, radius);
   }
 }
 
