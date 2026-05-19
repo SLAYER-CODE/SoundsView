@@ -434,10 +434,12 @@ void VoiceRoulette::handleMenuAction(const QString &name) {
 
 void VoiceRoulette::speakText(const QString &text) {
   QProcess::startDetached("spd-say", QStringList() << "-e" << "-r" << "-50" << text);
+  m_buttonloquendo->animateProgress(1.0);
 }
 
 void VoiceRoulette::stopSpeech() {
   QProcess::startDetached("spd-say", QStringList() << "-C");
+  m_buttonloquendo->animateProgress(0.0);
 }
 
 bool VoiceRoulette::menuSelect() { return m_menuSelect; }

@@ -185,15 +185,6 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
   QRectF iconRect(inscribedRect.x(), inscribedRect.y(),
                   inscribedRect.width(), inscribedRect.height() * 0.45);
 
-  if (focused) {
-    QRadialGradient glow(iconRect.center(), qMax(iconRect.width(), iconRect.height()) * 0.7);
-    glow.setColorAt(0, QColor(100, 200, 255, 100));
-    glow.setColorAt(1, QColor(100, 200, 255, 0));
-    painter.setBrush(glow);
-    painter.setPen(Qt::NoPen);
-    painter.drawEllipse(iconRect.center(), iconRect.width() * 0.5, iconRect.height() * 0.5);
-  }
-
   QFont iconFont = awesome->font(fa::fa_solid, fontSize * 1.4);
   painter.setFont(iconFont);
   if (focused) {

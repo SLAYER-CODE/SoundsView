@@ -190,6 +190,10 @@ CirleButonEditConvert::CirleButonEditConvert(const QString &text, qreal radius,
   editline->installEventFilter(this);
   treants->installEventFilter(this);
   clear->installEventFilter(this);
+
+  m_progressAnim = new QPropertyAnimation(this, "progress");
+  m_progressAnim->setDuration(300);
+  m_progressAnim->setEasingCurve(QEasingCurve::Linear);
 }
 
 void CirleButonEditConvert::setInitialExpanded() {
@@ -266,6 +270,24 @@ void CirleButonEditConvert::paintEvent(QPaintEvent *event) {
   painter.setBrush(Qt::black);
   painter.setPen(Qt::NoPen);
   painter.drawEllipse(circleRect);
+
+  QRectF arcRect = circleRect.adjusted(3, 3, -3, -3);
+  QPen trackPen(QColor(255, 255, 255, 30), 4);
+  trackPen.setCapStyle(Qt::RoundCap);
+  painter.setPen(trackPen);
+  painter.setBrush(Qt::NoBrush);
+  painter.drawEllipse(arcRect);
+
+  if (m_progress > 0.0) {
+    QConicalGradient cg(arcRect.center(), 90);
+    cg.setColorAt(0.0, QColor(255, 220, 50));
+    cg.setColorAt(0.5, QColor(255, 160, 0));
+    cg.setColorAt(1.0, QColor(255, 100, 0));
+    QPen arcPen(QBrush(cg), 4);
+    arcPen.setCapStyle(Qt::RoundCap);
+    painter.setPen(arcPen);
+    painter.drawArc(arcRect, 90 * 16, -m_progress * 360 * 16);
+  }
 
   painter.restore();
 }
@@ -352,6 +374,8 @@ void CirleButonEditConvert::setSendStatus(SendStatus status) {
 
 void CirleButonEditConvert::updateIcon(bool checked) {
   m_check = checked;
+  m_posAnimation->stop();
+  m_pos = 0;
   if (!checked) {
     highlightLeft(false);
     highlightRight(false);
@@ -605,4 +629,17 @@ void CirleButonEditConvert::onClearClicked() {
   setNeutral();
   m_clearActive = !m_clearActive;
   clear->setIconColor(m_clearActive ? QColor(76, 175, 80) : QColor(128, 128, 128));
+}
+
+void CirleButonEditConvert::setProgress(qreal p) {
+  m_progress = qBound(0.0, p, 1.0);
+  update();
+}
+
+void CirleButonEditConvert::animateProgress(qreal target) {
+  if (m_progressAnim->state() == QPropertyAnimation::Running)
+    m_progressAnim->stop();
+  m_progressAnim->setStartValue(m_progress);
+  m_progressAnim->setEndValue(target);
+  m_progressAnim->start();
 }

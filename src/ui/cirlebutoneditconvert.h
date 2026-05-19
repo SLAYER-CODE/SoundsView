@@ -22,6 +22,7 @@ class CirleButonEditConvert : public QWidget {
   Q_PROPERTY(qreal mog READ mog WRITE setmog NOTIFY mog)
   Q_PROPERTY(
       QSize scaleSize READ scaleSize WRITE setScaleSize NOTIFY scaleSizeChanged)
+  Q_PROPERTY(qreal progress READ progress WRITE setProgress)
 
 public:
   explicit CirleButonEditConvert(const QString &text, qreal raidus,
@@ -81,6 +82,10 @@ public:
   void setNeutral() { setSendStatus(SendStatus::Neutral); }
   void markSent() { setSendStatus(SendStatus::Success); }
   void markFailed() { setSendStatus(SendStatus::Failure); }
+
+  qreal progress() const { return m_progress; }
+  void setProgress(qreal p);
+  void animateProgress(qreal target);
 
 protected:
   void paintEvent(QPaintEvent *event) override;
@@ -144,6 +149,9 @@ private:
   QPropertyAnimation *m_posAnimation;
 
   QPropertyAnimation *m_mogAnimation;
+
+  QPropertyAnimation *m_progressAnim;
+  qreal m_progress = 0.0;
 
   fa::QtAwesome *awesome;
 
