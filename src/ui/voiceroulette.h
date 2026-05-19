@@ -94,6 +94,7 @@ private:
   bool m_headphoneMuted = false;
   bool m_listMode = false;
   QList<SoundEntry> m_originalSounds;
+  QString m_profileName;
   qreal m_transition = 0.0;
   QPropertyAnimation *m_transitionAnim = nullptr;
 

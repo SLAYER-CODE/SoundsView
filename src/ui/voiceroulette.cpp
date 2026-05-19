@@ -100,6 +100,7 @@ VoiceRoulette::VoiceRoulette(QWidget *parent)
           });
 
   QString saved = loadProfile();
+  m_profileName = saved;
   if (!saved.isEmpty()) {
     QList<SoundEntry> profileSounds = SoundManager::instance().scanSoundsInFolder(saved);
     if (!profileSounds.isEmpty()) {
@@ -175,8 +176,7 @@ void VoiceRoulette::setupButtonsFromLists(const QStringList &lists) {
   QStringList items;
   for (const QString &l : lists)
     items << l;
-  items << "Favoritos"
-        << "Agregar";
+  items << "Favoritos" << "Acceso Rapido" << "Agregar";
 
   double gap = 2.0;
   double angleStep = 360.0 / items.size();
@@ -197,6 +197,8 @@ void VoiceRoulette::setupButtonsFromLists(const QStringList &lists) {
     QChar icon;
     if (items[i] == "Favoritos")
       icon = QChar(static_cast<char16_t>(fa::fa_heart));
+    else if (items[i] == "Acceso Rapido")
+      icon = QChar(static_cast<char16_t>(fa::fa_arrow_right));
     else if (items[i] == "Agregar")
       icon = QChar('+');
     else
@@ -205,6 +207,19 @@ void VoiceRoulette::setupButtonsFromLists(const QStringList &lists) {
     PolygonButton *btn = new PolygonButton(items[i], centerX, centerY, radius, angle, nextAngle, this, icon);
     btn->setGeometry(0, 0, 2 * radius + centerX, 2 * radius + centerY);
     btn->setEnabled(true);
+    if (items[i] == "Favoritos") {
+      btn->setHighlightColor(Qt::red);
+      btn->setFocusColor(Qt::red);
+      btn->setNonFocusColor(QColor(180, 60, 60));
+    } else if (items[i] == "Acceso Rapido") {
+      btn->setHighlightColor(QColor(255, 200, 0));
+      btn->setFocusColor(QColor(255, 200, 0));
+      btn->setNonFocusColor(QColor(180, 140, 0));
+    } else if (items[i] == "Agregar") {
+      btn->setHighlightColor(QColor(60, 140, 255));
+      btn->setFocusColor(QColor(60, 140, 255));
+      btn->setNonFocusColor(QColor(40, 80, 180));
+    }
     ButtonData *data = new ButtonData(btn, angle, nextAngle);
     m_listButtons.append(data);
   }
@@ -246,24 +261,21 @@ void VoiceRoulette::setTransition(qreal t) {
 }
 
 void VoiceRoulette::switchToListMode() {
-  qDebug() << "[SWITCH] switchToListMode called";
   m_listMode = true;
   if (m_buttons.isEmpty()) {
-    qDebug() << "[SWITCH] m_buttons empty, returning";
     return;
   }
 
   // Pick entry point: between last and first sector
   qreal entry = m_buttons.last()->endAngle;
   g_entryAngle = entry;
-  qDebug() << "[SWITCH] entry angle=" << entry;
 
   // Build new list buttons
   QStringList lists = SoundManager::instance().scanSoundLists();
   clearListButtons();
   QStringList items;
   for (const QString &l : lists) items << l;
-  items << "Favoritos" << "Agregar";
+  items << "Favoritos" << "Acceso Rapido" << "Agregar";
 
   double gap = 2.0;
   double totalSpan = 360.0 - gap * items.size();
@@ -290,6 +302,7 @@ void VoiceRoulette::switchToListMode() {
 
     QChar icon;
     if (items[i] == "Favoritos") icon = QChar(static_cast<char16_t>(fa::fa_heart));
+    else if (items[i] == "Acceso Rapido") icon = QChar(static_cast<char16_t>(fa::fa_arrow_right));
     else if (items[i] == "Agregar") icon = QChar('+');
     else icon = QChar(static_cast<char16_t>(fa::fa_folder));
 
@@ -297,12 +310,24 @@ void VoiceRoulette::switchToListMode() {
     btn->setGeometry(0, 0, 2 * radius + centerX, 2 * radius + centerY);
     btn->setEnabled(true);
     btn->setSize(1.0);
+    if (items[i] == "Favoritos") {
+      btn->setHighlightColor(Qt::red);
+      btn->setFocusColor(Qt::red);
+      btn->setNonFocusColor(QColor(180, 60, 60));
+    } else if (items[i] == "Acceso Rapido") {
+      btn->setHighlightColor(QColor(255, 200, 0));
+      btn->setFocusColor(QColor(255, 200, 0));
+      btn->setNonFocusColor(QColor(180, 140, 0));
+    } else if (items[i] == "Agregar") {
+      btn->setHighlightColor(QColor(60, 140, 255));
+      btn->setFocusColor(QColor(60, 140, 255));
+      btn->setNonFocusColor(QColor(40, 80, 180));
+    }
     btn->show();
 
     ButtonData *d = new ButtonData(btn, s, e);
     m_listButtons.append(d);
     g_animSectors.append({btn, entry, entry, s, e});
-    qDebug() << "[SWITCH] list btn" << i << items[i] << "s=" << s << "e=" << e;
   }
 
   // Animate
@@ -310,11 +335,8 @@ void VoiceRoulette::switchToListMode() {
   m_transitionAnim->setStartValue(0.0);
   m_transitionAnim->setEndValue(1.0);
   m_transitionAnim->start();
-  qDebug() << "[SWITCH] transition started, m_listButtons.size=" << m_listButtons.size();
 
   connect(m_transitionAnim, &QPropertyAnimation::finished, this, [this]() {
-    qDebug() << "[SWITCH] transition finished";
-    qDebug() << "[SWITCH] m_listMode=" << m_listMode << "m_listButtons.size=" << m_listButtons.size();
     for (ButtonData *bd : m_buttons) {
       bd->button->hide();
       bd->button->deleteLater();
@@ -333,11 +355,17 @@ void VoiceRoulette::switchToSoundMode(const QString &folderName) {
   }
 
   // Build new sound buttons (they will animate in)
-  if (folderName.isEmpty())
+  if (!folderName.isEmpty())
+    m_profileName = folderName;
+
+  if (m_profileName.isEmpty()) {
     setupButtonsFromSounds(m_originalSounds, false);
-  else {
-    QList<SoundEntry> sounds = SoundManager::instance().scanSoundsInFolder(folderName);
-    setupButtonsFromSounds(sounds, false);
+  } else {
+    QList<SoundEntry> sounds = SoundManager::instance().scanSoundsInFolder(m_profileName);
+    if (sounds.isEmpty())
+      setupButtonsFromSounds(m_originalSounds, false);
+    else
+      setupButtonsFromSounds(sounds, false);
   }
   for (ButtonData *bd : m_buttons) {
     bd->button->setSize(1.0);
@@ -596,12 +624,6 @@ void VoiceRoulette::mouseMoveEvent(QMouseEvent *event) {
   double angle = qAtan2(dy, dx) * (180.0 / M_PI);
   if (angle < 0) angle += 360;
 
-  qDebug() << "[TRACK] mouseMove mode=" << (m_menuSelect ? "menu" : m_listMode ? "list" : "sound")
-           << "angle=" << angle
-           << "focused=" << (m_focusedButton ? "yes" : "no")
-           << "listBtns=" << m_listButtons.size()
-           << "soundBtns=" << m_buttons.size();
-
   if (m_menuSelect) {
     ButtonDataMenu *rawSector = nullptr;
     for (ButtonDataMenu *data : m_buttonsMenu) {
@@ -689,6 +711,8 @@ void VoiceRoulette::mouseReleaseEvent(QMouseEvent *event) {
 bool VoiceRoulette::angleInRange(double angle, double start, double end) {
   start = fmod(start, 360.0);
   end = fmod(end, 360.0);
+  if (qFuzzyCompare(start, end))
+    return angle >= 0 && angle < 360;
   if (start <= end)
     return angle >= start && angle < end;
   else
@@ -715,9 +739,18 @@ void VoiceRoulette::activateCurrentSector() {
     for (const ButtonData *data : m_listButtons) {
       if (angleInRange(angle, data->startAngle, data->endAngle)) {
         QString name = data->button->text().trimmed();
-        if (name == "Favoritos" || name == "Agregar")
+        if (name == "Favoritos")
+          break;
+        if (name == "Acceso Rapido") {
+          m_profileName.clear();
+          saveProfile(QString());
+          switchToSoundMode();
+          break;
+        }
+        if (name == "Agregar")
           break;
         saveProfile(name);
+        switchToSoundMode(name);
         break;
       }
     }
@@ -743,7 +776,6 @@ void VoiceRoulette::handleMenuAction(const QString &name) {
   } else if (name == "Config") {
     qDebug() << "Open config";
   } else if (name == "Process Audio") {
-    qDebug() << "[TRACK] Process Audio clicked, m_listMode=" << m_listMode;
     if (m_listMode) {
       switchToSoundMode();
     } else {

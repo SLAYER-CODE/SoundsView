@@ -55,6 +55,9 @@ public:
   void setHoverBackgroundColor(const QColor &color);
   void setBorderColor(const QColor &color);
   void setHoverBorderColor(const QColor &color);
+  void setHighlightColor(const QColor &color) { m_highlightColor = color; }
+  void setFocusColor(const QColor &c) { m_focusColor = c; }
+  void setNonFocusColor(const QColor &c) { m_nonFocusColor = c; }
   void setRotationAngle(double angle); // Agregar este método
 
   qreal gradientProgress() const;
@@ -131,7 +134,10 @@ private:
 
   bool m_isHovered;
   bool m_visualHighlighted = false;
-  double m_rotationAngle; // Agregar esta variable
+  double m_rotationAngle;
+  QColor m_highlightColor{Qt::white};
+  QColor m_focusColor{QColor(180, 230, 255)};
+  QColor m_nonFocusColor{QColor(200, 200, 200)};
 
   QString m_text;
   QChar m_icon;

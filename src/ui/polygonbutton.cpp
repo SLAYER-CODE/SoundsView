@@ -171,7 +171,7 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
   painter.drawPath(m_arcPath);
 
   if (m_visualHighlighted || m_isHovered) {
-    QPen whitePen(Qt::white, 6, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    QPen whitePen(m_highlightColor, 6, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
     painter.setPen(whitePen);
     painter.setBrush(Qt::NoBrush);
     painter.drawPath(m_innerArcPath);
@@ -190,12 +190,12 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
   QFont iconFont = awesome->font(fa::fa_solid, fontSize * 1.4);
   painter.setFont(iconFont);
   if (focused) {
-    painter.setPen(QColor(180, 230, 255));
+    painter.setPen(m_focusColor.darker(150));
     painter.drawText(iconRect.adjusted(0, 0, 2, 2), Qt::AlignCenter,
                      m_icon);
-    painter.setPen(Qt::white);
+    painter.setPen(m_focusColor);
   } else {
-    painter.setPen(QColor(200, 200, 200));
+    painter.setPen(m_nonFocusColor);
   }
   painter.drawText(iconRect, Qt::AlignCenter,
                    m_icon);
@@ -215,11 +215,11 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
                   inscribedRect.width(), inscribedRect.height() * 0.55);
 
   if (focused) {
-    painter.setPen(QColor(180, 230, 255));
+    painter.setPen(m_focusColor.darker(150));
     painter.drawText(textRect.adjusted(0, 1, 0, 1), Qt::AlignCenter, elided);
-    painter.setPen(Qt::white);
+    painter.setPen(m_focusColor);
   } else {
-    painter.setPen(QColor(200, 200, 200));
+    painter.setPen(m_nonFocusColor);
   }
   painter.drawText(textRect, Qt::AlignCenter, elided);
 
