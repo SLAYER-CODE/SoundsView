@@ -40,6 +40,8 @@ VoiceRoulette::VoiceRoulette(QWidget *parent)
                  Qt::FramelessWindowHint | Qt::WindowMaximizeButtonHint |
                  Qt::CustomizeWindowHint);
   setAttribute(Qt::WA_TranslucentBackground);
+  // Wayland: use overlay layer (above fullscreen windows)
+  setProperty("_qt_wayland_shell_layer", "overlay");
   setMouseTracking(true);
   QScreen *primaryScreen = QGuiApplication::primaryScreen();
   setGeometry(primaryScreen->geometry());

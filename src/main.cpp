@@ -16,6 +16,10 @@ static void sigHandler(int) {
 }
 
 int main(int argc, char *argv[]) {
+  if (qEnvironmentVariableIsSet("WAYLAND_DISPLAY")) {
+    // layer-shell enables overlay above fullscreen apps (games, etc.)
+    qputenv("QT_WAYLAND_SHELL_INTEGRATION", "layer-shell");
+  }
   QApplication app(argc, argv);
 
   VoiceRoulette voiceRoulette;
