@@ -665,9 +665,9 @@ void CirleButonEditConvert::setLocked(bool locked) {
   m_locked = locked;
   treants->setVisible(!locked);
   clear->setVisible(!locked);
-  icon_place->setVisible(!locked);
   editline->setVisible(!locked);
   placeholder->setVisible(!locked);
+  icon_place->setVisible(!locked || !m_check);
   update();
 }
 

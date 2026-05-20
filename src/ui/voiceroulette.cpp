@@ -977,6 +977,7 @@ void VoiceRoulette::keyPressEvent(QKeyEvent *event) {
     }
     event->accept();
   } else if (event->key() == Qt::Key_Control) {
+    if (m_grabarActive || m_escucharActive) { event->accept(); return; }
     m_menuLarge = !m_menuLarge;
     if (m_menuLarge) {
       for (ButtonDataMenu *data : m_buttonsMenu)
@@ -1319,9 +1320,15 @@ void VoiceRoulette::setSoundButtonsDisabled(bool disabled) {
                                    : QChar(static_cast<char16_t>(fa::fa_headphones));
     QString recText = m_grabarActive ? "Esperando tu hermoza voz"
                                      : "Grabando sonido del equipo";
-    m_buttonloquendo->setRecordingOverlay(recIcon, recText);
+    if (m_buttonloquendo->isExpanded()) {
+      m_buttonloquendo->setRecordingOverlay(recIcon, recText);
+    } else {
+      m_buttonloquendo->setRecordingOverlay(QChar(), QString());
+      m_buttonloquendo->setMessageIcon(recIcon);
+    }
   } else {
     m_buttonloquendo->setRecordingOverlay(QChar(), QString());
+    m_buttonloquendo->resetMessageIcon();
   }
   if (m_grabarActive) {
     m_buttonloquendo->setProgressBarColor(QColor(200, 30, 30));

@@ -89,6 +89,8 @@ public:
   void setProgressBarColor(const QColor &color) { m_progressBarColor = color; update(); }
   void setLocked(bool locked);
   void setRecordingOverlay(const QChar &icon, const QString &text) { m_recordingIcon = icon; m_recordingText = text; update(); }
+  void setMessageIcon(const QChar &icon) { icon_place->setText(icon); }
+  void resetMessageIcon() { icon_place->setText(m_icon); }
 
 protected:
   void paintEvent(QPaintEvent *event) override;
