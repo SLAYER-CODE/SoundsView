@@ -7,6 +7,7 @@
 #include "structdata.h"
 #include <QDialog>
 #include <QWidget>
+#include <tuple>
 class VoiceRoulette : public QWidget {
   Q_OBJECT
   Q_PROPERTY(double windowOpacity READ windowOpacity WRITE setWindowOpacity
@@ -59,6 +60,8 @@ private:
   void clearListButtons();
   void switchToListMode();
   void switchToSoundMode(const QString &folderName = QString());
+  void switchToAddMode();
+  void exitAddMode();
   void saveProfile(const QString &folderName);
   QString loadProfile();
   QList<ButtonData *> m_buttons;
@@ -94,10 +97,24 @@ private:
   bool m_micMuted = false;
   bool m_headphoneMuted = false;
   bool m_listMode = false;
+  bool m_addMode = false;
   QList<SoundEntry> m_originalSounds;
   QString m_profileName;
   qreal m_transition = 0.0;
   QPropertyAnimation *m_transitionAnim = nullptr;
+
+  ButtonData *m_addButtonData = nullptr;
+  ButtonData *m_grabarBtn = nullptr;
+  ButtonData *m_escucharBtn = nullptr;
+  QList<std::tuple<ButtonData*, qreal, qreal>> m_savedAngles;
+  qreal m_addOrigStart = 0;
+  qreal m_addOrigEnd = 0;
+  // Store Add button original visuals for restore
+  QString m_addOldText;
+  QChar m_addOldIcon;
+  QColor m_addOldFill;
+  QColor m_addOldFocusColor;
+  QColor m_addOldNonFocusColor;
 
 signals:
   void windowOpacityChanged(double opacity);

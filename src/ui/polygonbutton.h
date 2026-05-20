@@ -66,6 +66,13 @@ public:
   void setCustomFont(const QFont &f) { m_customFont = f; }
   void setRotationAngle(double angle); // Agregar este método
 
+  // Getters for visual restoration
+  QChar icon() const { return m_icon; }
+  QColor fillOverride() const { return m_fillOverride; }
+  QColor focusColor() const { return m_focusColor; }
+  QColor nonFocusColor() const { return m_nonFocusColor; }
+  QColor textColor() const { return m_textColor; }
+
   qreal gradientProgress() const;
   void setGradientProgress(qreal progress);
 
@@ -83,6 +90,7 @@ public:
   void startSizeAnimation();
   void animateSizeTo(qreal target);
   void setVisualHighlight(bool highlighted);
+  void setHighlightDisabled(bool disabled);
 
   int calculateFontSize(const QString &text, const QRectF &inscribedRect,
                         int maxFontSize);
@@ -150,6 +158,7 @@ private:
   bool m_iconLeftTextRight = false;
   bool m_rotateWithAngle = false;
   QFont m_customFont{};
+  bool m_disableHighlight = false;
 
   QString m_text;
   QChar m_icon;

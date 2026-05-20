@@ -160,8 +160,8 @@ void VoiceRoulette::setupButtonsFromSounds(const QList<SoundEntry> &sounds, bool
     addFont.setPointSize(11);
     btn->setCustomFont(addFont);
     btn->setEnabled(true);
-    ButtonData *data = new ButtonData(btn, addStart, addEnd);
-    m_buttons.append(data);
+    m_addButtonData = new ButtonData(btn, addStart, addEnd);
+    m_buttons.append(m_addButtonData);
     btn->show();
   }
 
@@ -359,7 +359,10 @@ void VoiceRoulette::switchToListMode() {
       bd->button->deleteLater();
       delete bd;
     }
-    m_buttons.clear();
+  m_buttons.clear();
+  m_addButtonData = nullptr;
+  m_grabarBtn = nullptr;
+  m_escucharBtn = nullptr;
   }, Qt::SingleShotConnection);
 }
 
@@ -421,6 +424,359 @@ void VoiceRoulette::switchToSoundMode(const QString &folderName) {
   }, Qt::SingleShotConnection);
 }
 
+void VoiceRoulette::switchToAddMode() {
+  if (!m_addButtonData) return;
+  // Toggle: if already in add mode, exit
+  if (m_addMode) {
+    exitAddMode();
+    return;
+  }
+  if (m_grabarBtn) return;
+
+  const qreal gap = 2.0;
+  int radius = 400;
+  int centerX = width() / 2;
+  int centerY = height() / 2;
+
+  qreal entry = (m_addButtonData->startAngle + m_addButtonData->endAngle) / 2.0;
+
+  // Keep the add button visible while we show Grabar/Escuchar radially.
+  // m_addButtonData->button->hide();
+  m_addMode = true;
+
+  // Collect current sound buttons (excluding add)
+  QList<ButtonData*> sounds;
+  for (ButtonData *bd : m_buttons)
+    if (bd != m_addButtonData) sounds.append(bd);
+  int N = sounds.size();
+  if (N == 0) return;
+
+  // Create Grabar at entry (0 span)
+   const int extraOut = 60;
+   PolygonButton *grab = new PolygonButton("Grabar", centerX, centerY,
+                                            radius + extraOut, entry, entry,
+                                            this, QChar(static_cast<char16_t>(fa::fa_microphone)));
+   grab->setGeometry(0, 0, 2 * (radius + extraOut) + centerX, 2 * (radius + extraOut) + centerY);
+   grab->setInnerRadiusRatio(0.44 * radius / (radius + extraOut));
+  grab->setHighlightColor(QColor(180, 80, 0));
+  grab->setFocusColor(QColor(255, 150, 50));
+  grab->setNonFocusColor(QColor(255, 150, 50));
+  grab->setFillOverride(QColor(100, 50, 10));
+   grab->setBluntCorners(false);
+  grab->setEnabled(true);
+   grab->setSize(0.95);
+   grab->setRotateWithAngle(true);
+  m_grabarBtn = new ButtonData(grab, entry, entry);
+
+  // Create Escuchar at entry (0 span)
+   PolygonButton *escu = new PolygonButton("Escuchar", centerX, centerY,
+                                            radius + extraOut, entry, entry,
+                                            this, QChar(static_cast<char16_t>(fa::fa_headphones)));
+   escu->setGeometry(0, 0, 2 * (radius + extraOut) + centerX, 2 * (radius + extraOut) + centerY);
+   escu->setInnerRadiusRatio(0.44 * radius / (radius + extraOut));
+  escu->setHighlightColor(QColor(160, 130, 0));
+  escu->setFocusColor(QColor(255, 230, 50));
+  escu->setNonFocusColor(QColor(255, 230, 50));
+  escu->setFillOverride(QColor(90, 75, 10));
+   escu->setBluntCorners(false);
+  escu->setEnabled(true);
+   escu->setSize(0.95);
+   escu->setRotateWithAngle(true);
+  escu->setIconLeftTextRight(true);
+  m_escucharBtn = new ButtonData(escu, entry, entry);
+
+  grab->setIconLeftTextRight(true);
+  // Both new buttons are shown radially around the same angular span
+  // as the Add button. Keep Add visible underneath.
+  grab->show();
+  escu->show();
+
+  // We'll make the two new buttons come out from the Add sector edges.
+  // Grabar will appear directly CCW adjacent to Add.start, Escuchar CW adjacent to Add.end.
+  const qreal kNewSpan = 6.0;   // desired span per new button (smaller)
+  const qreal kMinSpan = 6.0;    // minimum allowed span for existing sectors
+
+  qreal addStartOrig = m_addButtonData->startAngle;
+  qreal addEndOrig = m_addButtonData->endAngle;
+  qreal addSpan = addEndOrig - addStartOrig;
+  if (addSpan < 0) addSpan += 360.0;
+
+  // Save originals before animating so we can restore later
+  m_savedAngles.clear();
+  for (ButtonData *bd : m_buttons) {
+    if (bd == m_addButtonData) continue;
+    m_savedAngles.append(std::make_tuple(bd, bd->startAngle, bd->endAngle));
+  }
+  if (m_addButtonData) { m_addOrigStart = m_addButtonData->startAngle; m_addOrigEnd = m_addButtonData->endAngle; }
+  // Save visuals of Add button
+  if (m_addButtonData) {
+    m_addOldText = m_addButtonData->button->text();
+    m_addOldIcon = m_addButtonData->button->icon(); // placeholder, will replace next
+    // Use getter since PolygonButton stores icon internally
+    m_addOldIcon = m_addButtonData->button->icon();
+    m_addOldFill = m_addButtonData->button->fillOverride();
+    m_addOldFocusColor = m_addButtonData->button->focusColor();
+    m_addOldNonFocusColor = m_addButtonData->button->nonFocusColor();
+    // Change Add to toggle visual: red, '-' and text 'Cerrar'
+    // Change text and icon color to black; keep fill as it was
+    m_addButtonData->button->setText("Cerrar");
+    m_addButtonData->button->setIcon(QChar('-'));
+    m_addButtonData->button->setTextColor(Qt::white);
+    m_addButtonData->button->setFocusColor(Qt::white);
+    m_addButtonData->button->setNonFocusColor(Qt::white);
+    // Disable highlight animations while toggled, but don't draw inner highlight
+    m_addButtonData->button->setVisualHighlight(false);
+    m_addButtonData->button->setHighlightDisabled(true);
+    m_addButtonData->button->setBluntCorners(false);
+    m_addButtonData->button->raise();
+  }
+
+  qreal needLeft = kNewSpan;   // need this much on the left side
+  qreal needRight = kNewSpan;  // need this much on the right side
+
+  // Find index of m_addButtonData
+  int addIndex = -1;
+  for (int i = 0; i < m_buttons.size(); ++i) if (m_buttons[i] == m_addButtonData) { addIndex = i; break; }
+  if (addIndex == -1) addIndex = m_buttons.size() - 1;
+
+  // Collect compression on left (previous sectors) to free needLeft
+  QList<QPair<int, qreal>> compressLeft;
+  int lidx = addIndex - 1; if (lidx < 0) lidx = m_buttons.size() - 1;
+  qreal remL = needLeft;
+  while (remL > 0 && lidx != addIndex) {
+    ButtonData *bd = m_buttons[lidx];
+    qreal span = bd->endAngle - bd->startAngle; if (span < 0) span += 360.0;
+    qreal avail = span - kMinSpan;
+    if (avail > 0) {
+      qreal take = qMin(avail, remL);
+      compressLeft.append(qMakePair(lidx, take));
+      remL -= take;
+    }
+    lidx--; if (lidx < 0) lidx = m_buttons.size() - 1;
+    if (compressLeft.size() > m_buttons.size()) break;
+  }
+
+  // Collect compression on right (next sectors) to free needRight
+  QList<QPair<int, qreal>> compressRight;
+  int ridx = addIndex + 1; if (ridx >= m_buttons.size()) ridx = 0;
+  qreal remR = needRight;
+  while (remR > 0 && ridx != addIndex) {
+    ButtonData *bd = m_buttons[ridx];
+    qreal span = bd->endAngle - bd->startAngle; if (span < 0) span += 360.0;
+    qreal avail = span - kMinSpan;
+    if (avail > 0) {
+      qreal take = qMin(avail, remR);
+      compressRight.append(qMakePair(ridx, take));
+      remR -= take;
+    }
+    ridx++; if (ridx >= m_buttons.size()) ridx = 0;
+    if (compressRight.size() > m_buttons.size()) break;
+  }
+
+  // If couldn't free enough on one side, try to borrow from the other side
+  qreal freedL = 0; for (const auto &p : compressLeft) freedL += p.second;
+  qreal freedR = 0; for (const auto &p : compressRight) freedR += p.second;
+  qreal needMoreL = qMax<qreal>(0.0, needLeft - freedL);
+  qreal needMoreR = qMax<qreal>(0.0, needRight - freedR);
+  if (needMoreL > 0) {
+    // try to get more from right side neighbors
+    int scan = ridx;
+    while (needMoreL > 0 && scan != addIndex) {
+      ButtonData *bd = m_buttons[scan]; qreal span = bd->endAngle - bd->startAngle; if (span < 0) span += 360.0;
+      qreal avail = span - kMinSpan; for (const auto &p: compressRight) if (p.first == scan) avail -= p.second;
+      if (avail > 0) {
+        qreal take = qMin(avail, needMoreL);
+        compressRight.append(qMakePair(scan, take)); freedR += take; needMoreL -= take;
+      }
+      scan++; if (scan >= m_buttons.size()) scan = 0;
+    }
+  }
+  if (needMoreR > 0) {
+    int scan = lidx;
+    while (needMoreR > 0 && scan != addIndex) {
+      ButtonData *bd = m_buttons[scan]; qreal span = bd->endAngle - bd->startAngle; if (span < 0) span += 360.0;
+      qreal avail = span - kMinSpan; for (const auto &p: compressLeft) if (p.first == scan) avail -= p.second;
+      if (avail > 0) {
+        qreal take = qMin(avail, needMoreR);
+        compressLeft.append(qMakePair(scan, take)); freedL += take; needMoreR -= take;
+      }
+      scan--; if (scan < 0) scan = m_buttons.size() - 1;
+    }
+  }
+
+  // Targets: grab directly before addStart, esc directly after addEnd
+  qreal grabStart = addStartOrig - kNewSpan;
+  while (grabStart < 0) grabStart += 360.0;
+  qreal grabEnd = addStartOrig;
+  qreal escStart = addEndOrig;
+  qreal escEnd = addEndOrig + kNewSpan;
+
+  g_animSectors.clear();
+
+  // Left compression: reduce endAngle of affected sectors
+  for (const auto &p : compressLeft) {
+    int iidx = p.first; qreal reduction = p.second; ButtonData *bd = m_buttons[iidx];
+    qreal s = bd->startAngle; qreal e = bd->endAngle; qreal targetE = e - reduction;
+    g_animSectors.append({bd->button, s, e, s, targetE});
+  }
+
+  // Right compression: increase startAngle of affected sectors
+  for (const auto &p : compressRight) {
+    int iidx = p.first; qreal reduction = p.second; ButtonData *bd = m_buttons[iidx];
+    qreal s = bd->startAngle; qreal e = bd->endAngle; qreal targetS = s + reduction;
+    g_animSectors.append({bd->button, s, e, targetS, e});
+  }
+
+  // New grab and escu occupy space adjacent to Add (not overlapping Add)
+  // Shrink Add so it sits exactly between grab and escu with no gap
+  qreal centerGapStart = grabEnd;
+  qreal centerGapEnd = escStart;
+  // Ensure normalized
+  while (centerGapStart < 0) centerGapStart += 360.0;
+  while (centerGapEnd < 0) centerGapEnd += 360.0;
+  // Animate grab/escu from the Add edges so they appear to come out from Add
+  g_animSectors.append({grab, addStartOrig, addStartOrig, grabStart, grabEnd});
+  g_animSectors.append({m_addButtonData->button, m_addButtonData->startAngle, m_addButtonData->endAngle, centerGapStart, centerGapEnd});
+  g_animSectors.append({escu, addEndOrig, addEndOrig, escStart, escEnd});
+
+  m_transitionAnim->stop();
+  m_transitionAnim->setStartValue(0.0);
+  m_transitionAnim->setEndValue(1.0);
+  m_transitionAnim->start();
+
+  connect(m_transitionAnim, &QPropertyAnimation::finished, this, [this, compressLeft, compressRight, grabStart, grabEnd, escStart, escEnd]() {
+    // Apply final angles to compressed neighbors and append grab/escu buttons to m_buttons
+    // (previous 'compress' loop removed — we now have compressLeft/compressRight)
+    // Update compressed neighbors stored angles
+    for (const auto &p : compressLeft) {
+      int iidx = p.first;
+      ButtonData *bd = m_buttons[iidx];
+      bd->startAngle = bd->button->angle();
+      bd->endAngle = bd->button->nextangle();
+    }
+    for (const auto &p : compressRight) {
+      int iidx = p.first;
+      ButtonData *bd = m_buttons[iidx];
+      bd->startAngle = bd->button->angle();
+      bd->endAngle = bd->button->nextangle();
+    }
+
+    // Update Add stored angles to its new centered position (center gap)
+    if (m_addButtonData) {
+      // centerGap calculated earlier during animation setup; recover from button
+      m_addButtonData->startAngle = m_addButtonData->button->angle();
+      m_addButtonData->endAngle = m_addButtonData->button->nextangle();
+    }
+
+    if (m_grabarBtn) {
+      m_grabarBtn->startAngle = grabStart;
+      m_grabarBtn->endAngle = grabEnd;
+      // register as active button so it participates in hover/focus
+      m_buttons.append(m_grabarBtn);
+    }
+    if (m_escucharBtn) {
+      m_escucharBtn->startAngle = escStart;
+      m_escucharBtn->endAngle = escEnd;
+      m_buttons.append(m_escucharBtn);
+    }
+    // Ensure Add is rendered on top so it remains visible in the center gap
+    if (m_addButtonData && m_addButtonData->button) m_addButtonData->button->raise();
+    m_addMode = true;
+  }, Qt::SingleShotConnection);
+}
+
+void VoiceRoulette::exitAddMode() {
+  if (!m_addMode) return;
+  // Animate Grabar/Escuchar back to entry (zero span) and restore compressed neighbors
+  if (!m_grabarBtn && !m_escucharBtn) {
+    m_addMode = false;
+    return;
+  }
+
+  qreal entry = (m_addButtonData->startAngle + m_addButtonData->endAngle) / 2.0;
+  g_animSectors.clear();
+
+  // compressed neighbors: we will restore them by reading current button angles
+  // Use saved originals if available
+  if (!m_savedAngles.isEmpty()) {
+    for (const auto &t : m_savedAngles) {
+      ButtonData *bd; qreal s,e; std::tie(bd,s,e) = t;
+      g_animSectors.append({bd->button, bd->button->angle(), bd->button->nextangle(), s, e});
+    }
+  } else {
+    for (ButtonData *bd : m_buttons) {
+      if (bd == m_addButtonData) continue;
+      g_animSectors.append({bd->button, bd->button->angle(), bd->button->nextangle(), bd->startAngle, bd->endAngle});
+    }
+  }
+
+  // shrink Grabar/Escuchar to entry
+  if (m_grabarBtn) g_animSectors.append({m_grabarBtn->button, m_grabarBtn->button->angle(), m_grabarBtn->button->nextangle(), entry, entry});
+  if (m_escucharBtn) g_animSectors.append({m_escucharBtn->button, m_escucharBtn->button->angle(), m_escucharBtn->button->nextangle(), entry, entry});
+
+  m_transitionAnim->stop();
+  m_transitionAnim->setStartValue(0.0);
+  m_transitionAnim->setEndValue(1.0);
+  m_transitionAnim->start();
+
+  connect(m_transitionAnim, &QPropertyAnimation::finished, this, [this]() {
+    // hide and delete grab/escu and restore Add as visible
+    for (auto it = m_buttons.begin(); it != m_buttons.end();) {
+      if (*it == m_grabarBtn || *it == m_escucharBtn)
+        it = m_buttons.erase(it);
+      else
+        ++it;
+    }
+    if (m_grabarBtn) {
+      m_grabarBtn->button->hide();
+      m_grabarBtn->button->deleteLater();
+      delete m_grabarBtn;
+      m_grabarBtn = nullptr;
+    }
+    if (m_escucharBtn) {
+      m_escucharBtn->button->hide();
+      m_escucharBtn->button->deleteLater();
+      delete m_escucharBtn;
+      m_escucharBtn = nullptr;
+    }
+    // Restore stored angles on m_buttons from saved list
+    if (!m_savedAngles.isEmpty()) {
+      for (const auto &t : m_savedAngles) {
+        ButtonData *bd; qreal s,e; std::tie(bd,s,e) = t;
+        bd->button->setAngle(s);
+        bd->button->setnextAngle(e);
+        bd->button->show();
+        bd->startAngle = s; bd->endAngle = e;
+      }
+    } else {
+      for (ButtonData *bd : m_buttons) {
+        bd->button->setAngle(bd->startAngle);
+        bd->button->setnextAngle(bd->endAngle);
+        bd->button->show();
+      }
+    }
+    if (m_addButtonData) {
+      m_addButtonData->startAngle = m_addOrigStart;
+      m_addButtonData->endAngle = m_addOrigEnd;
+      m_addButtonData->button->setAngle(m_addOrigStart);
+      m_addButtonData->button->setnextAngle(m_addOrigEnd);
+      // restore visuals
+      m_addButtonData->button->setText(m_addOldText);
+      m_addButtonData->button->setIcon(m_addOldIcon);
+      m_addButtonData->button->setFillOverride(m_addOldFill);
+      m_addButtonData->button->setTextColor(m_addButtonData->button->nonFocusColor());
+      m_addButtonData->button->setBluntCorners(false);
+      m_addButtonData->button->setVisualHighlight(false);
+      m_addButtonData->button->setHighlightDisabled(false); // re-enable highlight animation
+      m_addButtonData->button->setFocusColor(m_addOldFocusColor);
+      m_addButtonData->button->setNonFocusColor(m_addOldNonFocusColor);
+      m_addButtonData->button->show();
+    }
+    m_savedAngles.clear();
+    m_addMode = false;
+  }, Qt::SingleShotConnection);
+}
+
 void VoiceRoulette::paintEvent(QPaintEvent *event) {
   QWidget::paintEvent(event);
 
@@ -459,6 +815,8 @@ void VoiceRoulette::showEvent(QShowEvent *event) {
     m_buttonloquendo->collapse();
   } else {
     for (ButtonData *data : m_buttons) data->button->show();
+    if (m_addMode && m_addButtonData)
+      m_addButtonData->button->hide();
     for (ButtonData *data : m_listButtons) data->button->hide();
     if (m_menuLarge) {
       m_buttonloquendo->collapse();
@@ -573,6 +931,11 @@ void VoiceRoulette::setupButtonsMenu(QMap<QString, QPair<QChar, QChar>> list) {
 
 void VoiceRoulette::keyPressEvent(QKeyEvent *event) {
   if (event->key() == Qt::Key_Escape) {
+    if (m_addMode) {
+      exitAddMode();
+      event->accept();
+      return;
+    }
     if (m_listMode) {
       switchToSoundMode();
     } else {
@@ -679,9 +1042,13 @@ void VoiceRoulette::mouseMoveEvent(QMouseEvent *event) {
           break;
         }
       }
-      if (current && distanceToSectorEdge(angle, current->startAngle,
-                                           current->endAngle) < kHysteresis)
-        target = current->button;
+      if (current) {
+          double span = current->endAngle - current->startAngle;
+          if (span < 0) span += 360.0;
+          if (distanceToSectorEdge(angle, current->startAngle,
+                                   current->endAngle) < qMin(kHysteresis, span * 0.25))
+            target = current->button;
+      }
     }
     for (const ButtonDataMenu *data : m_buttonsMenu)
       data->button->setVisualHighlight(data->button == target);
@@ -703,9 +1070,13 @@ void VoiceRoulette::mouseMoveEvent(QMouseEvent *event) {
           break;
         }
       }
-      if (current && distanceToSectorEdge(angle, current->startAngle,
-                                           current->endAngle) < kHysteresis)
-        target = current->button;
+      if (current) {
+          double span = current->endAngle - current->startAngle;
+          if (span < 0) span += 360.0;
+          if (distanceToSectorEdge(angle, current->startAngle,
+                                   current->endAngle) < qMin(kHysteresis, span * 0.25))
+            target = current->button;
+      }
     }
     for (const ButtonData *data : m_listButtons)
       data->button->setVisualHighlight(data->button == target);
@@ -727,9 +1098,13 @@ void VoiceRoulette::mouseMoveEvent(QMouseEvent *event) {
           break;
         }
       }
-      if (current && distanceToSectorEdge(angle, current->startAngle,
-                                           current->endAngle) < kHysteresis)
-        target = current->button;
+      if (current) {
+          double span = current->endAngle - current->startAngle;
+          if (span < 0) span += 360.0;
+          if (distanceToSectorEdge(angle, current->startAngle,
+                                   current->endAngle) < qMin(kHysteresis, span * 0.25))
+            target = current->button;
+      }
     }
     for (const ButtonData *data : m_buttons)
       data->button->setVisualHighlight(data->button == target);
@@ -796,8 +1171,14 @@ void VoiceRoulette::activateCurrentSector() {
     for (const ButtonData *data : m_buttons) {
       if (angleInRange(angle, data->startAngle, data->endAngle)) {
         QString name = data->button->text().trimmed();
-        if (name == "Agregar")
+        if (name == "Agregar" || name == "Cerrar") {
+          switchToAddMode();
           break;
+        }
+        if (name == "Grabar" || name == "Escuchar") {
+          exitAddMode();
+          break;
+        }
         AudioManager::instance().playSound(name);
         break;
       }

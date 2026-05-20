@@ -235,6 +235,10 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
     painter.drawText(iconRect, Qt::AlignCenter, m_icon);
 
     QFont tf = m_customFont.family().isEmpty() ? painter.font() : m_customFont;
+    // Ensure text rotates with the sector so it aligns to the same angle as Add
+    if (m_rotateWithAngle) {
+      // rotation already applied earlier in paintEvent via painter.rotate(midAngle)
+    }
     painter.setFont(tf);
     QString displayText = text();
     if (focused) {
@@ -388,6 +392,11 @@ void PolygonButton::setVisualHighlight(bool highlighted) {
   m_radiusAnimation->stop();
   m_radiusAnimation->setDirection(highlighted ? QPropertyAnimation::Forward : QPropertyAnimation::Backward);
   m_radiusAnimation->start();
+}
+
+void PolygonButton::setHighlightDisabled(bool disabled) {
+  m_disableHighlight = disabled;
+  update();
 }
 
 void PolygonButton::startSizeAnimation() { m_sizeAnimation->start(); }
