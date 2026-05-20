@@ -258,12 +258,12 @@ void CirleButonEditConvert::paintEvent(QPaintEvent *event) {
 
   QRectF circleRect(0, 0, 2 * (radius * exp), 2 * (radius * exp));
 
-  painter.setBrush(Qt::black);
+  painter.setBrush(m_locked ? QColor(40, 40, 40) : Qt::black);
   painter.setPen(Qt::NoPen);
   painter.drawEllipse(circleRect);
 
   QRectF arcRect = circleRect.adjusted(3, 3, -3, -3);
-  QPen trackPen(QColor(255, 255, 255, 30), 4);
+  QPen trackPen(m_locked ? QColor(80, 80, 80, 60) : QColor(255, 255, 255, 30), 4);
   trackPen.setCapStyle(Qt::RoundCap);
   painter.setPen(trackPen);
   painter.setBrush(Qt::NoBrush);
@@ -271,9 +271,9 @@ void CirleButonEditConvert::paintEvent(QPaintEvent *event) {
 
   if (m_progress > 0.0) {
     QConicalGradient cg(arcRect.center(), 90);
-    cg.setColorAt(0.0, QColor(255, 220, 50));
-    cg.setColorAt(0.5, QColor(255, 160, 0));
-    cg.setColorAt(1.0, QColor(255, 100, 0));
+    cg.setColorAt(0.0, m_progressBarColor.lighter(140));
+    cg.setColorAt(0.5, m_progressBarColor);
+    cg.setColorAt(1.0, m_progressBarColor.darker(150));
     QPen arcPen(QBrush(cg), 4);
     arcPen.setCapStyle(Qt::RoundCap);
     painter.setPen(arcPen);
@@ -300,7 +300,7 @@ void CirleButonEditConvert::updateEmojiHighlight(int mouseX) {
 }
 
 void CirleButonEditConvert::mouseMoveEvent(QMouseEvent *event) {
-  if (!m_check || !m_altActive) {
+  if (m_locked || !m_check || !m_altActive) {
     event->ignore();
     return;
   }
@@ -314,6 +314,7 @@ void CirleButonEditConvert::leaveEvent(QEvent *event) {
 }
 
 bool CirleButonEditConvert::eventFilter(QObject *obj, QEvent *event) {
+  if (m_locked) return true;
   if (m_check && m_altActive && event->type() == QEvent::MouseMove) {
     QMouseEvent *me = static_cast<QMouseEvent *>(event);
     QPoint local = mapFromGlobal(me->globalPosition().toPoint());
@@ -611,7 +612,7 @@ void CirleButonEditConvert::focusInEvent(QFocusEvent *event) {
 }
 
 void CirleButonEditConvert::triggerHighlighted() {
-  if (!m_check) return;
+  if (!m_check || m_locked) return;
   CircularButton *btn = nullptr;
   if (m_highlightedSide == Left)
     btn = treants;
@@ -625,7 +626,7 @@ void CirleButonEditConvert::triggerHighlighted() {
 }
 
 void CirleButonEditConvert::onSendClicked() {
-  if (!m_check) return;
+  if (!m_check || m_locked) return;
   QString text = editline->toPlainText().trimmed();
   if (!text.isEmpty())
     emit sendRequested(text);
@@ -634,13 +635,22 @@ void CirleButonEditConvert::onSendClicked() {
 }
 
 void CirleButonEditConvert::onClearClicked() {
-  if (!m_check) return;
+  if (!m_check || m_locked) return;
   editline->clear();
   placeholder->setVisible(true);
   editline->setCursorWidth(0);
   setNeutral();
   m_clearActive = !m_clearActive;
   clear->setIconColor(m_clearActive ? QColor(76, 175, 80) : QColor(128, 128, 128));
+}
+
+void CirleButonEditConvert::setLocked(bool locked) {
+  m_locked = locked;
+  treants->setEnabled(!locked);
+  clear->setEnabled(!locked);
+  treants->setIconColor(locked ? QColor(60, 60, 60) : QColor(128, 128, 128));
+  clear->setIconColor(locked ? QColor(60, 60, 60) : QColor(128, 128, 128));
+  update();
 }
 
 void CirleButonEditConvert::setProgress(qreal p) {

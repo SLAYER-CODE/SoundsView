@@ -160,6 +160,7 @@ void VoiceRoulette::setupButtonsFromSounds(const QList<SoundEntry> &sounds, bool
     addFont.setPointSize(11);
     btn->setCustomFont(addFont);
     btn->setEnabled(true);
+    btn->setHighlightDisabled(true);
     m_addButtonData = new ButtonData(btn, addStart, addEnd);
     m_buttons.append(m_addButtonData);
     btn->show();
@@ -452,18 +453,19 @@ void VoiceRoulette::switchToAddMode() {
   if (N == 0) return;
 
   // Create Grabar at entry (0 span)
-   const int extraOut = 60;
+   const int extraOut = 20;
    PolygonButton *grab = new PolygonButton("Grabar", centerX, centerY,
-                                            radius + extraOut, entry, entry,
-                                            this, QChar(static_cast<char16_t>(fa::fa_microphone)));
+                                           radius + extraOut, entry, entry,
+                                           this, QChar(static_cast<char16_t>(fa::fa_microphone)));
    grab->setGeometry(0, 0, 2 * (radius + extraOut) + centerX, 2 * (radius + extraOut) + centerY);
-   grab->setInnerRadiusRatio(0.44 * radius / (radius + extraOut));
+    grab->setInnerRadiusRatio(0.55);
   grab->setHighlightColor(QColor(180, 80, 0));
   grab->setFocusColor(QColor(255, 150, 50));
   grab->setNonFocusColor(QColor(255, 150, 50));
   grab->setFillOverride(QColor(100, 50, 10));
    grab->setBluntCorners(false);
-  grab->setEnabled(true);
+   grab->setEnabled(true);
+   grab->setHighlightDisabled(true);
    grab->setSize(0.95);
    grab->setRotateWithAngle(true);
   m_grabarBtn = new ButtonData(grab, entry, entry);
@@ -473,19 +475,24 @@ void VoiceRoulette::switchToAddMode() {
                                             radius + extraOut, entry, entry,
                                             this, QChar(static_cast<char16_t>(fa::fa_headphones)));
    escu->setGeometry(0, 0, 2 * (radius + extraOut) + centerX, 2 * (radius + extraOut) + centerY);
-   escu->setInnerRadiusRatio(0.44 * radius / (radius + extraOut));
+    escu->setInnerRadiusRatio(0.55);
   escu->setHighlightColor(QColor(160, 130, 0));
   escu->setFocusColor(QColor(255, 230, 50));
   escu->setNonFocusColor(QColor(255, 230, 50));
   escu->setFillOverride(QColor(90, 75, 10));
    escu->setBluntCorners(false);
-  escu->setEnabled(true);
+   escu->setEnabled(true);
+   escu->setHighlightDisabled(true);
    escu->setSize(0.95);
    escu->setRotateWithAngle(true);
   escu->setIconLeftTextRight(true);
+  escu->setIconOnRight(true);
+  escu->setIconFontScale(0.9);
   m_escucharBtn = new ButtonData(escu, entry, entry);
 
   grab->setIconLeftTextRight(true);
+  grab->setIconOnRight(true);
+  grab->setIconFontScale(0.9);
   // Both new buttons are shown radially around the same angular span
   // as the Add button. Keep Add visible underneath.
   grab->show();
@@ -517,13 +524,22 @@ void VoiceRoulette::switchToAddMode() {
     m_addOldFill = m_addButtonData->button->fillOverride();
     m_addOldFocusColor = m_addButtonData->button->focusColor();
     m_addOldNonFocusColor = m_addButtonData->button->nonFocusColor();
-    // Change Add to toggle visual: red, '-' and text 'Cerrar'
-    // Change text and icon color to black; keep fill as it was
+    m_addOldGradStart = m_addButtonData->button->gradientColorStart();
+    m_addOldGradMid = m_addButtonData->button->gradientColorMiddle();
+    m_addOldGradEnd = m_addButtonData->button->gradientColorEnd();
+    m_addOldTextColor = m_addButtonData->button->textColor();
+    // Change Add to toggle visual: light red gradient, '-' and text 'Cerrar'
     m_addButtonData->button->setText("Cerrar");
     m_addButtonData->button->setIcon(QChar('-'));
     m_addButtonData->button->setTextColor(Qt::white);
     m_addButtonData->button->setFocusColor(Qt::white);
     m_addButtonData->button->setNonFocusColor(Qt::white);
+    // Toggle visual: transparent light red gradient + enlarged
+    m_addButtonData->button->setFillOverride(QColor()); // clear to show gradient
+    m_addButtonData->button->setGradientColorStart(QColor(220, 60, 60, 60));
+    m_addButtonData->button->setGradientColorMiddle(QColor(200, 40, 40, 130));
+    m_addButtonData->button->setGradientColorEnd(QColor(160, 20, 20, 200));
+    m_addButtonData->button->animateSizeTo(1.06);
     // Disable highlight animations while toggled, but don't draw inner highlight
     m_addButtonData->button->setVisualHighlight(false);
     m_addButtonData->button->setHighlightDisabled(true);
@@ -764,14 +780,22 @@ void VoiceRoulette::exitAddMode() {
       m_addButtonData->button->setText(m_addOldText);
       m_addButtonData->button->setIcon(m_addOldIcon);
       m_addButtonData->button->setFillOverride(m_addOldFill);
+      m_addButtonData->button->setTextColor(m_addOldTextColor);
+      m_addButtonData->button->setGradientColorStart(m_addOldGradStart);
+      m_addButtonData->button->setGradientColorMiddle(m_addOldGradMid);
+      m_addButtonData->button->setGradientColorEnd(m_addOldGradEnd);
+    m_addButtonData->button->animateSizeTo(1.0);
       m_addButtonData->button->setTextColor(m_addButtonData->button->nonFocusColor());
       m_addButtonData->button->setBluntCorners(false);
       m_addButtonData->button->setVisualHighlight(false);
-      m_addButtonData->button->setHighlightDisabled(false); // re-enable highlight animation
+      m_addButtonData->button->setHighlightDisabled(true); // stays static on hover
       m_addButtonData->button->setFocusColor(m_addOldFocusColor);
       m_addButtonData->button->setNonFocusColor(m_addOldNonFocusColor);
       m_addButtonData->button->show();
     }
+    m_grabarActive = false;
+    m_escucharActive = false;
+    setSoundButtonsDisabled(false);
     m_savedAngles.clear();
     m_addMode = false;
   }, Qt::SingleShotConnection);
@@ -1028,6 +1052,7 @@ void VoiceRoulette::mouseMoveEvent(QMouseEvent *event) {
   if (m_menuSelect) {
     ButtonDataMenu *rawSector = nullptr;
     for (ButtonDataMenu *data : m_buttonsMenu) {
+      if (!data->button->isEnabled()) continue;
       if (angleInRange(angle, data->startAngle, data->endAngle)) {
         rawSector = data;
         break;
@@ -1051,8 +1076,8 @@ void VoiceRoulette::mouseMoveEvent(QMouseEvent *event) {
       }
     }
     for (const ButtonDataMenu *data : m_buttonsMenu)
-      data->button->setVisualHighlight(data->button == target);
-    m_focusedButton = target;
+      data->button->setVisualHighlight(data->button == target && data->button->isEnabled());
+    m_focusedButton = (target && target->isEnabled()) ? target : nullptr;
   } else if (m_listMode) {
     ButtonData *rawSector = nullptr;
     for (ButtonData *data : m_listButtons) {
@@ -1084,6 +1109,7 @@ void VoiceRoulette::mouseMoveEvent(QMouseEvent *event) {
   } else {
     ButtonData *rawSector = nullptr;
     for (ButtonData *data : m_buttons) {
+      if (!data->button->isEnabled()) continue;
       if (angleInRange(angle, data->startAngle, data->endAngle)) {
         rawSector = data;
         break;
@@ -1107,8 +1133,8 @@ void VoiceRoulette::mouseMoveEvent(QMouseEvent *event) {
       }
     }
     for (const ButtonData *data : m_buttons)
-      data->button->setVisualHighlight(data->button == target);
-    m_focusedButton = target;
+      data->button->setVisualHighlight(data->button == target && data->button->isEnabled());
+    m_focusedButton = (target && target->isEnabled()) ? target : nullptr;
   }
 }
 
@@ -1142,6 +1168,7 @@ void VoiceRoulette::activateCurrentSector() {
 
   if (m_menuSelect) {
     for (const ButtonDataMenu *data : m_buttonsMenu) {
+      if (!data->button->isEnabled()) continue;
       if (angleInRange(angle, data->startAngle, data->endAngle)) {
         data->button->toggle();
         handleMenuAction(data->button->text());
@@ -1169,16 +1196,68 @@ void VoiceRoulette::activateCurrentSector() {
     }
   } else {
     for (const ButtonData *data : m_buttons) {
+      if (!data->button->isEnabled()) continue;
       if (angleInRange(angle, data->startAngle, data->endAngle)) {
         QString name = data->button->text().trimmed();
         if (name == "Agregar" || name == "Cerrar") {
           switchToAddMode();
           break;
         }
-        if (name == "Grabar" || name == "Escuchar") {
-          exitAddMode();
+        if (name == "Grabar") {
+          m_grabarActive = !m_grabarActive;
+          setSoundButtonsDisabled(m_grabarActive || m_escucharActive);
+          if (m_grabarBtn) {
+            PolygonButton *g = m_grabarBtn->button;
+            if (m_grabarActive) {
+              m_grabarOldGradStart = g->gradientColorStart();
+              m_grabarOldGradMid = g->gradientColorMiddle();
+              m_grabarOldGradEnd = g->gradientColorEnd();
+              m_grabarOldTextColor = g->textColor();
+              m_grabarOldFillOverride = g->fillOverride();
+              g->setFillOverride(QColor());
+              g->setGradientColorStart(QColor(130, 15, 15, 120));
+              g->setGradientColorMiddle(QColor(180, 25, 25, 250));
+              g->setGradientColorEnd(QColor(90, 8, 8, 206));
+              g->setTextColor(Qt::white);
+            } else {
+              g->setFillOverride(m_grabarOldFillOverride);
+              g->setGradientColorStart(m_grabarOldGradStart);
+              g->setGradientColorMiddle(m_grabarOldGradMid);
+              g->setGradientColorEnd(m_grabarOldGradEnd);
+              g->setTextColor(m_grabarOldTextColor);
+            }
+            g->animateSizeTo(m_grabarActive ? 1.04 : 1.0);
+          }
           break;
         }
+        if (name == "Escuchar") {
+          m_escucharActive = !m_escucharActive;
+          setSoundButtonsDisabled(m_grabarActive || m_escucharActive);
+          if (m_escucharBtn) {
+            PolygonButton *e = m_escucharBtn->button;
+            if (m_escucharActive) {
+              m_escucharOldGradStart = e->gradientColorStart();
+              m_escucharOldGradMid = e->gradientColorMiddle();
+              m_escucharOldGradEnd = e->gradientColorEnd();
+              m_escucharOldTextColor = e->textColor();
+              m_escucharOldFillOverride = e->fillOverride();
+              e->setFillOverride(QColor());
+              e->setGradientColorStart(QColor(130, 15, 15, 120));
+              e->setGradientColorMiddle(QColor(180, 25, 25, 250));
+              e->setGradientColorEnd(QColor(90, 8, 8, 206));
+              e->setTextColor(Qt::white);
+            } else {
+              e->setFillOverride(m_escucharOldFillOverride);
+              e->setGradientColorStart(m_escucharOldGradStart);
+              e->setGradientColorMiddle(m_escucharOldGradMid);
+              e->setGradientColorEnd(m_escucharOldGradEnd);
+              e->setTextColor(m_escucharOldTextColor);
+            }
+            e->animateSizeTo(m_escucharActive ? 1.04 : 1.0);
+          }
+          break;
+        }
+        if (m_grabarActive || m_escucharActive) break;
         AudioManager::instance().playSound(name);
         break;
       }
@@ -1206,6 +1285,40 @@ void VoiceRoulette::handleMenuAction(const QString &name) {
 }
 
 
+
+void VoiceRoulette::setSoundButtonsDisabled(bool disabled) {
+  for (ButtonData *bd : m_buttons) {
+    if (bd == m_addButtonData || bd == m_grabarBtn || bd == m_escucharBtn) {
+      if (disabled) {
+        bool isThisActive = (bd == m_grabarBtn && m_grabarActive) ||
+                            (bd == m_escucharBtn && m_escucharActive);
+        bd->button->setGrayedOut(!isThisActive);
+        bd->button->setEnabled(isThisActive);
+      } else {
+        bd->button->setGrayedOut(false);
+        bd->button->setEnabled(true);
+      }
+      continue;
+    }
+    bd->button->setEnabled(!disabled);
+    bd->button->setGrayedOut(disabled);
+  }
+  for (ButtonDataMenu *md : m_buttonsMenu) {
+    md->button->setEnabled(!disabled);
+    md->button->setGrayedOut(disabled);
+  }
+  m_buttonloquendo->setLocked(disabled);
+  if (m_grabarActive) {
+    m_buttonloquendo->setProgressBarColor(QColor(200, 30, 30));
+    m_buttonloquendo->animateProgress(1.0);
+  } else if (m_escucharActive) {
+    m_buttonloquendo->setProgressBarColor(QColor(200, 30, 30));
+    m_buttonloquendo->animateProgress(1.0);
+  } else {
+    m_buttonloquendo->setProgressBarColor(QColor(255, 160, 0));
+    m_buttonloquendo->animateProgress(0.0);
+  }
+}
 
 void VoiceRoulette::speakText(const QString &text) {
   QProcess::startDetached("spd-say", QStringList() << "-e" << "-r" << "-50" << text);

@@ -93,11 +93,15 @@ private:
   static constexpr double kHysteresis = 8.0;
   void speakText(const QString &text);
   void stopSpeech();
+  void updateButtonStates();
+  void setSoundButtonsDisabled(bool disabled);
 
   bool m_micMuted = false;
   bool m_headphoneMuted = false;
   bool m_listMode = false;
   bool m_addMode = false;
+  bool m_grabarActive = false;
+  bool m_escucharActive = false;
   QList<SoundEntry> m_originalSounds;
   QString m_profileName;
   qreal m_transition = 0.0;
@@ -115,6 +119,12 @@ private:
   QColor m_addOldFill;
   QColor m_addOldFocusColor;
   QColor m_addOldNonFocusColor;
+  QColor m_addOldGradStart, m_addOldGradMid, m_addOldGradEnd;
+  QColor m_addOldTextColor;
+  QColor m_grabarOldGradStart, m_grabarOldGradMid, m_grabarOldGradEnd;
+  QColor m_grabarOldTextColor, m_grabarOldFillOverride;
+  QColor m_escucharOldGradStart, m_escucharOldGradMid, m_escucharOldGradEnd;
+  QColor m_escucharOldTextColor, m_escucharOldFillOverride;
 
 signals:
   void windowOpacityChanged(double opacity);

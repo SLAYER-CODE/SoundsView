@@ -74,7 +74,11 @@ void CircularTriangleButton::paintEvent(QPaintEvent *event) {
   c /= m_polygon.size();
 
   QRadialGradient grad(c, maxDist * m_scale);
-  if (m_isChecked || m_isHovered) {
+  if (m_grayedOut) {
+    grad.setColorAt(0.0, QColor(80, 80, 80, 220));
+    grad.setColorAt(0.5, QColor(60, 60, 60, 160));
+    grad.setColorAt(1.0, QColor(40, 40, 40, 100));
+  } else if (m_isChecked || m_isHovered) {
     grad.setColorAt(0.0, QColor(180, 0, 0, 220));
     grad.setColorAt(0.5, QColor(120, 0, 0, 160));
     grad.setColorAt(1.0, QColor(0, 0, 0, 0));
@@ -147,6 +151,20 @@ void CircularTriangleButton::focusOutEvent(QFocusEvent *event) {
 
 void CircularTriangleButton::mouseMoveEvent(QMouseEvent *event) {
   event->ignore();
+}
+
+void CircularTriangleButton::setGrayedOut(bool grayed) {
+  if (m_grayedOut == grayed) return;
+  m_grayedOut = grayed;
+  if (grayed) {
+    m_savedBackgroundColor = m_backgroundColor;
+    m_savedHoverBackgroundColor = m_hoverBackgroundColor;
+    m_backgroundColor = QColor(35, 35, 35, 200);
+  } else {
+    m_backgroundColor = m_savedBackgroundColor;
+    m_hoverBackgroundColor = m_savedHoverBackgroundColor;
+  }
+  update();
 }
 
 void CircularTriangleButton::setVisualHighlight(bool highlighted) {

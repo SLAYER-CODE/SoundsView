@@ -56,6 +56,7 @@ public:
   void setChecked(bool checked);
   void toggle() { setChecked(!m_isChecked); }
   void setVisualHighlight(bool highlighted);
+  void setGrayedOut(bool grayed);
   void animateScale(qreal target);
   qreal scale() const { return m_scale; }
   void setScale(qreal s);
@@ -99,6 +100,10 @@ private:
   qreal m_scale = 1.0;
   QPolygonF m_polygon;
   QPolygonF m_originalPolygon;
+
+  bool m_grayedOut = false;
+  QColor m_savedBackgroundColor;
+  QColor m_savedHoverBackgroundColor;
 
   QString m_text;
   QChar m_icon;

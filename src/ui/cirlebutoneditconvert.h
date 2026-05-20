@@ -86,6 +86,8 @@ public:
   qreal progress() const { return m_progress; }
   void setProgress(qreal p);
   void animateProgress(qreal target);
+  void setProgressBarColor(const QColor &color) { m_progressBarColor = color; update(); }
+  void setLocked(bool locked);
 
 protected:
   void paintEvent(QPaintEvent *event) override;
@@ -152,6 +154,8 @@ private:
 
   QPropertyAnimation *m_progressAnim;
   qreal m_progress = 0.0;
+  QColor m_progressBarColor = QColor(255, 160, 0);
+  bool m_locked = false;
 
   fa::QtAwesome *awesome;
 

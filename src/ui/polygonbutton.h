@@ -62,6 +62,8 @@ public:
   void setFillOverride(const QColor &c) { m_fillOverride = c; }
   void setBluntCorners(bool b) { m_bluntCorners = b; }
   void setIconLeftTextRight(bool b) { m_iconLeftTextRight = b; }
+  void setIconOnRight(bool b) { m_iconOnRight = b; }
+  void setIconFontScale(qreal s) { m_iconFontScale = s; }
   void setRotateWithAngle(bool b) { m_rotateWithAngle = b; }
   void setCustomFont(const QFont &f) { m_customFont = f; }
   void setRotationAngle(double angle); // Agregar este método
@@ -91,6 +93,11 @@ public:
   void animateSizeTo(qreal target);
   void setVisualHighlight(bool highlighted);
   void setHighlightDisabled(bool disabled);
+  void setGrayedOut(bool grayed);
+  void setPersistentHighlight(bool persistent);
+  void setRecordingActive(bool active) { m_recordingActive = active; update(); }
+  void setRecordBorderColor(const QColor &c) { m_recordBorderColor = c; }
+  void setRecordBorderWidth(qreal w) { m_recordBorderWidth = w; }
 
   int calculateFontSize(const QString &text, const QRectF &inscribedRect,
                         int maxFontSize);
@@ -159,6 +166,21 @@ private:
   bool m_rotateWithAngle = false;
   QFont m_customFont{};
   bool m_disableHighlight = false;
+  bool m_persistentHighlight = false;
+  bool m_iconOnRight = false;
+  qreal m_iconFontScale = 1.6;
+
+  bool m_grayedOut = false;
+  QColor m_savedGradientStart;
+  QColor m_savedGradientMiddle;
+  QColor m_savedGradientEnd;
+  QColor m_savedFillOverride;
+  QColor m_savedFocusColor;
+  QColor m_savedNonFocusColor;
+
+  bool m_recordingActive = false;
+  QColor m_recordBorderColor{Qt::red};
+  qreal m_recordBorderWidth = 20.0;
 
   QString m_text;
   QChar m_icon;

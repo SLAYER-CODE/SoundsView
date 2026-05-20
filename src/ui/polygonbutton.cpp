@@ -158,11 +158,11 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
   qreal fade = m_gradientProgress;
   qreal minV = 0.18;
 
-  if (m_fillOverride.isValid()) {
+    if (m_fillOverride.isValid()) {
     QColor c = m_fillOverride;
     if (m_visualHighlighted || m_isHovered)
       c = c.lighter(180);
-    QColor fillCol(c.red(), c.green(), c.blue(), 220);
+    QColor fillCol(c.red(), c.green(), c.blue(), m_recordingActive ? 255 : 220);
     painter.setBrush(fillCol);
     if (m_bluntCorners)
       painter.setPen(QPen(fillCol, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
@@ -200,6 +200,13 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
     painter.drawPath(m_innerArcPath);
   }
 
+  if (m_recordingActive) {
+    QPen redPen(m_recordBorderColor, m_recordBorderWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    painter.setPen(redPen);
+    painter.setBrush(Qt::NoBrush);
+    painter.drawPath(m_innerArcPath);
+  }
+
   painter.restore();
 
   painter.save();
@@ -216,14 +223,22 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
   bool focused = m_visualHighlighted || m_isHovered;
 
   if (m_iconLeftTextRight) {
-    // Icon on the left, text on the right, side by side
-    qreal half = inscribedRect.width() * 0.35;
-    QRectF iconRect(inscribedRect.x(), inscribedRect.y(),
-                    half, inscribedRect.height());
-    QRectF textRect(inscribedRect.x() + half, inscribedRect.y(),
-                    inscribedRect.width() - half, inscribedRect.height());
+    // Icon and text side by side
+    qreal iconW = inscribedRect.width() * 0.25;
+    QRectF iconRect, textRect;
+    if (m_iconOnRight) {
+      iconRect = QRectF(inscribedRect.x() + inscribedRect.width() - iconW,
+                        inscribedRect.y(), iconW, inscribedRect.height());
+      textRect = QRectF(inscribedRect.x(), inscribedRect.y(),
+                        inscribedRect.width() - iconW, inscribedRect.height());
+    } else {
+      iconRect = QRectF(inscribedRect.x(), inscribedRect.y(),
+                        iconW, inscribedRect.height());
+      textRect = QRectF(inscribedRect.x() + iconW, inscribedRect.y(),
+                        inscribedRect.width() - iconW, inscribedRect.height());
+    }
 
-    QFont iconFont = awesome->font(fa::fa_solid, fontSize * 1.6);
+    QFont iconFont = awesome->font(fa::fa_solid, qRound(fontSize * m_iconFontScale));
     painter.setFont(iconFont);
     if (focused) {
       painter.setPen(m_focusColor.darker(150));
@@ -235,20 +250,17 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
     painter.drawText(iconRect, Qt::AlignCenter, m_icon);
 
     QFont tf = m_customFont.family().isEmpty() ? painter.font() : m_customFont;
-    // Ensure text rotates with the sector so it aligns to the same angle as Add
-    if (m_rotateWithAngle) {
-      // rotation already applied earlier in paintEvent via painter.rotate(midAngle)
-    }
     painter.setFont(tf);
     QString displayText = text();
+    Qt::Alignment textAlign = m_iconOnRight ? Qt::AlignRight : Qt::AlignLeft;
     if (focused) {
       painter.setPen(m_focusColor.darker(150));
-      painter.drawText(textRect.adjusted(1, 1, 1, 1), Qt::AlignLeft | Qt::AlignVCenter, displayText);
+      painter.drawText(textRect.adjusted(1, 1, 1, 1), textAlign | Qt::AlignVCenter, displayText);
       painter.setPen(m_focusColor);
     } else {
       painter.setPen(m_nonFocusColor);
     }
-    painter.drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, displayText);
+    painter.drawText(textRect, textAlign | Qt::AlignVCenter, displayText);
   } else {
     QRectF iconRect(inscribedRect.x(), inscribedRect.y(),
                     inscribedRect.width(), inscribedRect.height() * 0.45);
@@ -383,7 +395,18 @@ void PolygonButton::setGradientColorEnd(const QColor &color) {
   update();
 }
 
+void PolygonButton::setPersistentHighlight(bool persistent) {
+  if (m_persistentHighlight == persistent) return;
+  m_persistentHighlight = persistent;
+  if (persistent)
+    setVisualHighlight(true);
+  else
+    setVisualHighlight(false);
+}
+
 void PolygonButton::setVisualHighlight(bool highlighted) {
+  if (m_disableHighlight) return;
+  if (m_persistentHighlight && !highlighted) return;
   if (m_visualHighlighted == highlighted) return;
   m_visualHighlighted = highlighted;
   gradientAnimation->stop();
@@ -396,6 +419,34 @@ void PolygonButton::setVisualHighlight(bool highlighted) {
 
 void PolygonButton::setHighlightDisabled(bool disabled) {
   m_disableHighlight = disabled;
+  update();
+}
+
+void PolygonButton::setGrayedOut(bool grayed) {
+  if (m_grayedOut == grayed) return;
+  m_grayedOut = grayed;
+  if (grayed) {
+    m_savedGradientStart = m_gradientColorStart;
+    m_savedGradientMiddle = m_gradientColorMiddle;
+    m_savedGradientEnd = m_gradientColorEnd;
+    m_savedFillOverride = m_fillOverride;
+    m_savedFocusColor = m_focusColor;
+    m_savedNonFocusColor = m_nonFocusColor;
+
+    m_fillOverride = QColor();
+    m_gradientColorStart = QColor(50, 50, 50, 120);
+    m_gradientColorMiddle = QColor(38, 38, 38, 250);
+    m_gradientColorEnd = QColor(25, 25, 25, 206);
+    m_focusColor = Qt::white;
+    m_nonFocusColor = QColor(140, 140, 140);
+  } else {
+    m_gradientColorStart = m_savedGradientStart;
+    m_gradientColorMiddle = m_savedGradientMiddle;
+    m_gradientColorEnd = m_savedGradientEnd;
+    m_fillOverride = m_savedFillOverride;
+    m_focusColor = m_savedFocusColor;
+    m_nonFocusColor = m_savedNonFocusColor;
+  }
   update();
 }
 
