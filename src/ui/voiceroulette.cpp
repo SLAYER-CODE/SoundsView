@@ -147,7 +147,7 @@ void VoiceRoulette::setupButtonsFromSounds(const QList<SoundEntry> &sounds, bool
                                            this, QChar('+'));
     btn->setGeometry(0, 0, 2 * radius + centerX, 2 * radius + centerY);
     btn->setInnerRadiusRatio(0.44 * radius / (radius + 60));
-    btn->setHighlightColor(Qt::black);
+    btn->setHighlightColor(Qt::white);
     btn->setFocusColor(Qt::white);
     btn->setNonFocusColor(Qt::white);
     btn->setFillOverride(QColor(60, 5, 5));
@@ -629,19 +629,24 @@ void VoiceRoulette::switchToAddMode() {
 
   g_animSectors.clear();
 
-  // Left compression: reduce endAngle of affected sectors
+  // Combine left and right compression per button index so a sector
+  // compressed from both sides gets a single entry with both targets.
+  QMap<int, std::tuple<PolygonButton*, qreal, qreal, qreal, qreal>> merged;
   for (const auto &p : compressLeft) {
-    int iidx = p.first; qreal reduction = p.second; ButtonData *bd = m_buttons[iidx];
-    qreal s = bd->startAngle; qreal e = bd->endAngle; qreal targetE = e - reduction;
-    g_animSectors.append({bd->button, s, e, s, targetE});
+    int i = p.first; qreal red = p.second; ButtonData *bd = m_buttons[i];
+    merged[i] = {bd->button, bd->startAngle, bd->endAngle, bd->startAngle, bd->endAngle - red};
   }
-
-  // Right compression: increase startAngle of affected sectors
   for (const auto &p : compressRight) {
-    int iidx = p.first; qreal reduction = p.second; ButtonData *bd = m_buttons[iidx];
-    qreal s = bd->startAngle; qreal e = bd->endAngle; qreal targetS = s + reduction;
-    g_animSectors.append({bd->button, s, e, targetS, e});
+    int i = p.first; qreal red = p.second; ButtonData *bd = m_buttons[i];
+    auto it = merged.find(i);
+    if (it != merged.end()) {
+      std::get<3>(it.value()) = bd->startAngle + red;
+    } else {
+      merged[i] = {bd->button, bd->startAngle, bd->endAngle, bd->startAngle + red, bd->endAngle};
+    }
   }
+  for (const auto &m : merged)
+    g_animSectors.append({std::get<0>(m), std::get<1>(m), std::get<2>(m), std::get<3>(m), std::get<4>(m)});
 
   // New grab and escu occupy space adjacent to Add (not overlapping Add)
   // Shrink Add so it sits exactly between grab and escu with no gap
@@ -984,6 +989,7 @@ void VoiceRoulette::keyPressEvent(QKeyEvent *event) {
     }
     event->accept();
   } else if (event->key() == Qt::Key_Alt) {
+    if (m_grabarActive || m_escucharActive) { event->accept(); return; }
     m_altHeld = true;
     m_buttonloquendo->setAltActive(true);
     menuSelect_change(true);
@@ -998,7 +1004,7 @@ void VoiceRoulette::keyPressEvent(QKeyEvent *event) {
 }
 
 void VoiceRoulette::keyReleaseEvent(QKeyEvent *event) {
-  if (event->key() == Qt::Key_Alt) {
+  if (event->key() == Qt::Key_Alt && !(m_grabarActive || m_escucharActive)) {
     m_altHeld = false;
     m_buttonloquendo->setAltActive(false);
     menuSelect_change(false);
@@ -1308,6 +1314,15 @@ void VoiceRoulette::setSoundButtonsDisabled(bool disabled) {
     md->button->setGrayedOut(disabled);
   }
   m_buttonloquendo->setLocked(disabled);
+  if (disabled) {
+    QChar recIcon = m_grabarActive ? QChar(static_cast<char16_t>(fa::fa_microphone))
+                                   : QChar(static_cast<char16_t>(fa::fa_headphones));
+    QString recText = m_grabarActive ? "Esperando tu hermoza voz"
+                                     : "Grabando sonido del equipo";
+    m_buttonloquendo->setRecordingOverlay(recIcon, recText);
+  } else {
+    m_buttonloquendo->setRecordingOverlay(QChar(), QString());
+  }
   if (m_grabarActive) {
     m_buttonloquendo->setProgressBarColor(QColor(200, 30, 30));
     m_buttonloquendo->animateProgress(1.0);

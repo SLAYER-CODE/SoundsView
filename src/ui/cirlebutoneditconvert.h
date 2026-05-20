@@ -88,6 +88,7 @@ public:
   void animateProgress(qreal target);
   void setProgressBarColor(const QColor &color) { m_progressBarColor = color; update(); }
   void setLocked(bool locked);
+  void setRecordingOverlay(const QChar &icon, const QString &text) { m_recordingIcon = icon; m_recordingText = text; update(); }
 
 protected:
   void paintEvent(QPaintEvent *event) override;
@@ -156,6 +157,8 @@ private:
   qreal m_progress = 0.0;
   QColor m_progressBarColor = QColor(255, 160, 0);
   bool m_locked = false;
+  QChar m_recordingIcon;
+  QString m_recordingText;
 
   fa::QtAwesome *awesome;
 

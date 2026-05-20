@@ -160,7 +160,7 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
 
     if (m_fillOverride.isValid()) {
     QColor c = m_fillOverride;
-    if (m_visualHighlighted || m_isHovered)
+    if (!m_disableHighlight && (m_visualHighlighted || m_isHovered))
       c = c.lighter(180);
     QColor fillCol(c.red(), c.green(), c.blue(), m_recordingActive ? 255 : 220);
     painter.setBrush(fillCol);
@@ -179,7 +179,7 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
       QColor cInner = m_gradientColorEnd;
       QColor cMid   = m_gradientColorMiddle;
       QColor cOuter = m_gradientColorStart;
-      if (m_visualHighlighted || m_isHovered) {
+      if (!m_disableHighlight && (m_visualHighlighted || m_isHovered)) {
         cInner = cInner.lighter(150);
         cMid   = cMid.lighter(180);
         cOuter = cOuter.lighter(200);
@@ -220,7 +220,7 @@ void PolygonButton::paintEvent(QPaintEvent *event) {
   }
 
   fa::QtAwesome *awesome = IconManager::instance().awesome();
-  bool focused = m_visualHighlighted || m_isHovered;
+  bool focused = (m_visualHighlighted || m_isHovered) && !m_disableHighlight;
 
   if (m_iconLeftTextRight) {
     // Icon and text side by side
@@ -405,10 +405,10 @@ void PolygonButton::setPersistentHighlight(bool persistent) {
 }
 
 void PolygonButton::setVisualHighlight(bool highlighted) {
-  if (m_disableHighlight) return;
-  if (m_persistentHighlight && !highlighted) return;
   if (m_visualHighlighted == highlighted) return;
   m_visualHighlighted = highlighted;
+  if (m_disableHighlight) { update(); return; }
+  if (m_persistentHighlight && !highlighted) return;
   gradientAnimation->stop();
   gradientAnimation->setDirection(highlighted ? QPropertyAnimation::Forward : QPropertyAnimation::Backward);
   gradientAnimation->start();

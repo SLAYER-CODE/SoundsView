@@ -75,9 +75,9 @@ void CircularTriangleButton::paintEvent(QPaintEvent *event) {
 
   QRadialGradient grad(c, maxDist * m_scale);
   if (m_grayedOut) {
-    grad.setColorAt(0.0, QColor(80, 80, 80, 220));
-    grad.setColorAt(0.5, QColor(60, 60, 60, 160));
-    grad.setColorAt(1.0, QColor(40, 40, 40, 100));
+    grad.setColorAt(0.0, QColor(50, 50, 50, 220));
+    grad.setColorAt(0.5, QColor(35, 35, 35, 160));
+    grad.setColorAt(1.0, QColor(20, 20, 20, 100));
   } else if (m_isChecked || m_isHovered) {
     grad.setColorAt(0.0, QColor(180, 0, 0, 220));
     grad.setColorAt(0.5, QColor(120, 0, 0, 160));
@@ -99,7 +99,7 @@ void CircularTriangleButton::paintEvent(QPaintEvent *event) {
   QFontMetrics fm(iconFont);
   QRectF iconRect = fm.boundingRect(QString(m_icon));
   QPointF iconPos(c.x() - iconRect.width() / 2, c.y() - iconRect.height() / 2);
-  painter.setPen(Qt::white);
+  painter.setPen(m_grayedOut ? QColor(90, 90, 90) : Qt::white);
   painter.drawText(QRectF(iconPos, iconRect.size()), Qt::AlignCenter,
                    QString(m_icon));
 
@@ -108,7 +108,7 @@ void CircularTriangleButton::paintEvent(QPaintEvent *event) {
   QFont labelFont;
   labelFont.setPixelSize(labelSize);
   painter.setFont(labelFont);
-  painter.setPen(Qt::white);
+  painter.setPen(m_grayedOut ? QColor(90, 90, 90) : Qt::white);
 
   qreal labelW = qMin(c.x() * 2, maxDist * m_scale * 1.2);
   qreal labelY = c.y() + iconRect.height() / 2 + 2;
@@ -159,7 +159,7 @@ void CircularTriangleButton::setGrayedOut(bool grayed) {
   if (grayed) {
     m_savedBackgroundColor = m_backgroundColor;
     m_savedHoverBackgroundColor = m_hoverBackgroundColor;
-    m_backgroundColor = QColor(35, 35, 35, 200);
+    m_backgroundColor = QColor(20, 20, 20, 200);
   } else {
     m_backgroundColor = m_savedBackgroundColor;
     m_hoverBackgroundColor = m_savedHoverBackgroundColor;

@@ -280,6 +280,23 @@ void CirleButonEditConvert::paintEvent(QPaintEvent *event) {
     painter.drawArc(arcRect, 90 * 16, -m_progress * 360 * 16);
   }
 
+  // Recording overlay text + icon
+  if (m_locked && !m_recordingText.isEmpty()) {
+    QColor darkGrey(80, 80, 80);
+    qreal w = width(), h = height();
+
+    QFont iconFont = awesome->font(fa::fa_solid, 24);
+    painter.setFont(iconFont);
+    painter.setPen(darkGrey);
+    painter.drawText(QRectF(w / 2 - 30, h / 2 - 50, 60, 40), Qt::AlignCenter, m_recordingIcon);
+
+    QFont textFont;
+    textFont.setPointSize(10);
+    painter.setFont(textFont);
+    painter.setPen(darkGrey);
+    painter.drawText(QRectF(w / 2 - 120, h / 2, 240, 30), Qt::AlignCenter, m_recordingText);
+  }
+
   painter.restore();
 }
 
@@ -646,10 +663,11 @@ void CirleButonEditConvert::onClearClicked() {
 
 void CirleButonEditConvert::setLocked(bool locked) {
   m_locked = locked;
-  treants->setEnabled(!locked);
-  clear->setEnabled(!locked);
-  treants->setIconColor(locked ? QColor(60, 60, 60) : QColor(128, 128, 128));
-  clear->setIconColor(locked ? QColor(60, 60, 60) : QColor(128, 128, 128));
+  treants->setVisible(!locked);
+  clear->setVisible(!locked);
+  icon_place->setVisible(!locked);
+  editline->setVisible(!locked);
+  placeholder->setVisible(!locked);
   update();
 }
 

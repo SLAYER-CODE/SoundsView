@@ -2332,7 +2332,6 @@
  mdp:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h
  mdp:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stddef.h
 /home/Tiopaz/SoundsView/src/common/utils.cpp
-/home/Tiopaz/SoundsView/src/ui/cirlebutoneditconvert.cpp
 /home/Tiopaz/SoundsView/src/core/audiomanager.h
  mmc:Q_OBJECT
  mdp:/home/Tiopaz/SoundsView/build_terminal/SoundsView_autogen/moc_predefs.h
@@ -2719,6 +2718,7 @@
  mdp:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h
  mdp:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h
  mdp:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stddef.h
+/home/Tiopaz/SoundsView/src/ui/cirlebutoneditconvert.cpp
 /home/Tiopaz/SoundsView/src/core/soundmanager.cpp
 /home/Tiopaz/SoundsView/src/ui/voiceroulette.h
  mmc:Q_OBJECT
